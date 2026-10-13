@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"surface-variant":"#d3e4fe","tertiary":"#374559","on-surface-variant":"#434655","on-tertiary":"#ffffff","surface-container-highest":"#d3e4fe","on-secondary-fixed-variant":"#3f465c","on-primary-container":"#cad3ff","surface-container-high":"#dce9ff","on-tertiary-fixed":"#0d1c2e","on-background":"#0b1c30","primary-container":"#1d4ed8","outline":"#747686","on-primary-fixed":"#001551","on-secondary-container":"#5c647a","on-tertiary-container":"#c7d6ee","on-secondary":"#ffffff","tertiary-fixed-dim":"#b9c7df","tertiary-container":"#4f5d71","surface-bright":"#f8f9ff","on-primary-fixed-variant":"#0039b5","primary-fixed-dim":"#b7c4ff","surface":"#f8f9ff","primary-fixed":"#dce1ff","surface-container":"#e5eeff","on-surface":"#0b1c30","on-primary":"#ffffff","on-error-container":"#93000a","inverse-on-surface":"#eaf1ff","surface-container-lowest":"#ffffff","surface-container-low":"#eff4ff","outline-variant":"#c4c5d7","on-tertiary-fixed-variant":"#3a485b","inverse-surface":"#213145","surface-dim":"#cbdbf5","secondary-fixed":"#dae2fd","surface-tint":"#2151da","tertiary-fixed":"#d5e3fc","on-secondary-fixed":"#131b2e","secondary-container":"#dae2fd","secondary":"#565e74","background":"#f8f9ff","secondary-fixed-dim":"#bec6e0","error-container":"#ffdad6","on-error":"#ffffff","primary":"#0037b0","inverse-primary":"#b7c4ff","error":"#ba1a1a"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-xl":"1.5rem","space-sm":"0.5rem","gutter":"1rem","space-xs":"0.25rem","space-2xl":"2rem","margin-desktop":"2rem","space-lg":"1rem","space-md":"0.75rem","gutter-mobile":"0.75rem","margin-mobile":"1rem","margin":"1.5rem","gutter-desktop":"1.5rem"},"fontFamily":{"body-lg":["Inter"],"headline-md":["Plus Jakarta Sans"],"metric-md":["Inter"],"headline-lg-mobile":["Plus Jakarta Sans"],"headline-sm":["Plus Jakarta Sans"],"display":["Plus Jakarta Sans"],"body-sm":["Inter"],"label-sm":["Inter"],"metric-lg":["Inter"],"caption":["Inter"],"body-md":["Inter"],"headline-lg":["Plus Jakarta Sans"],"label-md":["Inter"]},"fontSize":{"body-lg":["15px",{"lineHeight":"22px","fontWeight":"400"}],"headline-md":["18px",{"lineHeight":"24px","letterSpacing":"-0.01em","fontWeight":"600"}],"metric-md":["16px",{"lineHeight":"20px","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-lg-mobile":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"700"}],"headline-sm":["15px",{"lineHeight":"20px","letterSpacing":"-0.005em","fontWeight":"600"}],"display":["32px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"700"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.03em","fontWeight":"500"}],"metric-lg":["24px",{"lineHeight":"28px","letterSpacing":"-0.02em","fontWeight":"600"}],"caption":["10px",{"lineHeight":"12px","letterSpacing":"0.04em","fontWeight":"500"}],"body-md":["13px",{"lineHeight":"18px","fontWeight":"400"}],"headline-lg":["24px",{"lineHeight":"32px","letterSpacing":"-0.02em","fontWeight":"700"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"600"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-lg flex items-center gap-space-sm bg-surface-container-low"><img alt="LedgerPoint Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Vlrh8zgatY5F-wFnJukD1aPffmrpDoA9_cKRKWrShsTYEWHMh5Kt49RnENdlseBItspibPJkTB_io7M_HKG1i9hzEu6DvIKikZJdnVWnyFHGxbqG4nBikyGlxyUQO-zl8Wp4Z1SFWfDfXohTenWmg-MPLhW-71TgGkRJ3k4Y4FeJzhSXT8fuR_rycouCwE0gjkmLMNdLGNvDuFA7Q53aRIDxx7gFPdeykJuJu5knQvrLDp9Zb1bjJOErya"/><div class="flex flex-col min-w-0 leading-tight"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight truncate">LedgerPoint</span><span class="font-caption text-caption text-secondary uppercase tracking-wider truncate">CPA &amp; Advisory</span></div></div><div class="px-space-md py-space-sm"><div class="h-[1px] w-full bg-outline-variant/30"></div></div><nav class="flex flex-col gap-space-xs px-space-sm py-space-xs" data-active-classes="bg-primary-container text-on-primary font-semibold shadow-[0_1px_2px_rgba(0,0,0,0.05)]"><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg transition-colors bg-primary-container text-on-primary font-semibold shadow-[0_1px_2px_rgba(0,0,0,0.05)]" data-path="overview" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="font-label-md text-label-md">Overview</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="clients" href="#"><span class="material-symbols-outlined text-[20px]">business_center</span><span class="font-label-md text-label-md">Clients</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="client-360" href="#"><span class="material-symbols-outlined text-[20px]">domain_verification</span><span class="font-label-md text-label-md">Client 360</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="workflows" href="#"><span class="material-symbols-outlined text-[20px]">view_kanban</span><span class="font-label-md text-label-md">Workflows</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="billing-and-wip" href="#"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span class="font-label-md text-label-md">Billing &amp; WIP</span></a></nav><div class="px-space-md py-space-sm"><div class="h-[1px] w-full bg-outline-variant/30"></div></div><div class="px-space-md py-space-xs"><div class="p-space-md bg-surface-container-lowest rounded-xl shadow-[0_1px_2px_rgba(15,23,42,0.05)]"><div class="flex items-center justify-between mb-space-xs"><span class="font-label-sm text-label-sm font-semibold uppercase text-secondary tracking-wider">Tax Season 2024</span><span class="font-metric-md text-metric-md text-primary font-bold">84%</span></div><div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden mb-space-xs"><div class="bg-primary h-full rounded-full" style="width: 84%"></div></div><div class="flex items-center justify-between text-secondary"><span class="font-caption text-caption">Filed &amp; Accepted</span><span class="font-caption text-caption font-semibold text-on-surface">16d to Deadline</span></div></div></div><nav class="flex flex-col gap-space-xs px-space-sm py-space-xs" data-active-classes="bg-primary-container text-on-primary font-semibold"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="firm-documents" href="#"><span class="material-symbols-outlined text-[20px]">folder_shared</span><span class="font-label-md text-label-md">Firm Documents</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[20px]">settings</span><span class="font-label-md text-label-md">Settings</span></a></nav></div><div class="p-space-md bg-surface-container-low"><div class="p-space-sm rounded-lg bg-surface-container flex items-center justify-between"><div class="flex items-center gap-space-xs min-w-0"><span class="material-symbols-outlined text-[18px] text-primary">verified_user</span><div class="flex flex-col min-w-0"><span class="font-caption text-caption text-on-surface font-semibold truncate">IRS e-File Status</span><span class="font-caption text-caption text-secondary">Connected &amp; Active</span></div></div><div class="w-2 h-2 rounded-full bg-primary"></div></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-gutter-desktop"><div class="flex items-center gap-space-lg flex-1 max-w-xl"><div class="relative w-full"><span class="material-symbols-outlined absolute left-space-md top-1/2 -translate-y-1/2 text-[18px] text-outline pointer-events-none">search</span><input class="w-full h-9 pl-9 pr-space-lg bg-surface-container-lowest rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary shadow-[0_1px_2px_rgba(15,23,42,0.05)]" placeholder="Search clients, EIN, returns, or invoices... Cmd+K" type="text"/></div></div><div class="flex items-center gap-space-md"><button class="h-9 px-space-md bg-primary hover:bg-primary-container text-on-primary rounded-lg font-label-md text-label-md uppercase tracking-wider flex items-center gap-space-xs shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">add</span><span>New Client / Engagement</span></button><div class="h-6 w-[1px] bg-outline-variant/40 mx-space-xs"></div><div class="flex items-center gap-space-xs bg-surface-container-lowest px-space-sm py-1 rounded-lg shadow-[0_1px_2px_rgba(15,23,42,0.05)]"><span class="font-caption text-caption text-secondary uppercase font-semibold">Period:</span><span class="font-label-sm text-label-sm font-semibold text-on-surface">FY 2024</span><span class="material-symbols-outlined text-[16px] text-secondary">expand_more</span></div><div class="relative flex items-center"><button aria-label="Notifications" class="w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span></button><span class="absolute top-1 right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-error text-on-error font-caption text-[10px] font-bold leading-none">3</span></div><div class="h-6 w-[1px] bg-outline-variant/40 mx-space-xs"></div><div class="flex items-center gap-space-sm pl-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-outline-variant/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM-9xcIPNgyot7olyfq9LPtH8qDEgbqi-eTkNvImZ7jgB4rGBVatMIoVqWFdU_fB4X6Lv4wrRf99Fld5IrzwFaT3WPyXXCSoYQke0aVWFi6AZBpTn5rr0jAEz-3EMXe_NtcBm_55m7474JTsImAwfRKr96sFpB8L64sJIhFzZ4zZT5YpAUJfRTb0_q4dl-XXc502pW8vYn4FC6jvwq9tI29I5wkmvUaI8TPzkh2779bctme6X08GB6IQ"/><div class="hidden lg:flex flex-col text-left leading-tight"><span class="font-label-md text-label-md font-semibold text-on-surface truncate">Elena Vance, CPA</span><span class="font-caption text-caption text-primary font-semibold uppercase tracking-wider truncate">Managing Partner</span></div><span class="material-symbols-outlined text-[18px] text-secondary">expand_more</span></div></div></header><main class="relative pt-16 bg-surface min-h-screen w-full px-gutter-desktop"><div class="flex flex-col w-full">
+<!-- Sub-header Notification Banner & Quick Operational Status -->
+<div class="py-space-md flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div>
+<div class="flex items-center gap-space-xs text-secondary font-label-sm uppercase tracking-wider">
+<span class="inline-block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span>Operational Readiness • Fiscal Q2 2024</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-0.5">
+        Good morning, Elena. Tax deadline in <span class="text-primary font-bold">14 days</span>.
+      </h1>
+<p class="font-body-md text-body-md text-secondary">
+        All partner queues synchronized. Priority attention recommended on 7 unconfirmed Schedule K-1 schedules.
+      </p>
+</div>
+<!-- Actions & Timeline Selector -->
+<div class="flex items-center gap-space-sm self-start md:self-auto">
+<div class="flex items-center bg-surface-container-low p-1 rounded-lg shadow-sm">
+<button class="px-space-md py-1 rounded bg-surface-container-lowest font-label-sm text-on-surface shadow-sm transition">Current Quarter</button>
+<button class="px-space-md py-1 rounded text-secondary font-label-sm hover:text-on-surface transition">FY 2024 YTD</button>
+</div>
+<button class="h-9 px-space-md bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md rounded-lg flex items-center gap-space-xs shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[18px] text-secondary">download</span>
+<span>Export Report</span>
+</button>
+</div>
+</div>
+<!-- Top Metric KPI Row (4 Cards) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md mb-space-xl">
+<!-- 1. Active Engagements -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden group hover:shadow-md transition">
+<div class="flex items-start justify-between mb-space-sm">
+<span class="font-label-sm text-secondary uppercase tracking-wider font-semibold">Active Engagements</span>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-high text-primary font-label-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> 12% YoY
+        </span>
+</div>
+<div class="flex items-baseline gap-space-sm mb-space-sm">
+<span class="font-display text-display text-on-surface font-bold tracking-tight">142</span>
+<span class="font-body-sm text-body-sm text-secondary">total engagements</span>
+</div>
+<div class="space-y-space-xs pt-space-xs">
+<div class="flex h-1.5 w-full rounded-full overflow-hidden bg-surface-container gap-0.5">
+<div class="bg-primary h-full" style="width: 69%" title="Tax: 98"></div>
+<div class="bg-surface-tint h-full" style="width: 22%" title="Advisory: 31"></div>
+<div class="bg-secondary h-full" style="width: 9%" title="Audit: 13"></div>
+</div>
+<div class="flex items-center justify-between font-caption text-caption text-secondary pt-1">
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>98 Tax</span>
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-surface-tint inline-block"></span>31 Advisory</span>
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-secondary inline-block"></span>13 Audit</span>
+</div>
+</div>
+</div>
+<!-- 2. Billed YTD & WIP -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md transition">
+<div class="flex items-start justify-between mb-space-sm">
+<span class="font-label-sm text-secondary uppercase tracking-wider font-semibold">Billed YTD &amp; WIP</span>
+<span class="font-caption text-caption text-primary bg-surface-container-low px-1.5 py-0.5 rounded font-semibold">88% Quota</span>
+</div>
+<div class="flex flex-col mb-space-xs">
+<div class="flex items-baseline justify-between">
+<span class="font-metric-lg text-metric-lg text-on-surface font-bold tracking-tight">$1,420,850</span>
+<span class="font-label-sm text-label-sm text-secondary">Billed</span>
+</div>
+<div class="flex items-baseline justify-between text-secondary mt-0.5">
+<span class="font-metric-md text-metric-md text-primary font-semibold">$184,300</span>
+<span class="font-caption text-caption">Unbilled WIP</span>
+</div>
+</div>
+<div class="space-y-1">
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-500" style="width: 88%"></div>
+</div>
+<div class="flex justify-between font-caption text-caption text-secondary">
+<span>Target: $1.60M</span>
+<span class="text-on-surface font-medium">$179.2k to Target</span>
+</div>
+</div>
+</div>
+<!-- 3. Filing Deadlines -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md transition">
+<div class="flex items-start justify-between mb-space-sm">
+<span class="font-label-sm text-secondary uppercase tracking-wider font-semibold">Statutory Deadlines</span>
+<span class="px-1.5 py-0.5 rounded bg-error-container text-on-error-container font-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">schedule</span> 14 Days
+        </span>
+</div>
+<div class="flex items-baseline gap-space-sm mb-space-xs">
+<span class="font-display text-display text-on-surface font-bold">28</span>
+<span class="font-body-sm text-body-sm text-error font-medium">urgent returns pending</span>
+</div>
+<div class="flex items-center gap-space-xs font-caption text-caption text-secondary pt-space-xs">
+<span class="bg-surface-container-low px-2 py-1 rounded text-on-surface font-medium">11x Form 1065</span>
+<span class="bg-surface-container-low px-2 py-1 rounded text-on-surface font-medium">13x Form 1120-S</span>
+<span class="bg-surface-container-low px-2 py-1 rounded text-on-surface font-medium">4x 1040</span>
+</div>
+</div>
+<!-- 4. Realization Rate -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md transition">
+<div class="flex items-start justify-between mb-space-sm">
+<span class="font-label-sm text-secondary uppercase tracking-wider font-semibold">Firm Realization</span>
+<span class="font-label-sm text-primary flex items-center font-semibold">
+<span class="material-symbols-outlined text-[16px]">verified</span> Peer Top 5%
+        </span>
+</div>
+<div class="flex items-center justify-between mb-space-xs">
+<div>
+<span class="font-display text-display text-on-surface font-bold tracking-tight">94.2%</span>
+<p class="font-caption text-caption text-secondary">Aggregate across 4 partners</p>
+</div>
+<!-- Compact circular indicator / sparkline SVG -->
+<div class="relative w-12 h-12 flex items-center justify-center">
+<svg class="w-12 h-12 transform -rotate-90" viewbox="0 0 36 36">
+<path class="text-surface-container" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+<path class="text-primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="94.2, 100" stroke-linecap="round" stroke-width="3.5"></path>
+</svg>
+<span class="absolute font-caption text-caption font-bold text-primary">A+</span>
+</div>
+</div>
+<div class="flex justify-between font-caption text-caption text-secondary pt-space-xs">
+<span>Standard Target: 85.0%</span>
+<span class="text-primary font-semibold">+9.2% variance</span>
+</div>
+</div>
+</div>
+<!-- Main Content Layout (Two Columns) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg pb-space-2xl">
+<!-- LEFT COLUMN (Wider: 8 cols) -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<!-- Card: Urgent Statutory Deadlines & Filings -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<!-- Header -->
+<div class="px-space-lg py-space-md bg-surface-container-lowest flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[20px] text-primary">assignment_late</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Urgent Statutory Deadlines &amp; Filings</h2>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-caption text-caption text-secondary uppercase font-semibold">Priority:</span>
+<span class="font-label-sm text-error bg-error-container/40 px-2 py-0.5 rounded font-semibold">April 15 Batch (14d)</span>
+</div>
+</div>
+<!-- Table Container -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-secondary font-label-sm uppercase tracking-wider text-[11px]">
+<th class="py-space-sm px-space-md font-semibold">Client Entity</th>
+<th class="py-space-sm px-space-md font-semibold">Form / Filing</th>
+<th class="py-space-sm px-space-md font-semibold">Due Date</th>
+<th class="py-space-sm px-space-md font-semibold">Status Stage</th>
+<th class="py-space-sm px-space-md font-semibold">Lead CPA</th>
+<th class="py-space-sm px-space-md font-semibold text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container font-body-md text-body-md text-on-surface">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-space-md px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Summit Ridge Capital LLC</span>
+<span class="font-caption text-caption text-secondary">EIN: ••-•••8841 • Tier 1 Client</span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="font-mono text-body-sm font-semibold bg-surface-container px-2 py-0.5 rounded text-on-surface">Form 1065</span>
+<div class="font-caption text-caption text-secondary mt-0.5">Partnership Return</div>
+</td>
+<td class="py-space-md px-space-md font-mono text-body-sm text-error font-medium">Apr 15, 2024</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-highest text-primary font-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                    Partner Review
+                  </span>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-1.5">
+<span class="w-6 h-6 rounded-full bg-primary text-on-primary font-caption flex items-center justify-center font-bold">EV</span>
+<span class="font-body-sm text-body-sm">E. Vance</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right">
+<button class="h-8 px-space-sm bg-primary hover:bg-primary-container text-on-primary font-label-sm rounded uppercase tracking-wider transition shadow-sm inline-flex items-center gap-1">
+<span>Review Return</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-space-md px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Apex BioTech Innovations</span>
+<span class="font-caption text-caption text-secondary">EIN: ••-•••3192 • R&amp;D Credits Included</span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="font-mono text-body-sm font-semibold bg-surface-container px-2 py-0.5 rounded text-on-surface">Form 1120-S</span>
+<div class="font-caption text-caption text-secondary mt-0.5">S-Corporation Return</div>
+</td>
+<td class="py-space-md px-space-md font-mono text-body-sm text-error font-medium">Apr 15, 2024</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-amber-50 text-amber-800 font-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+                    Sign-off Required
+                  </span>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-1.5">
+<span class="w-6 h-6 rounded-full bg-tertiary text-on-tertiary font-caption flex items-center justify-center font-bold">MR</span>
+<span class="font-body-sm text-body-sm">M. Reed</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right">
+<button class="h-8 px-space-sm bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm rounded uppercase tracking-wider transition shadow-sm inline-flex items-center gap-1">
+<span>View Docs</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-space-md px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Horizon Logistics Global Inc</span>
+<span class="font-caption text-caption text-secondary">EIN: ••-•••9045 • Multi-State Apportionment</span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="font-mono text-body-sm font-semibold bg-surface-container px-2 py-0.5 rounded text-on-surface">Form 1120-S</span>
+<div class="font-caption text-caption text-secondary mt-0.5">8 State Attachments</div>
+</td>
+<td class="py-space-md px-space-md font-mono text-body-sm text-error font-medium">Apr 15, 2024</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 font-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                    Ready to E-File
+                  </span>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-1.5">
+<span class="w-6 h-6 rounded-full bg-surface-variant text-on-surface-variant font-caption flex items-center justify-center font-bold">SC</span>
+<span class="font-body-sm text-body-sm">S. Chen</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right">
+<button class="h-8 px-space-sm bg-primary hover:bg-primary-container text-on-primary font-label-sm rounded uppercase tracking-wider transition shadow-sm inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">send</span>
+<span>Submit E-File</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-space-md px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Vanguard Real Estate Holdings</span>
+<span class="font-caption text-caption text-secondary">EIN: ••-•••1102 • 14 Asset Deprec. Schedules</span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="font-mono text-body-sm font-semibold bg-surface-container px-2 py-0.5 rounded text-on-surface">Form 1065</span>
+<div class="font-caption text-caption text-secondary mt-0.5">Real Estate Partnership</div>
+</td>
+<td class="py-space-md px-space-md font-mono text-body-sm text-error font-medium">Apr 15, 2024</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-highest text-primary font-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                    Partner Review
+                  </span>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-1.5">
+<span class="w-6 h-6 rounded-full bg-primary text-on-primary font-caption flex items-center justify-center font-bold">EV</span>
+<span class="font-body-sm text-body-sm">E. Vance</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right">
+<button class="h-8 px-space-sm bg-primary hover:bg-primary-container text-on-primary font-label-sm rounded uppercase tracking-wider transition shadow-sm inline-flex items-center gap-1">
+<span>Review Return</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-space-lg py-space-sm bg-surface-container-low flex items-center justify-between text-secondary font-caption">
+<span>Showing 4 of 28 priority statutory filings</span>
+<a class="text-primary font-label-sm hover:underline flex items-center gap-0.5" href="#">View all 28 filings <span class="material-symbols-outlined text-[14px]">chevron_right</span></a>
+</div>
+</div>
+<!-- Card: Capacity & Partner Workload -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col">
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[20px] text-primary">groups</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Capacity &amp; Partner Workload Allocation</h2>
+</div>
+<div class="flex items-center gap-space-md text-secondary font-caption">
+<span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-primary inline-block"></span>Billable Target</span>
+<span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-surface-container-high inline-block"></span>Admin &amp; Advisory</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+<!-- Partner 1: Elena Vance -->
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col justify-between">
+<div class="flex items-start justify-between mb-2">
+<div class="flex items-center gap-2">
+<img class="w-9 h-9 rounded-full object-cover" data-alt="Close up professional portrait of female CPA managing partner Elena Vance in executive business suit in a high-tech modern financial office." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrFC0xCgiwlkpNiHxe-bfQjDEcAwxBpA-7g0vY1f8hFV1lEXOz9YQP-asI9s8IKDomICgclP7ua9GUTYj7ldnFECgR1vNjNoBjN-rZD2n3B-gpzKJlNYT7U3c-_QA1PVGLibt4ednInZO0ct2VXRphd1xAMCtoKuXv3ZYOsAkpoNRHD9bihR_H6M_uSw0nYIBE9ZWPw5EZaw2w0F4aVbpKamaoo0uuOQwUjEiuuwWf3zV0rxViNGDfuQ"/>
+<div>
+<div class="font-label-md text-label-md text-on-surface font-semibold">Elena Vance, CPA</div>
+<div class="font-caption text-caption text-secondary">Managing Partner • High Net Worth &amp; M&amp;A</div>
+</div>
+</div>
+<span class="font-metric-md text-metric-md text-primary font-bold">88% Capacity</span>
+</div>
+<div class="space-y-1 mt-2">
+<div class="h-2 w-full rounded-full bg-surface-container overflow-hidden flex">
+<div class="bg-primary h-full" style="width: 76%"></div>
+<div class="bg-secondary h-full" style="width: 12%"></div>
+</div>
+<div class="flex justify-between font-caption text-caption text-secondary">
+<span>38.0 / 45.0 Hours logged</span>
+<span class="text-on-surface font-medium">7.0h Remaining Buffer</span>
+</div>
+</div>
+</div>
+<!-- Partner 2: Marcus Reed -->
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col justify-between">
+<div class="flex items-start justify-between mb-2">
+<div class="flex items-center gap-2">
+<img class="w-9 h-9 rounded-full object-cover" data-alt="Professional headshot of senior male tax partner Marcus Reed wearing glasses and crisp shirt in corporate accounting boardroom." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_Mpilz0o4eBifGrI0HUJ9UhT6-s8LLkmDu7-eB_7tj__y5Y661RpRT2PXG1NZiOEnyvpxshA4JVbq_1KUOl1R9wjlGAiqLvbUKvSvwx0hkzWyu4LlTbxklmZMl3fABNQ7ArxgSW7wANS-z71zP3weFd9GaqtXFswuijqlbTx-NK4Xz7uS3usGd4p_3BlpRYr06mtkvJWODYC7czeGCd2nq_3EXtqyaxEF3Cku-Ra5fcXrvABweX9lMQ"/>
+<div>
+<div class="font-label-md text-label-md text-on-surface font-semibold">Marcus Reed, CPA</div>
+<div class="font-caption text-caption text-secondary">Senior Tax Partner • Corporate Entities</div>
+</div>
+</div>
+<span class="font-metric-md text-metric-md text-error font-bold">92% Capacity</span>
+</div>
+<div class="space-y-1 mt-2">
+<div class="h-2 w-full rounded-full bg-surface-container overflow-hidden flex">
+<div class="bg-error h-full" style="width: 82%"></div>
+<div class="bg-secondary h-full" style="width: 10%"></div>
+</div>
+<div class="flex justify-between font-caption text-caption text-secondary">
+<span>41.5 / 45.0 Hours logged</span>
+<span class="text-error font-medium">Near Maximum Load</span>
+</div>
+</div>
+</div>
+<!-- Partner 3: Sarah Chen -->
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col justify-between">
+<div class="flex items-start justify-between mb-2">
+<div class="flex items-center gap-2">
+<div class="w-9 h-9 rounded-full bg-surface-variant text-primary font-label-md flex items-center justify-center font-bold">SC</div>
+<div>
+<div class="font-label-md text-label-md text-on-surface font-semibold">Sarah Chen, CPA, CFE</div>
+<div class="font-caption text-caption text-secondary">Audit &amp; Compliance Partner</div>
+</div>
+</div>
+<span class="font-metric-md text-metric-md text-on-surface font-bold">74% Capacity</span>
+</div>
+<div class="space-y-1 mt-2">
+<div class="h-2 w-full rounded-full bg-surface-container overflow-hidden flex">
+<div class="bg-primary h-full" style="width: 62%"></div>
+<div class="bg-secondary h-full" style="width: 12%"></div>
+</div>
+<div class="flex justify-between font-caption text-caption text-secondary">
+<span>33.2 / 45.0 Hours logged</span>
+<span class="text-on-surface font-medium">11.8h Available</span>
+</div>
+</div>
+</div>
+<!-- Partner 4: David Miller -->
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col justify-between">
+<div class="flex items-start justify-between mb-2">
+<div class="flex items-center gap-2">
+<div class="w-9 h-9 rounded-full bg-surface-container text-secondary font-label-md flex items-center justify-center font-bold">DM</div>
+<div>
+<div class="font-label-md text-label-md text-on-surface font-semibold">David Miller, CPA</div>
+<div class="font-caption text-caption text-secondary">Advisory &amp; Valuation Director</div>
+</div>
+</div>
+<span class="font-metric-md text-metric-md text-on-surface font-bold">65% Capacity</span>
+</div>
+<div class="space-y-1 mt-2">
+<div class="h-2 w-full rounded-full bg-surface-container overflow-hidden flex">
+<div class="bg-primary h-full" style="width: 50%"></div>
+<div class="bg-secondary h-full" style="width: 15%"></div>
+</div>
+<div class="flex justify-between font-caption text-caption text-secondary">
+<span>29.0 / 45.0 Hours logged</span>
+<span class="text-on-surface font-medium">16.0h Available (Reallocating)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN (Narrower: 4 cols) -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Card: Client Action Required (Bottlenecks) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col">
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[20px] text-error">notification_important</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Client Action Required</h2>
+</div>
+<span class="font-caption text-caption bg-error-container text-on-error-container px-2 py-0.5 rounded-full font-bold">3 Blockers</span>
+</div>
+<p class="font-caption text-caption text-secondary mb-space-md">
+          Immediate documents required to proceed with statutory assembly before e-filing cut-off.
+        </p>
+<div class="flex flex-col gap-space-sm">
+<!-- Bottleneck Item 1 -->
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-2 transition hover:bg-surface-container">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-md text-label-md font-semibold text-on-surface">Kodiak Timber Holdings</span>
+<div class="font-caption text-caption text-error font-medium flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">warning</span> Missing 3x Form 1099-NEC
+                </div>
+</div>
+<span class="font-caption text-caption bg-surface-container px-1.5 py-0.5 rounded text-secondary font-mono">4d delay</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-caption text-caption text-secondary">Contact: Arthur Pendelton</span>
+<button class="px-space-sm py-1 bg-primary text-on-primary hover:bg-primary-container font-label-sm rounded uppercase tracking-wider text-[11px] font-semibold transition flex items-center gap-1" onclick="this.innerHTML='Nudge Sent!'">
+<span class="material-symbols-outlined text-[13px]">outgoing_mail</span> Send Nudge
+              </button>
+</div>
+</div>
+<!-- Bottleneck Item 2 -->
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-2 transition hover:bg-surface-container">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-md text-label-md font-semibold text-on-surface">Crestview Medical Partners</span>
+<div class="font-caption text-caption text-error font-medium flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">warning</span> Unreceived Schedule K-1 (Pass-thru)
+                </div>
+</div>
+<span class="font-caption text-caption bg-surface-container px-1.5 py-0.5 rounded text-secondary font-mono">6d delay</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-caption text-caption text-secondary">Contact: Dr. Rachel Vance</span>
+<button class="px-space-sm py-1 bg-primary text-on-primary hover:bg-primary-container font-label-sm rounded uppercase tracking-wider text-[11px] font-semibold transition flex items-center gap-1" onclick="this.innerHTML='Nudge Sent!'">
+<span class="material-symbols-outlined text-[13px]">outgoing_mail</span> Send Nudge
+              </button>
+</div>
+</div>
+<!-- Bottleneck Item 3 -->
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-2 transition hover:bg-surface-container">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-md text-label-md font-semibold text-on-surface">Solas Renewable Energy Inc</span>
+<div class="font-caption text-caption text-error font-medium flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">edit_document</span> Unsigned Engagement Letter
+                </div>
+</div>
+<span class="font-caption text-caption bg-surface-container px-1.5 py-0.5 rounded text-secondary font-mono">1d delay</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-caption text-caption text-secondary">Contact: Marcus Brody (CFO)</span>
+<button class="px-space-sm py-1 bg-primary text-on-primary hover:bg-primary-container font-label-sm rounded uppercase tracking-wider text-[11px] font-semibold transition flex items-center gap-1" onclick="this.innerHTML='Nudge Sent!'">
+<span class="material-symbols-outlined text-[13px]">outgoing_mail</span> Send Nudge
+              </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Card: Recent Firm Activity & Real-Time Audit Trail -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col">
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[20px] text-primary">history</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Recent Firm Activity</h2>
+</div>
+<span class="inline-flex items-center gap-1 font-caption text-caption text-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span> Live
+          </span>
+</div>
+<div class="relative pl-6 space-y-space-md before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-surface-container">
+<!-- Activity 1: Payment Cleared -->
+<div class="relative flex flex-col">
+<span class="absolute -left-6 top-0.5 w-4 h-4 rounded-full bg-emerald-100 flex items-center justify-center">
+<span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+</span>
+<div class="flex items-baseline justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Retainer Payment Cleared</span>
+<span class="font-caption text-caption text-secondary">20m ago</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5">
+<strong class="text-on-surface font-medium">$15,400</strong> deposited via ACH from <span class="font-medium text-on-surface">Apex BioTech</span>. WIP cleared.
+            </p>
+</div>
+<!-- Activity 2: IRS E-File Accepted -->
+<div class="relative flex flex-col">
+<span class="absolute -left-6 top-0.5 w-4 h-4 rounded-full bg-primary-container/20 flex items-center justify-center">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</span>
+<div class="flex items-baseline justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">IRS e-File Accepted</span>
+<span class="font-caption text-caption text-secondary">1h 14m ago</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5">
+              Form 1065 for <span class="font-medium text-on-surface">Beacon Point Partners</span> officially recognized by MeF gateway. Acknowledgement ID: #88219.
+            </p>
+</div>
+<!-- Activity 3: Client Document Upload -->
+<div class="relative flex flex-col">
+<span class="absolute -left-6 top-0.5 w-4 h-4 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</span>
+<div class="flex items-baseline justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Client Secure Upload</span>
+<span class="font-caption text-caption text-secondary">2h 45m ago</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5">
+<span class="font-medium text-on-surface">Summit Ridge Capital</span> uploaded 4 files into <code class="font-mono text-[11px] bg-surface-container px-1 py-0.5 rounded">/FY2024/TrialBalances</code>.
+            </p>
+</div>
+<!-- Activity 4: Workpaper Signed Off -->
+<div class="relative flex flex-col">
+<span class="absolute -left-6 top-0.5 w-4 h-4 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</span>
+<div class="flex items-baseline justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Workpaper Review Signed</span>
+<span class="font-caption text-caption text-secondary">4h ago</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5">
+<span class="font-medium text-on-surface">Marcus Reed, CPA</span> signed off on Section 179 depreciation schedule for Horizon Logistics.
+            </p>
+</div>
+</div>
+<button class="mt-space-md py-space-xs text-center font-label-sm text-primary hover:bg-surface-container-low rounded transition-colors w-full uppercase tracking-wider font-semibold">
+          View Complete Audit Trail
+        </button>
+</div>
+</div>
+</div>
+</div></main></div></body></html>

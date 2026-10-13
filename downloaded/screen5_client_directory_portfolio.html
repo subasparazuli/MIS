@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"surface-variant":"#d3e4fe","tertiary":"#374559","on-surface-variant":"#434655","on-tertiary":"#ffffff","surface-container-highest":"#d3e4fe","on-secondary-fixed-variant":"#3f465c","on-primary-container":"#cad3ff","surface-container-high":"#dce9ff","on-tertiary-fixed":"#0d1c2e","on-background":"#0b1c30","primary-container":"#1d4ed8","outline":"#747686","on-primary-fixed":"#001551","on-secondary-container":"#5c647a","on-tertiary-container":"#c7d6ee","on-secondary":"#ffffff","tertiary-fixed-dim":"#b9c7df","tertiary-container":"#4f5d71","surface-bright":"#f8f9ff","on-primary-fixed-variant":"#0039b5","primary-fixed-dim":"#b7c4ff","surface":"#f8f9ff","primary-fixed":"#dce1ff","surface-container":"#e5eeff","on-surface":"#0b1c30","on-primary":"#ffffff","on-error-container":"#93000a","inverse-on-surface":"#eaf1ff","surface-container-lowest":"#ffffff","surface-container-low":"#eff4ff","outline-variant":"#c4c5d7","on-tertiary-fixed-variant":"#3a485b","inverse-surface":"#213145","surface-dim":"#cbdbf5","secondary-fixed":"#dae2fd","surface-tint":"#2151da","tertiary-fixed":"#d5e3fc","on-secondary-fixed":"#131b2e","secondary-container":"#dae2fd","secondary":"#565e74","background":"#f8f9ff","secondary-fixed-dim":"#bec6e0","error-container":"#ffdad6","on-error":"#ffffff","primary":"#0037b0","inverse-primary":"#b7c4ff","error":"#ba1a1a"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-xl":"1.5rem","space-sm":"0.5rem","gutter":"1rem","space-xs":"0.25rem","space-2xl":"2rem","margin-desktop":"2rem","space-lg":"1rem","space-md":"0.75rem","gutter-mobile":"0.75rem","margin-mobile":"1rem","margin":"1.5rem","gutter-desktop":"1.5rem"},"fontFamily":{"body-lg":["Inter"],"headline-md":["Plus Jakarta Sans"],"metric-md":["Inter"],"headline-lg-mobile":["Plus Jakarta Sans"],"headline-sm":["Plus Jakarta Sans"],"display":["Plus Jakarta Sans"],"body-sm":["Inter"],"label-sm":["Inter"],"metric-lg":["Inter"],"caption":["Inter"],"body-md":["Inter"],"headline-lg":["Plus Jakarta Sans"],"label-md":["Inter"]},"fontSize":{"body-lg":["15px",{"lineHeight":"22px","fontWeight":"400"}],"headline-md":["18px",{"lineHeight":"24px","letterSpacing":"-0.01em","fontWeight":"600"}],"metric-md":["16px",{"lineHeight":"20px","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-lg-mobile":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"700"}],"headline-sm":["15px",{"lineHeight":"20px","letterSpacing":"-0.005em","fontWeight":"600"}],"display":["32px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"700"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.03em","fontWeight":"500"}],"metric-lg":["24px",{"lineHeight":"28px","letterSpacing":"-0.02em","fontWeight":"600"}],"caption":["10px",{"lineHeight":"12px","letterSpacing":"0.04em","fontWeight":"500"}],"body-md":["13px",{"lineHeight":"18px","fontWeight":"400"}],"headline-lg":["24px",{"lineHeight":"32px","letterSpacing":"-0.02em","fontWeight":"700"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"600"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-lg flex items-center gap-space-sm bg-surface-container-low"><img alt="LedgerPoint Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Vlrh8zgatY5F-wFnJukD1aPffmrpDoA9_cKRKWrShsTYEWHMh5Kt49RnENdlseBItspibPJkTB_io7M_HKG1i9hzEu6DvIKikZJdnVWnyFHGxbqG4nBikyGlxyUQO-zl8Wp4Z1SFWfDfXohTenWmg-MPLhW-71TgGkRJ3k4Y4FeJzhSXT8fuR_rycouCwE0gjkmLMNdLGNvDuFA7Q53aRIDxx7gFPdeykJuJu5knQvrLDp9Zb1bjJOErya"/><div class="flex flex-col min-w-0 leading-tight"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight truncate">LedgerPoint</span><span class="font-caption text-caption text-secondary uppercase tracking-wider truncate">CPA &amp; Advisory</span></div></div><div class="px-space-md py-space-sm"><div class="h-[1px] w-full bg-outline-variant/30"></div></div><nav class="flex flex-col gap-space-xs px-space-sm py-space-xs" data-active-classes="bg-primary-container text-on-primary font-semibold shadow-[0_1px_2px_rgba(0,0,0,0.05)]"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="overview" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="font-label-md text-label-md">Overview</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg transition-colors bg-primary-container text-on-primary font-semibold shadow-[0_1px_2px_rgba(0,0,0,0.05)]" data-path="clients" href="#"><span class="material-symbols-outlined text-[20px]">business_center</span><span class="font-label-md text-label-md">Clients</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="client-360" href="#"><span class="material-symbols-outlined text-[20px]">domain_verification</span><span class="font-label-md text-label-md">Client 360</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="workflows" href="#"><span class="material-symbols-outlined text-[20px]">view_kanban</span><span class="font-label-md text-label-md">Workflows</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="billing-and-wip" href="#"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span class="font-label-md text-label-md">Billing &amp; WIP</span></a></nav><div class="px-space-md py-space-sm"><div class="h-[1px] w-full bg-outline-variant/30"></div></div><div class="px-space-md py-space-xs"><div class="p-space-md bg-surface-container-lowest rounded-xl shadow-[0_1px_2px_rgba(15,23,42,0.05)]"><div class="flex items-center justify-between mb-space-xs"><span class="font-label-sm text-label-sm font-semibold uppercase text-secondary tracking-wider">Tax Season 2024</span><span class="font-metric-md text-metric-md text-primary font-bold">84%</span></div><div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden mb-space-xs"><div class="bg-primary h-full rounded-full" style="width: 84%"></div></div><div class="flex items-center justify-between text-secondary"><span class="font-caption text-caption">Filed &amp; Accepted</span><span class="font-caption text-caption font-semibold text-on-surface">16d to Deadline</span></div></div></div><nav class="flex flex-col gap-space-xs px-space-sm py-space-xs" data-active-classes="bg-primary-container text-on-primary font-semibold"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="firm-documents" href="#"><span class="material-symbols-outlined text-[20px]">folder_shared</span><span class="font-label-md text-label-md">Firm Documents</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[20px]">settings</span><span class="font-label-md text-label-md">Settings</span></a></nav></div><div class="p-space-md bg-surface-container-low"><div class="p-space-sm rounded-lg bg-surface-container flex items-center justify-between"><div class="flex items-center gap-space-xs min-w-0"><span class="material-symbols-outlined text-[18px] text-primary">verified_user</span><div class="flex flex-col min-w-0"><span class="font-caption text-caption text-on-surface font-semibold truncate">IRS e-File Status</span><span class="font-caption text-caption text-secondary">Connected &amp; Active</span></div></div><div class="w-2 h-2 rounded-full bg-primary"></div></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-gutter-desktop"><div class="flex items-center gap-space-lg flex-1 max-w-xl"><div class="relative w-full"><span class="material-symbols-outlined absolute left-space-md top-1/2 -translate-y-1/2 text-[18px] text-outline pointer-events-none">search</span><input class="w-full h-9 pl-9 pr-space-lg bg-surface-container-lowest rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary shadow-[0_1px_2px_rgba(15,23,42,0.05)]" placeholder="Search clients, EIN, returns, or invoices... Cmd+K" type="text"/></div></div><div class="flex items-center gap-space-md"><button class="h-9 px-space-md bg-primary hover:bg-primary-container text-on-primary rounded-lg font-label-md text-label-md uppercase tracking-wider flex items-center gap-space-xs shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">add</span><span>New Client / Engagement</span></button><div class="h-6 w-[1px] bg-outline-variant/40 mx-space-xs"></div><div class="flex items-center gap-space-xs bg-surface-container-lowest px-space-sm py-1 rounded-lg shadow-[0_1px_2px_rgba(15,23,42,0.05)]"><span class="font-caption text-caption text-secondary uppercase font-semibold">Period:</span><span class="font-label-sm text-label-sm font-semibold text-on-surface">FY 2024</span><span class="material-symbols-outlined text-[16px] text-secondary">expand_more</span></div><div class="relative flex items-center"><button aria-label="Notifications" class="w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span></button><span class="absolute top-1 right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-error text-on-error font-caption text-[10px] font-bold leading-none">3</span></div><div class="h-6 w-[1px] bg-outline-variant/40 mx-space-xs"></div><div class="flex items-center gap-space-sm pl-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-outline-variant/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM-9xcIPNgyot7olyfq9LPtH8qDEgbqi-eTkNvImZ7jgB4rGBVatMIoVqWFdU_fB4X6Lv4wrRf99Fld5IrzwFaT3WPyXXCSoYQke0aVWFi6AZBpTn5rr0jAEz-3EMXe_NtcBm_55m7474JTsImAwfRKr96sFpB8L64sJIhFzZ4zZT5YpAUJfRTb0_q4dl-XXc502pW8vYn4FC6jvwq9tI29I5wkmvUaI8TPzkh2779bctme6X08GB6IQ"/><div class="hidden lg:flex flex-col text-left leading-tight"><span class="font-label-md text-label-md font-semibold text-on-surface truncate">Elena Vance, CPA</span><span class="font-caption text-caption text-primary font-semibold uppercase tracking-wider truncate">Managing Partner</span></div><span class="material-symbols-outlined text-[18px] text-secondary">expand_more</span></div></div></header><main class="relative pt-16 bg-surface min-h-screen w-full px-gutter-desktop"><div class="flex flex-col w-full pb-12">
+<!-- Top Utility Bar / Command strip -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md py-space-lg">
+<div class="flex items-center gap-space-md">
+<div class="flex items-baseline gap-space-sm">
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Client Directory</h1>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm font-semibold">
+          248 Active Entities
+        </span>
+</div>
+<div class="hidden xl:flex items-center gap-space-xs text-secondary font-caption text-caption pl-space-xs">
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+<span>IRS e-Services Synced 8m ago</span>
+</div>
+</div>
+<!-- Primary Actions -->
+<div class="flex items-center gap-space-sm">
+<button class="h-9 px-space-md bg-surface-container-lowest hover:bg-surface-container-low text-on-surface rounded-lg font-label-md text-label-md uppercase tracking-wider flex items-center gap-space-xs shadow-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">file_download</span>
+<span>Export CSV</span>
+</button>
+<button class="h-9 px-space-md bg-surface-container-lowest hover:bg-surface-container-low text-on-surface rounded-lg font-label-md text-label-md uppercase tracking-wider flex items-center gap-space-xs shadow-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">sync_alt</span>
+<span>Re-Sync QBO/Xero</span>
+</button>
+<button class="h-9 px-space-md bg-primary hover:bg-primary-container text-on-primary rounded-lg font-label-md text-label-md uppercase tracking-wider flex items-center gap-space-xs shadow-sm transition-colors" id="openNewEntityModal" type="button">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>+ Add New Entity</span>
+</button>
+</div>
+</div>
+<!-- Metric Snapshot Banner (Data-dense KPI preview) -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-md mb-space-lg">
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-caption text-caption uppercase text-secondary font-medium tracking-wider">Total Retainer Base</span>
+<span class="font-metric-lg text-metric-lg font-bold text-on-surface mt-0.5">$3,420,800<span class="font-body-sm text-body-sm text-secondary font-normal">/yr</span></span>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">payments</span>
+</div>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-caption text-caption uppercase text-secondary font-medium tracking-wider">Form 1120/1065 Filed</span>
+<span class="font-metric-lg text-metric-lg font-bold text-on-surface mt-0.5">188 <span class="text-primary font-label-md text-label-md font-semibold">/ 248</span></span>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">fact_check</span>
+</div>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-caption text-caption uppercase text-secondary font-medium tracking-wider">Action / 1099 Flags</span>
+<span class="font-metric-lg text-metric-lg font-bold text-error mt-0.5">22 Entities</span>
+</div>
+<div class="w-10 h-10 rounded-lg bg-error-container/30 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[22px]">notification_important</span>
+</div>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-caption text-caption uppercase text-secondary font-medium tracking-wider">Extensions Requested</span>
+<span class="font-metric-lg text-metric-lg font-bold text-tertiary-container mt-0.5">38 Form 7004</span>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[22px]">schedule</span>
+</div>
+</div>
+</div>
+<!-- Filter & Search Toolbar Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm mb-space-md">
+<!-- Quick Views Segmented Tabs -->
+<div class="px-space-lg pt-space-md bg-surface-container-low/40 rounded-t-xl flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs overflow-x-auto">
+<button class="px-space-md py-2 font-label-md text-label-md font-bold text-primary bg-surface-container-lowest rounded-t-lg shadow-sm flex items-center gap-space-xs">
+<span>All Clients</span>
+<span class="px-1.5 py-0.2 rounded-full bg-primary/10 text-primary font-caption text-caption">248</span>
+</button>
+<button class="px-space-md py-2 font-label-md text-label-md font-semibold text-secondary hover:text-on-surface hover:bg-surface-container-high rounded-t-lg transition-colors flex items-center gap-space-xs">
+<span>Corporate &amp; Entities</span>
+<span class="px-1.5 py-0.2 rounded-full bg-surface-container text-secondary font-caption text-caption">164</span>
+</button>
+<button class="px-space-md py-2 font-label-md text-label-md font-semibold text-secondary hover:text-on-surface hover:bg-surface-container-high rounded-t-lg transition-colors flex items-center gap-space-xs">
+<span>High-Net-Worth 1040/Trust</span>
+<span class="px-1.5 py-0.2 rounded-full bg-surface-container text-secondary font-caption text-caption">62</span>
+</button>
+<button class="px-space-md py-2 font-label-md text-label-md font-semibold text-error hover:bg-error-container/30 rounded-t-lg transition-colors flex items-center gap-space-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span>
+<span>Filing Exceptions</span>
+<span class="px-1.5 py-0.2 rounded-full bg-error-container text-on-error-container font-caption text-caption font-bold">22</span>
+</button>
+</div>
+<div class="flex items-center gap-space-xs py-1">
+<button class="p-1 text-secondary hover:text-on-surface rounded hover:bg-surface-container transition-colors" title="Compact View" type="button">
+<span class="material-symbols-outlined text-[18px]">density_medium</span>
+</button>
+<button class="p-1 text-primary bg-surface-container rounded" title="Expanded View" type="button">
+<span class="material-symbols-outlined text-[18px]">table_rows</span>
+</button>
+</div>
+</div>
+<!-- Filters Row -->
+<div class="p-space-lg flex flex-col lg:flex-row gap-space-md items-stretch lg:items-center justify-between">
+<!-- Search Input -->
+<div class="relative flex-1 min-w-[280px]">
+<span class="material-symbols-outlined absolute left-space-md top-1/2 -translate-y-1/2 text-[18px] text-outline pointer-events-none">search</span>
+<input class="w-full h-10 pl-9 pr-8 bg-surface-container-low rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary transition-all" id="clientSearchInput" placeholder="Search company name, EIN, primary contact, email, or client ID..." type="text"/>
+<button class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface" id="clearSearch" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<!-- Multi-select Filter Dropdowns -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<!-- Entity Type -->
+<div class="relative">
+<select class="appearance-none h-10 pl-space-md pr-8 bg-surface-container-low hover:bg-surface-container rounded-lg font-label-md text-label-md text-on-surface cursor-pointer focus:outline-none focus:ring-1 focus:ring-primary" id="entityFilter">
+<option value="ALL">Entity: All Types</option>
+<option value="S-Corp">S-Corp (Form 1120-S)</option>
+<option value="C-Corp">C-Corp (Form 1120)</option>
+<option value="LLC">LLC (Multi-Member / 1065)</option>
+<option value="Individual">Individual (1040 / Schedule C)</option>
+<option value="Trust">Trust &amp; Estate (1041)</option>
+<option value="Non-Profit">Non-Profit (Form 990)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-[18px] text-secondary pointer-events-none">expand_more</span>
+</div>
+<!-- Tax Status -->
+<div class="relative">
+<select class="appearance-none h-10 pl-space-md pr-8 bg-surface-container-low hover:bg-surface-container rounded-lg font-label-md text-label-md text-on-surface cursor-pointer focus:outline-none focus:ring-1 focus:ring-primary" id="statusFilter">
+<option value="ALL">Tax Status: All</option>
+<option value="E-Filed Accepted">E-Filed &amp; Accepted</option>
+<option value="Extension Filed">Extension Filed (7004)</option>
+<option value="Docs Received 100%">Docs Received 100%</option>
+<option value="Pending 1099s">Pending 1099s / Action Req.</option>
+<option value="In Partner Review">In Partner Review</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-[18px] text-secondary pointer-events-none">expand_more</span>
+</div>
+<!-- Lead Partner -->
+<div class="relative">
+<select class="appearance-none h-10 pl-space-md pr-8 bg-surface-container-low hover:bg-surface-container rounded-lg font-label-md text-label-md text-on-surface cursor-pointer focus:outline-none focus:ring-1 focus:ring-primary" id="partnerFilter">
+<option value="ALL">Lead Partner: All</option>
+<option value="Elena Vance">Elena Vance, CPA</option>
+<option value="Marcus Reed">Marcus Reed, CPA</option>
+<option value="Julian Chen">Julian Chen, JD/LLM</option>
+<option value="Siddharth Rao">Siddharth Rao, EA</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-[18px] text-secondary pointer-events-none">expand_more</span>
+</div>
+<!-- Retainer Tier -->
+<div class="relative">
+<select class="appearance-none h-10 pl-space-md pr-8 bg-surface-container-low hover:bg-surface-container rounded-lg font-label-md text-label-md text-on-surface cursor-pointer focus:outline-none focus:ring-1 focus:ring-primary" id="tierFilter">
+<option value="ALL">Annual Retainer: All</option>
+<option value="TIER1">$10,000 - $25,000</option>
+<option value="TIER2">$25,000 - $50,000</option>
+<option value="TIER3">$50,000+</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-[18px] text-secondary pointer-events-none">expand_more</span>
+</div>
+<!-- Reset Button -->
+<button class="h-10 px-space-sm text-secondary hover:text-on-surface rounded-lg hover:bg-surface-container flex items-center justify-center transition-colors" id="resetFilters" title="Clear Filters" type="button">
+<span class="material-symbols-outlined text-[20px]">filter_alt_off</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Batch Action Floating / Sticky Banner -->
+<div class="p-space-sm px-space-md mb-space-md bg-inverse-surface text-inverse-on-surface rounded-xl shadow-md flex items-center justify-between" id="batchActionBanner">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs">
+<input class="w-4 h-4 rounded text-primary accent-primary cursor-pointer" id="selectAllCheckbox" type="checkbox"/>
+<span class="font-label-md text-label-md font-semibold"><span id="selectedCount">0</span> of 248 Entities Selected</span>
+</div>
+<div class="h-4 w-[1px] bg-outline-variant/30 hidden sm:block"></div>
+<button class="text-primary-fixed underline hover:text-on-primary font-caption text-caption hidden sm:block" id="selectAllPromptBtn" type="button">
+        Select all 248 records across 32 pages
+      </button>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="h-8 px-space-sm bg-surface-container-highest/20 hover:bg-surface-container-highest/40 text-inverse-on-surface rounded font-label-sm text-label-sm flex items-center gap-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">folder_special</span>
+<span>Batch Request Docs</span>
+</button>
+<button class="h-8 px-space-sm bg-surface-container-highest/20 hover:bg-surface-container-highest/40 text-inverse-on-surface rounded font-label-sm text-label-sm flex items-center gap-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">mail</span>
+<span>Send Tax Organizer</span>
+</button>
+<button class="h-8 px-space-sm bg-primary hover:bg-primary-container text-on-primary rounded font-label-sm text-label-sm flex items-center gap-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">receipt</span>
+<span>Generate Q1 Statements</span>
+</button>
+</div>
+</div>
+<!-- Primary Client Directory Table Container -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="h-10 bg-surface-container-low text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+<th class="w-12 pl-space-md pr-space-xs">
+<span class="sr-only">Select</span>
+</th>
+<th class="px-space-md min-w-[240px]">Client &amp; Legal Entity</th>
+<th class="px-space-md min-w-[130px]">Entity Type</th>
+<th class="px-space-md min-w-[220px]">Primary Contact</th>
+<th class="px-space-md min-w-[140px]">Engagement Team</th>
+<th class="px-space-md min-w-[210px]">Active Service Lines</th>
+<th class="px-space-md min-w-[170px]">Tax Season Status</th>
+<th class="px-space-md min-w-[140px] text-right">Retainer / Fee</th>
+<th class="pr-space-md pl-space-xs w-24 text-center">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface" id="clientTableBody">
+<!-- Row 1: Vanguard Logistics LLC -->
+<tr class="client-row hover:bg-surface-container-low/70 transition-colors bg-surface-container-lowest">
+<td class="pl-space-md pr-space-xs py-space-sm align-middle">
+<input class="row-checkbox w-4 h-4 rounded accent-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-variant flex items-center justify-center font-headline-sm text-headline-sm font-bold text-primary flex-shrink-0">
+                  VL
+                </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<a class="font-headline-sm text-headline-sm text-on-surface hover:text-primary font-bold truncate" href="#">Vanguard Logistics LLC</a>
+<span class="material-symbols-outlined text-[14px] text-primary" title="Multi-State Nexus">share_location</span>
+</div>
+<span class="font-caption text-caption text-secondary truncate">EIN: 84-***4821 • FYE Dec 31</span>
+</div>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-100 text-blue-900">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-700"></span>
+                LLC / 1065
+              </span>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex flex-col leading-tight">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">Marcus Sterling</span>
+<span class="font-caption text-caption text-secondary truncate">Chief Financial Officer</span>
+<span class="font-caption text-caption text-primary/80 truncate mt-0.5 hover:underline cursor-pointer">m.sterling@vanguardlog.com</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex items-center -space-x-2">
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center text-[10px] font-bold shadow-sm" title="Elena Vance, CPA (Lead Partner)">
+                  EV
+                </div>
+<div class="w-7 h-7 rounded-full bg-tertiary-container text-on-tertiary flex items-center justify-center text-[10px] font-bold shadow-sm" title="Devon Miller, CPA (Manager)">
+                  DM
+                </div>
+<span class="pl-3 font-caption text-caption text-secondary">E. Vance</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">Corp Tax</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">Multi-State</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">Payroll</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-800">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                Docs Received 100%
+              </span>
+</td>
+<td class="px-space-md py-space-sm align-middle text-right">
+<div class="flex flex-col items-end">
+<span class="font-metric-md text-metric-md font-bold text-on-surface">$48,000<span class="font-caption text-caption text-secondary font-normal">/yr</span></span>
+<span class="inline-flex items-center gap-1 font-caption text-[10px] text-emerald-700 font-semibold">
+<span class="w-1 h-1 rounded-full bg-emerald-600"></span>Current (Net 30)
+                </span>
+</div>
+</td>
+<td class="pr-space-md pl-space-xs py-space-sm align-middle text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-primary" title="Client 360 Workspace" type="button">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface" title="Direct Secure Message" type="button">
+<span class="material-symbols-outlined text-[18px]">chat_bubble_outline</span>
+</button>
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface" title="Entity Options" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: AeroDynamics Tech Corp -->
+<tr class="client-row hover:bg-surface-container-low/70 transition-colors bg-surface-container-lowest">
+<td class="pl-space-md pr-space-xs py-space-sm align-middle">
+<input class="row-checkbox w-4 h-4 rounded accent-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-purple-100 flex items-center justify-center font-headline-sm text-headline-sm font-bold text-purple-900 flex-shrink-0">
+                  AT
+                </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<a class="font-headline-sm text-headline-sm text-on-surface hover:text-primary font-bold truncate" href="#">AeroDynamics Tech Corp</a>
+<span class="material-symbols-outlined text-[14px] text-amber-700" title="R&amp;D Tax Credit Active">science</span>
+</div>
+<span class="font-caption text-caption text-secondary truncate">EIN: 27-***9104 • FYE Dec 31</span>
+</div>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-purple-100 text-purple-900">
+<span class="w-1.5 h-1.5 rounded-full bg-purple-700"></span>
+                S-Corp / 1120-S
+              </span>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex flex-col leading-tight">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">Chloe Lin</span>
+<span class="font-caption text-caption text-secondary truncate">VP of Finance</span>
+<span class="font-caption text-caption text-primary/80 truncate mt-0.5 hover:underline cursor-pointer">c.lin@aerotech.io</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex items-center -space-x-2">
+<div class="w-7 h-7 rounded-full bg-amber-700 text-on-primary flex items-center justify-center text-[10px] font-bold shadow-sm" title="Marcus Reed, CPA (Lead Partner)">
+                  MR
+                </div>
+<div class="w-7 h-7 rounded-full bg-tertiary-container text-on-tertiary flex items-center justify-center text-[10px] font-bold shadow-sm" title="Alyssa Cole (Associate)">
+                  AC
+                </div>
+<span class="pl-3 font-caption text-caption text-secondary">M. Reed</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">1120-S</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">R&amp;D Study</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">QBO Review</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-amber-50 text-amber-800">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+                Extension Filed (7004)
+              </span>
+</td>
+<td class="px-space-md py-space-sm align-middle text-right">
+<div class="flex flex-col items-end">
+<span class="font-metric-md text-metric-md font-bold text-on-surface">$36,500<span class="font-caption text-caption text-secondary font-normal">/yr</span></span>
+<span class="inline-flex items-center gap-1 font-caption text-[10px] text-emerald-700 font-semibold">
+<span class="w-1 h-1 rounded-full bg-emerald-600"></span>Current
+                </span>
+</div>
+</td>
+<td class="pr-space-md pl-space-xs py-space-sm align-middle text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-primary" title="Client 360 Workspace" type="button">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface" title="Direct Secure Message" type="button">
+<span class="material-symbols-outlined text-[18px]">chat_bubble_outline</span>
+</button>
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface" title="Entity Options" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Beacon BioVentures LLC -->
+<tr class="client-row hover:bg-surface-container-low/70 transition-colors bg-surface-container-lowest">
+<td class="pl-space-md pr-space-xs py-space-sm align-middle">
+<input class="row-checkbox w-4 h-4 rounded accent-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-variant flex items-center justify-center font-headline-sm text-headline-sm font-bold text-primary flex-shrink-0">
+                  BB
+                </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<a class="font-headline-sm text-headline-sm text-on-surface hover:text-primary font-bold truncate" href="#">Beacon BioVentures LLC</a>
+<span class="material-symbols-outlined text-[14px] text-primary" title="Multi-Tier Partnership">account_tree</span>
+</div>
+<span class="font-caption text-caption text-secondary truncate">EIN: 33-***1198 • FYE Dec 31</span>
+</div>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-100 text-blue-900">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-700"></span>
+                LLC / 1065
+              </span>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex flex-col leading-tight">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">Dr. Jonathan Vance</span>
+<span class="font-caption text-caption text-secondary truncate">Managing General Partner</span>
+<span class="font-caption text-caption text-primary/80 truncate mt-0.5 hover:underline cursor-pointer">jvance@beaconbio.vc</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex items-center -space-x-2">
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center text-[10px] font-bold shadow-sm" title="Elena Vance, CPA (Lead Partner)">
+                  EV
+                </div>
+<div class="w-7 h-7 rounded-full bg-blue-900 text-on-primary flex items-center justify-center text-[10px] font-bold shadow-sm" title="Siddharth Rao, EA (Tax Senior)">
+                  SR
+                </div>
+<span class="pl-3 font-caption text-caption text-secondary">E. Vance</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">42 K-1s Gen</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">Fund Audit</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">Tax Advisory</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-800">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                E-Filed Accepted
+              </span>
+</td>
+<td class="px-space-md py-space-sm align-middle text-right">
+<div class="flex flex-col items-end">
+<span class="font-metric-md text-metric-md font-bold text-on-surface">$72,000<span class="font-caption text-caption text-secondary font-normal">/yr</span></span>
+<span class="inline-flex items-center gap-1 font-caption text-[10px] text-emerald-700 font-semibold">
+<span class="w-1 h-1 rounded-full bg-emerald-600"></span>Retainer Paid
+                </span>
+</div>
+</td>
+<td class="pr-space-md pl-space-xs py-space-sm align-middle text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-primary" title="Client 360 Workspace" type="button">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface" title="Direct Secure Message" type="button">
+<span class="material-symbols-outlined text-[18px]">chat_bubble_outline</span>
+</button>
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface" title="Entity Options" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Meridian Hospitality Group -->
+<tr class="client-row hover:bg-surface-container-low/70 transition-colors bg-surface-container-lowest">
+<td class="pl-space-md pr-space-xs py-space-sm align-middle">
+<input class="row-checkbox w-4 h-4 rounded accent-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center font-headline-sm text-headline-sm font-bold text-amber-900 flex-shrink-0">
+                  MH
+                </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<a class="font-headline-sm text-headline-sm text-on-surface hover:text-primary font-bold truncate" href="#">Meridian Hospitality Group</a>
+</div>
+<span class="font-caption text-caption text-secondary truncate">EIN: 45-***7630 • C-Corp Subsidiary</span>
+</div>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-amber-100 text-amber-900">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-700"></span>
+                C-Corp / 1120
+              </span>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex flex-col leading-tight">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">Sara Deshmukh</span>
+<span class="font-caption text-caption text-secondary truncate">Head Controller</span>
+<span class="font-caption text-caption text-primary/80 truncate mt-0.5 hover:underline cursor-pointer">s.deshmukh@meridianhg.com</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex items-center -space-x-2">
+<div class="w-7 h-7 rounded-full bg-indigo-700 text-on-primary flex items-center justify-center text-[10px] font-bold shadow-sm" title="Julian Chen, JD (Partner)">
+                  JC
+                </div>
+<div class="w-7 h-7 rounded-full bg-tertiary text-on-primary flex items-center justify-center text-[10px] font-bold shadow-sm" title="Rebecca Price (Senior)">
+                  RP
+                </div>
+<span class="pl-3 font-caption text-caption text-secondary">J. Chen</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">Consolidated Tax</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">Tip Credit (8846)</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">Monthly AP</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-rose-50 text-rose-800">
+<span class="w-1.5 h-1.5 rounded-full bg-rose-600 animate-ping"></span>
+                Pending 1099s / Action Req.
+              </span>
+</td>
+<td class="px-space-md py-space-sm align-middle text-right">
+<div class="flex flex-col items-end">
+<span class="font-metric-md text-metric-md font-bold text-on-surface">$54,000<span class="font-caption text-caption text-secondary font-normal">/yr</span></span>
+<span class="inline-flex items-center gap-1 font-caption text-[10px] text-rose-700 font-semibold">
+<span class="w-1 h-1 rounded-full bg-rose-600"></span>15d Overdue AR
+                </span>
+</div>
+</td>
+<td class="pr-space-md pl-space-xs py-space-sm align-middle text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-primary" title="Client 360 Workspace" type="button">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface" title="Direct Secure Message" type="button">
+<span class="material-symbols-outlined text-[18px]">chat_bubble_outline</span>
+</button>
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface" title="Entity Options" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 5: Dr. Aris Thorne Family Trust -->
+<tr class="client-row hover:bg-surface-container-low/70 transition-colors bg-surface-container-lowest">
+<td class="pl-space-md pr-space-xs py-space-sm align-middle">
+<input class="row-checkbox w-4 h-4 rounded accent-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center font-headline-sm text-headline-sm font-bold text-emerald-900 flex-shrink-0">
+                  AT
+                </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<a class="font-headline-sm text-headline-sm text-on-surface hover:text-primary font-bold truncate" href="#">Dr. Aris Thorne Family Trust</a>
+<span class="material-symbols-outlined text-[14px] text-emerald-700" title="High Net Worth Tier 1">verified</span>
+</div>
+<span class="font-caption text-caption text-secondary truncate">EIN: 91-***0432 • Irrevocable Trust</span>
+</div>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-100 text-emerald-900">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-700"></span>
+                Individual / 1041
+              </span>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex flex-col leading-tight">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">Dr. Aris Thorne</span>
+<span class="font-caption text-caption text-secondary truncate">Trustee &amp; Beneficiary</span>
+<span class="font-caption text-caption text-primary/80 truncate mt-0.5 hover:underline cursor-pointer">thorne.familytrust@execmail.com</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex items-center -space-x-2">
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center text-[10px] font-bold shadow-sm" title="Elena Vance, CPA (Lead Partner)">
+                  EV
+                </div>
+<div class="w-7 h-7 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center text-[10px] font-bold shadow-sm" title="Julian Chen (Trust Counsel)">
+                  JC
+                </div>
+<span class="pl-3 font-caption text-caption text-secondary">E. Vance</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">Form 1041</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">Estate Strategy</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">Gift Tax (709)</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-800">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                E-Filed Accepted
+              </span>
+</td>
+<td class="px-space-md py-space-sm align-middle text-right">
+<div class="flex flex-col items-end">
+<span class="font-metric-md text-metric-md font-bold text-on-surface">$22,500<span class="font-caption text-caption text-secondary font-normal">/yr</span></span>
+<span class="inline-flex items-center gap-1 font-caption text-[10px] text-emerald-700 font-semibold">
+<span class="w-1 h-1 rounded-full bg-emerald-600"></span>Paid in Full
+                </span>
+</div>
+</td>
+<td class="pr-space-md pl-space-xs py-space-sm align-middle text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-primary" title="Client 360 Workspace" type="button">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface" title="Direct Secure Message" type="button">
+<span class="material-symbols-outlined text-[18px]">chat_bubble_outline</span>
+</button>
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface" title="Entity Options" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 6: Solstice Retail Partners -->
+<tr class="client-row hover:bg-surface-container-low/70 transition-colors bg-surface-container-lowest">
+<td class="pl-space-md pr-space-xs py-space-sm align-middle">
+<input class="row-checkbox w-4 h-4 rounded accent-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-purple-100 flex items-center justify-center font-headline-sm text-headline-sm font-bold text-purple-900 flex-shrink-0">
+                  SR
+                </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<a class="font-headline-sm text-headline-sm text-on-surface hover:text-primary font-bold truncate" href="#">Solstice Retail Partners</a>
+<span class="material-symbols-outlined text-[14px] text-secondary" title="Inventory Capitalization §263A">storefront</span>
+</div>
+<span class="font-caption text-caption text-secondary truncate">EIN: 77-***5512 • S-Corp Multi-Unit</span>
+</div>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-purple-100 text-purple-900">
+<span class="w-1.5 h-1.5 rounded-full bg-purple-700"></span>
+                S-Corp / 1120-S
+              </span>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex flex-col leading-tight">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">Gretchen Hayes</span>
+<span class="font-caption text-caption text-secondary truncate">Co-Founder &amp; COO</span>
+<span class="font-caption text-caption text-primary/80 truncate mt-0.5 hover:underline cursor-pointer">ghayes@solsticeretail.com</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex items-center -space-x-2">
+<div class="w-7 h-7 rounded-full bg-amber-700 text-on-primary flex items-center justify-center text-[10px] font-bold shadow-sm" title="Marcus Reed, CPA">
+                  MR
+                </div>
+<div class="w-7 h-7 rounded-full bg-tertiary-container text-on-tertiary flex items-center justify-center text-[10px] font-bold shadow-sm" title="Devon Miller, CPA">
+                  DM
+                </div>
+<span class="pl-3 font-caption text-caption text-secondary">M. Reed</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">Annual Tax</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">Monthly Close</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">Sales Tax Compliance</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-indigo-50 text-indigo-800">
+<span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+                In Partner Review
+              </span>
+</td>
+<td class="px-space-md py-space-sm align-middle text-right">
+<div class="flex flex-col items-end">
+<span class="font-metric-md text-metric-md font-bold text-on-surface">$31,200<span class="font-caption text-caption text-secondary font-normal">/yr</span></span>
+<span class="inline-flex items-center gap-1 font-caption text-[10px] text-emerald-700 font-semibold">
+<span class="w-1 h-1 rounded-full bg-emerald-600"></span>Current
+                </span>
+</div>
+</td>
+<td class="pr-space-md pl-space-xs py-space-sm align-middle text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-primary" title="Client 360 Workspace" type="button">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface" title="Direct Secure Message" type="button">
+<span class="material-symbols-outlined text-[18px]">chat_bubble_outline</span>
+</button>
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface" title="Entity Options" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 7: Horizon Health Foundation -->
+<tr class="client-row hover:bg-surface-container-low/70 transition-colors bg-surface-container-lowest">
+<td class="pl-space-md pr-space-xs py-space-sm align-middle">
+<input class="row-checkbox w-4 h-4 rounded accent-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center font-headline-sm text-headline-sm font-bold text-tertiary flex-shrink-0">
+                  HH
+                </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<a class="font-headline-sm text-headline-sm text-on-surface hover:text-primary font-bold truncate" href="#">Horizon Health Foundation</a>
+<span class="material-symbols-outlined text-[14px] text-primary" title="501(c)(3) Public Charity">volunteer_activism</span>
+</div>
+<span class="font-caption text-caption text-secondary truncate">EIN: 12-***8849 • FYE Jun 30</span>
+</div>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-100 text-slate-800">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span>
+                Non-Profit / 990
+              </span>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex flex-col leading-tight">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">Arthur Pendelton</span>
+<span class="font-caption text-caption text-secondary truncate">Executive Director</span>
+<span class="font-caption text-caption text-primary/80 truncate mt-0.5 hover:underline cursor-pointer">apendelton@horizonhealthfdn.org</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex items-center -space-x-2">
+<div class="w-7 h-7 rounded-full bg-indigo-700 text-on-primary flex items-center justify-center text-[10px] font-bold shadow-sm" title="Julian Chen, JD">
+                  JC
+                </div>
+<div class="w-7 h-7 rounded-full bg-blue-900 text-on-primary flex items-center justify-center text-[10px] font-bold shadow-sm" title="Siddharth Rao, EA">
+                  SR
+                </div>
+<span class="pl-3 font-caption text-caption text-secondary">J. Chen</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">Form 990 + Sched A</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">Grant Audit</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-caption text-[10px] text-on-surface-variant font-medium">Board Reporting</span>
+</div>
+</td>
+<td class="px-space-md py-space-sm align-middle">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-800">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                Docs Received 100%
+              </span>
+</td>
+<td class="px-space-md py-space-sm align-middle text-right">
+<div class="flex flex-col items-end">
+<span class="font-metric-md text-metric-md font-bold text-on-surface">$18,500<span class="font-caption text-caption text-secondary font-normal">/yr</span></span>
+<span class="inline-flex items-center gap-1 font-caption text-[10px] text-emerald-700 font-semibold">
+<span class="w-1 h-1 rounded-full bg-emerald-600"></span>Current
+                </span>
+</div>
+</td>
+<td class="pr-space-md pl-space-xs py-space-sm align-middle text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-primary" title="Client 360 Workspace" type="button">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface" title="Direct Secure Message" type="button">
+<span class="material-symbols-outlined text-[18px]">chat_bubble_outline</span>
+</button>
+<button class="w-7 h-7 rounded hover:bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface" title="Entity Options" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Empty State Container (Hidden by default) -->
+<div class="hidden py-16 flex flex-col items-center justify-center text-center px-4" id="noResultsState">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-secondary mb-3">
+<span class="material-symbols-outlined text-[28px]">search_off</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">No matching entities found</h3>
+<p class="font-body-md text-body-md text-secondary max-w-sm mb-4">We couldn't find any clients matching your current search parameters and filter settings.</p>
+<button class="h-9 px-space-md bg-surface-container-high hover:bg-surface-container text-on-surface font-label-md text-label-md rounded-lg transition-colors" id="clearAllFiltersBtn" type="button">
+        Reset All Filters
+      </button>
+</div>
+<!-- Pagination & Directory Footer -->
+<div class="p-space-md bg-surface-container-low/50 flex flex-col sm:flex-row items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="font-body-sm text-body-sm text-secondary">
+          Showing <span class="font-semibold text-on-surface">1 – 7</span> of <span class="font-semibold text-on-surface">248</span> clients
+        </span>
+<div class="h-4 w-[1px] bg-outline-variant/40 hidden sm:block"></div>
+<div class="flex items-center gap-1 font-caption text-caption text-secondary">
+<span>Rows per page:</span>
+<select class="bg-transparent font-semibold text-on-surface focus:outline-none cursor-pointer">
+<option>25</option>
+<option>50</option>
+<option>100</option>
+</select>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 rounded flex items-center justify-center text-outline hover:text-on-surface hover:bg-surface-container disabled:opacity-40" disabled="" type="button">
+<span class="material-symbols-outlined text-[18px]">first_page</span>
+</button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-outline hover:text-on-surface hover:bg-surface-container disabled:opacity-40" disabled="" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded bg-primary text-on-primary font-label-sm text-label-sm font-bold flex items-center justify-center" type="button">1</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container text-on-surface font-label-sm text-label-sm flex items-center justify-center" type="button">2</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container text-on-surface font-label-sm text-label-sm flex items-center justify-center" type="button">3</button>
+<span class="px-1 text-secondary font-caption text-caption">…</span>
+<button class="w-8 h-8 rounded hover:bg-surface-container text-on-surface font-label-sm text-label-sm flex items-center justify-center" type="button">10</button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-secondary hover:text-on-surface hover:bg-surface-container" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-secondary hover:text-on-surface hover:bg-surface-container" type="button">
+<span class="material-symbols-outlined text-[18px]">last_page</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Modal: Add New Entity (Hidden by default, triggered via JS) -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs hidden p-4" id="newEntityModal">
+<div class="bg-surface-container-lowest rounded-xl shadow-xl w-full max-w-2xl overflow-hidden flex flex-col">
+<!-- Modal Header -->
+<div class="px-space-lg py-space-md bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]">domain_add</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold">Onboard New Legal Entity</h2>
+</div>
+<button class="w-8 h-8 rounded flex items-center justify-center text-secondary hover:text-on-surface hover:bg-surface-container" id="closeModalBtn" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Modal Body -->
+<form class="p-space-lg space-y-4" id="newEntityForm">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+<div>
+<label class="block font-label-sm text-label-sm uppercase font-semibold text-secondary mb-1">Legal Company / Client Name *</label>
+<input class="w-full h-9 px-space-sm bg-surface-container-low rounded font-body-sm text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" placeholder="e.g. Apex Industrial Solutions Inc" required="" type="text"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm uppercase font-semibold text-secondary mb-1">Federal EIN (Tax ID) *</label>
+<input class="w-full h-9 px-space-sm bg-surface-container-low rounded font-body-sm text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" placeholder="XX-XXXXXXX" required="" type="text"/>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-md">
+<div>
+<label class="block font-label-sm text-label-sm uppercase font-semibold text-secondary mb-1">Entity Tax Structure *</label>
+<select class="w-full h-9 px-space-sm bg-surface-container-low rounded font-label-md text-label-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
+<option>S-Corporation (1120-S)</option>
+<option>C-Corporation (1120)</option>
+<option>LLC / Partnership (1065)</option>
+<option>Individual / Trust (1040/1041)</option>
+<option>Non-Profit Organization (990)</option>
+</select>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm uppercase font-semibold text-secondary mb-1">Lead Partner *</label>
+<select class="w-full h-9 px-space-sm bg-surface-container-low rounded font-label-md text-label-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
+<option>Elena Vance, CPA</option>
+<option>Marcus Reed, CPA</option>
+<option>Julian Chen, JD/LLM</option>
+<option>Siddharth Rao, EA</option>
+</select>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm uppercase font-semibold text-secondary mb-1">Fiscal Year End</label>
+<select class="w-full h-9 px-space-sm bg-surface-container-low rounded font-label-md text-label-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
+<option>December 31</option>
+<option>March 31</option>
+<option>June 30</option>
+<option>September 30</option>
+</select>
+</div>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container-low/40">
+<span class="font-label-sm text-label-sm uppercase font-bold text-secondary block mb-2">Primary Contact Details</span>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-sm">
+<input class="h-9 px-space-sm bg-surface-container-lowest rounded font-body-sm text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Contact Full Name" type="text"/>
+<input class="h-9 px-space-sm bg-surface-container-lowest rounded font-body-sm text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Corporate Email" type="email"/>
+<input class="h-9 px-space-sm bg-surface-container-lowest rounded font-body-sm text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Direct Phone / Mobile" type="tel"/>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+<div>
+<label class="block font-label-sm text-label-sm uppercase font-semibold text-secondary mb-1">Contracted Annual Retainer ($)</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-secondary font-label-md">$</span>
+<input class="w-full h-9 pl-7 pr-space-sm bg-surface-container-low rounded font-body-sm text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" placeholder="36000" type="number"/>
+</div>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm uppercase font-semibold text-secondary mb-1">Initial Engagement Service</label>
+<select class="w-full h-9 px-space-sm bg-surface-container-low rounded font-label-md text-label-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
+<option>Annual Tax Return + Advisory</option>
+<option>Full Monthly Bookkeeping &amp; Tax</option>
+<option>Advisory &amp; Tax Planning Only</option>
+<option>Audit &amp; Assurance</option>
+</select>
+</div>
+</div>
+<!-- Modal Footer Actions -->
+<div class="pt-space-md flex items-center justify-end gap-space-sm">
+<button class="h-9 px-space-md bg-surface-container hover:bg-surface-container-high text-on-surface rounded font-label-md text-label-md transition-colors" id="cancelModalBtn" type="button">
+            Cancel
+          </button>
+<button class="h-9 px-space-md bg-primary hover:bg-primary-container text-on-primary rounded font-label-md text-label-md uppercase tracking-wider flex items-center gap-1 shadow-sm transition-colors" type="submit">
+<span class="material-symbols-outlined text-[18px]">check</span>
+<span>Create Entity Profile</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+<!-- Interactive JavaScript logic -->
+<script>
+    (function initClientDirectory() {
+      const searchInput = document.getElementById('clientSearchInput');
+      const clearSearch = document.getElementById('clearSearch');
+      const entityFilter = document.getElementById('entityFilter');
+      const statusFilter = document.getElementById('statusFilter');
+      const partnerFilter = document.getElementById('partnerFilter');
+      const tierFilter = document.getElementById('tierFilter');
+      const resetFilters = document.getElementById('resetFilters');
+      const clearAllFiltersBtn = document.getElementById('clearAllFiltersBtn');
+      const tableRows = document.querySelectorAll('.client-row');
+      const noResultsState = document.getElementById('noResultsState');
+      
+      const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+      const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+      const selectedCount = document.getElementById('selectedCount');
+      const selectAllPromptBtn = document.getElementById('selectAllPromptBtn');
+
+      // Modal Controls
+      const modal = document.getElementById('newEntityModal');
+      const openModalBtn = document.getElementById('openNewEntityModal');
+      const closeModalBtn = document.getElementById('closeModalBtn');
+      const cancelModalBtn = document.getElementById('cancelModalBtn');
+      const newEntityForm = document.getElementById('newEntityForm');
+
+      function filterClients() {
+        const query = searchInput.value.toLowerCase().trim();
+        const selectedEntity = entityFilter.value;
+        const selectedStatus = statusFilter.value;
+        const selectedPartner = partnerFilter.value;
+        
+        clearSearch.classList.toggle('hidden', query.length === 0);
+
+        let visibleCount = 0;
+
+        tableRows.forEach(row => {
+          const rowText = row.innerText.toLowerCase();
+          
+          let matchesQuery = !query || rowText.includes(query);
+          let matchesEntity = (selectedEntity === 'ALL') || rowText.includes(selectedEntity.toLowerCase());
+          let matchesStatus = (selectedStatus === 'ALL') || rowText.includes(selectedStatus.toLowerCase());
+          let matchesPartner = (selectedPartner === 'ALL') || rowText.includes(selectedPartner.toLowerCase());
+
+          if (matchesQuery && matchesEntity && matchesStatus && matchesPartner) {
+            row.style.display = '';
+            visibleCount++;
+          } else {
+            row.style.display = 'none';
+          }
+        });
+
+        if (visibleCount === 0) {
+          noResultsState.classList.remove('hidden');
+        } else {
+          noResultsState.classList.add('hidden');
+        }
+      }
+
+      function resetAll() {
+        searchInput.value = '';
+        entityFilter.value = 'ALL';
+        statusFilter.value = 'ALL';
+        partnerFilter.value = 'ALL';
+        tierFilter.value = 'ALL';
+        filterClients();
+      }
+
+      // Checkbox batch selection
+      function updateSelectionState() {
+        let count = 0;
+        rowCheckboxes.forEach(cb => {
+          if (cb.checked) count++;
+        });
+        selectedCount.textContent = count;
+        selectAllCheckbox.checked = (count === rowCheckboxes.length && count > 0);
+        selectAllCheckbox.indeterminate = (count > 0 && count < rowCheckboxes.length);
+      }
+
+      selectAllCheckbox.addEventListener('change', (e) => {
+        rowCheckboxes.forEach(cb => {
+          cb.checked = e.target.checked;
+        });
+        updateSelectionState();
+      });
+
+      rowCheckboxes.forEach(cb => {
+        cb.addEventListener('change', updateSelectionState);
+      });
+
+      selectAllPromptBtn.addEventListener('click', () => {
+        rowCheckboxes.forEach(cb => cb.checked = true);
+        selectedCount.textContent = "248";
+        selectAllCheckbox.checked = true;
+      });
+
+      // Filter events
+      searchInput.addEventListener('input', filterClients);
+      clearSearch.addEventListener('click', () => {
+        searchInput.value = '';
+        filterClients();
+        searchInput.focus();
+      });
+      entityFilter.addEventListener('change', filterClients);
+      statusFilter.addEventListener('change', filterClients);
+      partnerFilter.addEventListener('change', filterClients);
+      tierFilter.addEventListener('change', filterClients);
+      resetFilters.addEventListener('click', resetAll);
+      clearAllFiltersBtn.addEventListener('click', resetAll);
+
+      // Modal Handlers
+      function toggleModal(show) {
+        if (show) {
+          modal.classList.remove('hidden');
+        } else {
+          modal.classList.add('hidden');
+        }
+      }
+
+      openModalBtn.addEventListener('click', () => toggleModal(true));
+      closeModalBtn.addEventListener('click', () => toggleModal(false));
+      cancelModalBtn.addEventListener('click', () => toggleModal(false));
+
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) toggleModal(false);
+      });
+
+      newEntityForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        toggleModal(false);
+        newEntityForm.reset();
+      });
+    })();
+  </script>
+</div></main></div></body></html>

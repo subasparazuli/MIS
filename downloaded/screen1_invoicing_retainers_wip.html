@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"surface-variant":"#d3e4fe","tertiary":"#374559","on-surface-variant":"#434655","on-tertiary":"#ffffff","surface-container-highest":"#d3e4fe","on-secondary-fixed-variant":"#3f465c","on-primary-container":"#cad3ff","surface-container-high":"#dce9ff","on-tertiary-fixed":"#0d1c2e","on-background":"#0b1c30","primary-container":"#1d4ed8","outline":"#747686","on-primary-fixed":"#001551","on-secondary-container":"#5c647a","on-tertiary-container":"#c7d6ee","on-secondary":"#ffffff","tertiary-fixed-dim":"#b9c7df","tertiary-container":"#4f5d71","surface-bright":"#f8f9ff","on-primary-fixed-variant":"#0039b5","primary-fixed-dim":"#b7c4ff","surface":"#f8f9ff","primary-fixed":"#dce1ff","surface-container":"#e5eeff","on-surface":"#0b1c30","on-primary":"#ffffff","on-error-container":"#93000a","inverse-on-surface":"#eaf1ff","surface-container-lowest":"#ffffff","surface-container-low":"#eff4ff","outline-variant":"#c4c5d7","on-tertiary-fixed-variant":"#3a485b","inverse-surface":"#213145","surface-dim":"#cbdbf5","secondary-fixed":"#dae2fd","surface-tint":"#2151da","tertiary-fixed":"#d5e3fc","on-secondary-fixed":"#131b2e","secondary-container":"#dae2fd","secondary":"#565e74","background":"#f8f9ff","secondary-fixed-dim":"#bec6e0","error-container":"#ffdad6","on-error":"#ffffff","primary":"#0037b0","inverse-primary":"#b7c4ff","error":"#ba1a1a"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-xl":"1.5rem","space-sm":"0.5rem","gutter":"1rem","space-xs":"0.25rem","space-2xl":"2rem","margin-desktop":"2rem","space-lg":"1rem","space-md":"0.75rem","gutter-mobile":"0.75rem","margin-mobile":"1rem","margin":"1.5rem","gutter-desktop":"1.5rem"},"fontFamily":{"body-lg":["Inter"],"headline-md":["Plus Jakarta Sans"],"metric-md":["Inter"],"headline-lg-mobile":["Plus Jakarta Sans"],"headline-sm":["Plus Jakarta Sans"],"display":["Plus Jakarta Sans"],"body-sm":["Inter"],"label-sm":["Inter"],"metric-lg":["Inter"],"caption":["Inter"],"body-md":["Inter"],"headline-lg":["Plus Jakarta Sans"],"label-md":["Inter"]},"fontSize":{"body-lg":["15px",{"lineHeight":"22px","fontWeight":"400"}],"headline-md":["18px",{"lineHeight":"24px","letterSpacing":"-0.01em","fontWeight":"600"}],"metric-md":["16px",{"lineHeight":"20px","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-lg-mobile":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"700"}],"headline-sm":["15px",{"lineHeight":"20px","letterSpacing":"-0.005em","fontWeight":"600"}],"display":["32px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"700"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.03em","fontWeight":"500"}],"metric-lg":["24px",{"lineHeight":"28px","letterSpacing":"-0.02em","fontWeight":"600"}],"caption":["10px",{"lineHeight":"12px","letterSpacing":"0.04em","fontWeight":"500"}],"body-md":["13px",{"lineHeight":"18px","fontWeight":"400"}],"headline-lg":["24px",{"lineHeight":"32px","letterSpacing":"-0.02em","fontWeight":"700"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"600"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-lg flex items-center gap-space-sm bg-surface-container-low"><img alt="LedgerPoint Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Vlrh8zgatY5F-wFnJukD1aPffmrpDoA9_cKRKWrShsTYEWHMh5Kt49RnENdlseBItspibPJkTB_io7M_HKG1i9hzEu6DvIKikZJdnVWnyFHGxbqG4nBikyGlxyUQO-zl8Wp4Z1SFWfDfXohTenWmg-MPLhW-71TgGkRJ3k4Y4FeJzhSXT8fuR_rycouCwE0gjkmLMNdLGNvDuFA7Q53aRIDxx7gFPdeykJuJu5knQvrLDp9Zb1bjJOErya"/><div class="flex flex-col min-w-0 leading-tight"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight truncate">LedgerPoint</span><span class="font-caption text-caption text-secondary uppercase tracking-wider truncate">CPA &amp; Advisory</span></div></div><div class="px-space-md py-space-sm"><div class="h-[1px] w-full bg-outline-variant/30"></div></div><nav class="flex flex-col gap-space-xs px-space-sm py-space-xs" data-active-classes="bg-primary-container text-on-primary font-semibold shadow-[0_1px_2px_rgba(0,0,0,0.05)]"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="overview" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="font-label-md text-label-md">Overview</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="clients" href="#"><span class="material-symbols-outlined text-[20px]">business_center</span><span class="font-label-md text-label-md">Clients</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="client-360" href="#"><span class="material-symbols-outlined text-[20px]">domain_verification</span><span class="font-label-md text-label-md">Client 360</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="workflows" href="#"><span class="material-symbols-outlined text-[20px]">view_kanban</span><span class="font-label-md text-label-md">Workflows</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg transition-colors bg-primary-container text-on-primary font-semibold shadow-[0_1px_2px_rgba(0,0,0,0.05)]" data-path="billing-and-wip" href="#"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span class="font-label-md text-label-md">Billing &amp; WIP</span></a></nav><div class="px-space-md py-space-sm"><div class="h-[1px] w-full bg-outline-variant/30"></div></div><div class="px-space-md py-space-xs"><div class="p-space-md bg-surface-container-lowest rounded-xl shadow-[0_1px_2px_rgba(15,23,42,0.05)]"><div class="flex items-center justify-between mb-space-xs"><span class="font-label-sm text-label-sm font-semibold uppercase text-secondary tracking-wider">Tax Season 2024</span><span class="font-metric-md text-metric-md text-primary font-bold">84%</span></div><div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden mb-space-xs"><div class="bg-primary h-full rounded-full" style="width: 84%"></div></div><div class="flex items-center justify-between text-secondary"><span class="font-caption text-caption">Filed &amp; Accepted</span><span class="font-caption text-caption font-semibold text-on-surface">16d to Deadline</span></div></div></div><nav class="flex flex-col gap-space-xs px-space-sm py-space-xs" data-active-classes="bg-primary-container text-on-primary font-semibold"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="firm-documents" href="#"><span class="material-symbols-outlined text-[20px]">folder_shared</span><span class="font-label-md text-label-md">Firm Documents</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[20px]">settings</span><span class="font-label-md text-label-md">Settings</span></a></nav></div><div class="p-space-md bg-surface-container-low"><div class="p-space-sm rounded-lg bg-surface-container flex items-center justify-between"><div class="flex items-center gap-space-xs min-w-0"><span class="material-symbols-outlined text-[18px] text-primary">verified_user</span><div class="flex flex-col min-w-0"><span class="font-caption text-caption text-on-surface font-semibold truncate">IRS e-File Status</span><span class="font-caption text-caption text-secondary">Connected &amp; Active</span></div></div><div class="w-2 h-2 rounded-full bg-primary"></div></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-gutter-desktop"><div class="flex items-center gap-space-lg flex-1 max-w-xl"><div class="relative w-full"><span class="material-symbols-outlined absolute left-space-md top-1/2 -translate-y-1/2 text-[18px] text-outline pointer-events-none">search</span><input class="w-full h-9 pl-9 pr-space-lg bg-surface-container-lowest rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary shadow-[0_1px_2px_rgba(15,23,42,0.05)]" placeholder="Search clients, EIN, returns, or invoices... Cmd+K" type="text"/></div></div><div class="flex items-center gap-space-md"><button class="h-9 px-space-md bg-primary hover:bg-primary-container text-on-primary rounded-lg font-label-md text-label-md uppercase tracking-wider flex items-center gap-space-xs shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">add</span><span>New Client / Engagement</span></button><div class="h-6 w-[1px] bg-outline-variant/40 mx-space-xs"></div><div class="flex items-center gap-space-xs bg-surface-container-lowest px-space-sm py-1 rounded-lg shadow-[0_1px_2px_rgba(15,23,42,0.05)]"><span class="font-caption text-caption text-secondary uppercase font-semibold">Period:</span><span class="font-label-sm text-label-sm font-semibold text-on-surface">FY 2024</span><span class="material-symbols-outlined text-[16px] text-secondary">expand_more</span></div><div class="relative flex items-center"><button aria-label="Notifications" class="w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span></button><span class="absolute top-1 right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-error text-on-error font-caption text-[10px] font-bold leading-none">3</span></div><div class="h-6 w-[1px] bg-outline-variant/40 mx-space-xs"></div><div class="flex items-center gap-space-sm pl-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-outline-variant/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM-9xcIPNgyot7olyfq9LPtH8qDEgbqi-eTkNvImZ7jgB4rGBVatMIoVqWFdU_fB4X6Lv4wrRf99Fld5IrzwFaT3WPyXXCSoYQke0aVWFi6AZBpTn5rr0jAEz-3EMXe_NtcBm_55m7474JTsImAwfRKr96sFpB8L64sJIhFzZ4zZT5YpAUJfRTb0_q4dl-XXc502pW8vYn4FC6jvwq9tI29I5wkmvUaI8TPzkh2779bctme6X08GB6IQ"/><div class="hidden lg:flex flex-col text-left leading-tight"><span class="font-label-md text-label-md font-semibold text-on-surface truncate">Elena Vance, CPA</span><span class="font-caption text-caption text-primary font-semibold uppercase tracking-wider truncate">Managing Partner</span></div><span class="material-symbols-outlined text-[18px] text-secondary">expand_more</span></div></div></header><main class="relative pt-16 bg-surface min-h-screen w-full px-gutter-desktop"><div class="flex flex-col w-full pb-16">
+<!-- Top Command & Action Bar -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md py-space-lg mb-space-md">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="font-caption text-caption uppercase tracking-wider text-secondary font-bold">Fiduciary Ledger &amp; Practice Operations</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+          Live Sync Active
+        </span>
+</div>
+<div class="flex items-baseline gap-space-md">
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Billing &amp; Practice Financials</h1>
+<div class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-low text-secondary font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span>Period: April 2024 (Closing in 6 Days)</span>
+</div>
+</div>
+</div>
+<!-- Global Financial Action Buttons -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="h-9 px-space-md bg-surface-container-lowest hover:bg-surface-container-high text-on-surface rounded-lg font-label-md text-label-md uppercase tracking-wider shadow-sm flex items-center gap-space-xs transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">tune</span>
+<span>Payment Gateway</span>
+</button>
+<button class="h-9 px-space-md bg-surface-container-lowest hover:bg-surface-container-high text-on-surface rounded-lg font-label-md text-label-md uppercase tracking-wider shadow-sm flex items-center gap-space-xs transition-colors" onclick="document.getElementById('quick-time-modal').classList.remove('hidden')" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">more_time</span>
+<span>+ Log Time / WIP Entry</span>
+</button>
+<button class="h-9 px-space-md bg-primary hover:bg-primary-container text-on-primary rounded-lg font-label-md text-label-md uppercase tracking-wider shadow-sm flex items-center gap-space-xs transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">receipt</span>
+<span>Create Batch Invoices</span>
+</button>
+</div>
+</div>
+<!-- Practice Financial KPI Matrix (4 Cards) -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-md mb-space-xl">
+<!-- KPI 1: WIP -->
+<div class="p-space-lg bg-surface-container-lowest rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-caption text-caption uppercase tracking-wider text-secondary font-semibold">Unbilled Inventory</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold mt-0.5">Total WIP Balance</span>
+</div>
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">hourglass_top</span>
+</div>
+</div>
+<div class="my-space-md">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display text-display text-on-surface tracking-tight font-bold">$218,450</span>
+<span class="font-caption text-caption text-secondary">USD</span>
+</div>
+<div class="flex items-center gap-1.5 text-primary font-body-sm text-body-sm mt-1">
+<span class="material-symbols-outlined text-[16px]">timelapse</span>
+<span>1,140.0 billable hours logged</span>
+</div>
+</div>
+<div class="pt-space-sm bg-surface-container-low/50 -mx-space-lg -mb-space-lg px-space-lg pb-space-sm flex items-center justify-between font-caption text-caption">
+<span class="text-secondary">WIP Turnover Velocity:</span>
+<span class="text-on-surface font-semibold">18.4 Days Avg</span>
+</div>
+</div>
+<!-- KPI 2: AR Aging Breakdown -->
+<div class="p-space-lg bg-surface-container-lowest rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-caption text-caption uppercase tracking-wider text-secondary font-semibold">Receivables Ledger</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold mt-0.5">Accounts Receivable (AR)</span>
+</div>
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+</div>
+</div>
+<div class="my-space-md">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display text-display text-on-surface tracking-tight font-bold">$84,200</span>
+<span class="font-caption text-caption text-secondary">USD</span>
+</div>
+<!-- Micro aging bar -->
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden flex mt-2">
+<div class="bg-primary h-full" style="width: 73.6%" title="Current $62k"></div>
+<div class="bg-surface-variant h-full" style="width: 16.8%" title="1-30d $14.2k"></div>
+<div class="bg-error h-full" style="width: 9.6%" title="30d+ $8k"></div>
+</div>
+</div>
+<div class="pt-space-sm bg-surface-container-low/50 -mx-space-lg -mb-space-lg px-space-lg pb-space-sm flex items-center justify-between font-caption text-caption">
+<span class="text-secondary">Aging:</span>
+<span class="text-on-surface font-semibold">$62k Current • $14.2k 1-30d • <span class="text-error font-bold">$8.0k 30d+</span></span>
+</div>
+</div>
+<!-- KPI 3: Realized Collections -->
+<div class="p-space-lg bg-surface-container-lowest rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-caption text-caption uppercase tracking-wider text-secondary font-semibold">Cash Flow Velocity</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold mt-0.5">Realized Collections MTD</span>
+</div>
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">verified</span>
+</div>
+</div>
+<div class="my-space-md">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display text-display text-on-surface tracking-tight font-bold">$348,900</span>
+<span class="font-caption text-caption text-secondary">USD</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface font-body-sm text-body-sm mt-1">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-semibold text-primary">96.4%</span>
+<span class="text-secondary">automated ACH/CC collection</span>
+</div>
+</div>
+<div class="pt-space-sm bg-surface-container-low/50 -mx-space-lg -mb-space-lg px-space-lg pb-space-sm flex items-center justify-between font-caption text-caption">
+<span class="text-secondary">Lockbox Clearing:</span>
+<span class="text-on-surface font-semibold font-mono">T+1 Auto-Batch</span>
+</div>
+</div>
+<!-- KPI 4: Effective Realization Rate -->
+<div class="p-space-lg bg-surface-container-lowest rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-caption text-caption uppercase tracking-wider text-secondary font-semibold">Profitability Metric</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold mt-0.5">Effective Realization</span>
+</div>
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">trending_up</span>
+</div>
+</div>
+<div class="my-space-md">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display text-display text-on-surface tracking-tight font-bold">$312<span class="font-headline-md text-headline-md font-normal text-secondary">/hr</span></span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface font-body-sm text-body-sm mt-1">
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+<span class="text-secondary">+4.0% vs target threshold ($300/hr)</span>
+</div>
+</div>
+<div class="pt-space-sm bg-surface-container-low/50 -mx-space-lg -mb-space-lg px-space-lg pb-space-sm flex items-center justify-between font-caption text-caption">
+<span class="text-secondary">Advisory Multiple:</span>
+<span class="text-on-surface font-semibold">1.42x Standard Tier</span>
+</div>
+</div>
+</div>
+<!-- Navigation Segment Tabs -->
+<div class="flex items-center gap-space-xs p-1 bg-surface-container-low rounded-xl mb-space-lg overflow-x-auto shadow-sm">
+<button class="px-space-md py-2 rounded-lg bg-surface-container-lowest text-primary font-label-md text-label-md shadow-sm font-semibold flex items-center gap-space-xs whitespace-nowrap" type="button">
+<span class="material-symbols-outlined text-[18px]">hourglass_bottom</span>
+<span>WIP &amp; Unbilled Time</span>
+<span class="ml-1 px-1.5 py-0.2 rounded-full bg-primary-fixed text-on-primary-fixed font-caption text-caption">12 Pending</span>
+</button>
+<button class="px-space-md py-2 rounded-lg hover:bg-surface-container-high text-on-surface-variant font-label-md text-label-md flex items-center gap-space-xs whitespace-nowrap transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">repeat</span>
+<span>Recurring Retainers</span>
+<span class="ml-1 px-1.5 py-0.2 rounded-full bg-surface-container text-secondary font-caption text-caption">48 Active</span>
+</button>
+<button class="px-space-md py-2 rounded-lg hover:bg-surface-container-high text-on-surface-variant font-label-md text-label-md flex items-center gap-space-xs whitespace-nowrap transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+<span>Invoices &amp; AR Aging</span>
+<span class="ml-1 px-1.5 py-0.2 rounded-full bg-surface-container text-secondary font-caption text-caption">32 Unpaid</span>
+</button>
+<button class="px-space-md py-2 rounded-lg hover:bg-surface-container-high text-on-surface-variant font-label-md text-label-md flex items-center gap-space-xs whitespace-nowrap transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">account_balance</span>
+<span>Trust / IOLTA Accounts</span>
+<span class="ml-1 px-1.5 py-0.2 rounded-full bg-surface-container text-secondary font-caption text-caption">$412,000 Custody</span>
+</button>
+</div>
+<!-- Main Multi-Column Split Workspace -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-start">
+<!-- Primary Column: Section 1 & Section 2 (8 Cols) -->
+<div class="xl:col-span-8 flex flex-col gap-space-xl">
+<!-- SECTION 1: WIP Conversion to Invoice (Unbilled Inventory) -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<!-- Section Header with Batch Action -->
+<div class="p-space-lg bg-surface-container-lowest flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[22px]">pending_actions</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Unbilled Work in Progress (WIP Conversion)</h2>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5">Approved timesheets ready to freeze, itemize, and convert into formal invoices.</p>
+</div>
+<button class="h-9 px-space-md bg-primary hover:bg-primary-container text-on-primary rounded-lg font-label-md text-label-md uppercase tracking-wider flex items-center justify-center gap-space-xs shadow-sm transition-all whitespace-nowrap" type="button">
+<span class="material-symbols-outlined text-[18px]">checklist</span>
+<span>Batch Convert Selected ($46,200)</span>
+</button>
+</div>
+<!-- Filter Sub-Toolbar -->
+<div class="px-space-lg py-space-sm bg-surface-container-low flex flex-wrap items-center gap-space-md text-body-sm">
+<div class="flex items-center gap-space-xs">
+<span class="font-caption text-caption uppercase text-secondary font-bold">Partner:</span>
+<select class="h-8 bg-surface-container-lowest rounded px-2 font-body-sm text-on-surface shadow-xs focus:ring-1 focus:ring-primary outline-none">
+<option>All Partners (6)</option>
+<option selected="">Elena Vance, CPA</option>
+<option>Marcus Sterling, JD/CPA</option>
+<option>Claire Beauchamp, Audit Lead</option>
+</select>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-caption text-caption uppercase text-secondary font-bold">Practice Line:</span>
+<select class="h-8 bg-surface-container-lowest rounded px-2 font-body-sm text-on-surface shadow-xs focus:ring-1 focus:ring-primary outline-none">
+<option selected="">All Practice Lines</option>
+<option>Corporate Tax (1120-S / 1065)</option>
+<option>Assurance &amp; Audit</option>
+<option>M&amp;A Advisory</option>
+<option>Bookkeeping &amp; Controller</option>
+</select>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-caption text-caption uppercase text-secondary font-bold">Threshold:</span>
+<select class="h-8 bg-surface-container-lowest rounded px-2 font-body-sm text-on-surface shadow-xs focus:ring-1 focus:ring-primary outline-none">
+<option>WIP &gt; $1,000 (Standard)</option>
+<option>WIP &gt; $5,000</option>
+<option>All Active WIP</option>
+</select>
+</div>
+<span class="text-secondary ml-auto font-caption text-caption">Showing 3 of 12 unbilled accounts</span>
+</div>
+<!-- WIP Data Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-md text-body-md border-collapse">
+<thead>
+<tr class="h-9 bg-surface-container-low text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+<th class="w-10 px-space-md text-center">
+<input checked="" class="rounded w-4 h-4 text-primary focus:ring-0" type="checkbox"/>
+</th>
+<th class="px-space-md font-semibold">Client &amp; Engagement</th>
+<th class="px-space-md font-semibold">Practice Lead</th>
+<th class="px-space-md font-semibold text-right">Logged Hours</th>
+<th class="px-space-md font-semibold text-right">Blended Rate</th>
+<th class="px-space-md font-semibold text-right">Unbilled WIP</th>
+<th class="px-space-md font-semibold text-center">Action</th>
+</tr>
+</thead>
+<tbody class="text-on-surface">
+<!-- Row 1: Vanguard Logistics -->
+<tr class="h-14 hover:bg-surface-container-high/60 transition-colors bg-surface-container-lowest">
+<td class="px-space-md text-center">
+<input checked="" class="rounded w-4 h-4 text-primary focus:ring-0" type="checkbox"/>
+</td>
+<td class="px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-on-surface">Vanguard Logistics Corp</span>
+<span class="font-caption text-caption text-secondary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                      FY23 Multi-State Tax Apportionment • #ENG-8821
+                    </span>
+</div>
+</td>
+<td class="px-space-md">
+<div class="flex items-center gap-2">
+<img class="w-6 h-6 rounded-full object-cover" data-alt="Corporate headshot portrait of senior CPA partner with professional studio lighting and clean blue background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOV1gRhmsbiJFbG-u_cik52SbuzGyYsdJW8LfZY7UHcijBfsdhxZ9BJ-pb-S4LEKuBPGREE_QHXtMuMc35v0MEYg61q5Ecoz0DOMQRd8EKy-mFCbDSoUEUeea-MN5PZrx9yL9vB_BmvLn3PiE3jkd-RA6xSSzuo2k-02c-XkkG8YjXMPb7l190OIkXCBXAy4e0XyCOAFav_iAlRE9hoU5g-glaFj9vJkXm_-2h45J4Nv6uo74SlivxqQ"/>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Elena Vance, CPA</span>
+</div>
+</td>
+<td class="px-space-md text-right font-mono font-medium text-on-surface">
+                  18.5 hrs
+                </td>
+<td class="px-space-md text-right font-mono text-secondary">
+                  $300.00
+                </td>
+<td class="px-space-md text-right">
+<span class="font-metric-md text-metric-md font-bold font-mono text-primary">$5,550.00</span>
+</td>
+<td class="px-space-md text-center">
+<button class="h-8 px-space-md bg-surface-container hover:bg-primary hover:text-on-primary text-primary rounded font-label-sm text-label-sm uppercase font-semibold transition-colors shadow-xs" type="button">
+                    Generate Invoice
+                  </button>
+</td>
+</tr>
+<!-- Row 2: Apex Dental Group -->
+<tr class="h-14 hover:bg-surface-container-high/60 transition-colors bg-surface-container-lowest">
+<td class="px-space-md text-center">
+<input checked="" class="rounded w-4 h-4 text-primary focus:ring-0" type="checkbox"/>
+</td>
+<td class="px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-on-surface">Apex Dental Partners, LLC</span>
+<span class="font-caption text-caption text-secondary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                      Q1 Financial Review &amp; Buyout Advisory • #ENG-9043
+                    </span>
+</div>
+</td>
+<td class="px-space-md">
+<div class="flex items-center gap-2">
+<img class="w-6 h-6 rounded-full object-cover" data-alt="Professional modern portrait of financial advisory partner in navy blazer with minimal architectural background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRwweVP9Bt0v4qFEcnFKo91DNF-HUR4tvgMoC-QpcCWvwA2Gp7o81S8fUadCj4RJx2-b6NDWXD1ztZZJv3PjMm5b7nlSyljowbIxFEYdWC7-kkHiL93NscjNtLzZ5QV9MGuOYjf5dHByCY5ZzD80CAuAb3KIk3KpxsVO5vdne-dLjUaCP_fOw5OzoyKIHoythbXZe1Ak77prVshw_QYKMF_8XUSqyWLkaPDx_OgxWZEG9dYtAtwSUPfQ"/>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Marcus Sterling</span>
+</div>
+</td>
+<td class="px-space-md text-right font-mono font-medium text-on-surface">
+                  34.0 hrs
+                </td>
+<td class="px-space-md text-right font-mono text-secondary">
+                  $288.23
+                </td>
+<td class="px-space-md text-right">
+<span class="font-metric-md text-metric-md font-bold font-mono text-primary">$9,800.00</span>
+</td>
+<td class="px-space-md text-center">
+<button class="h-8 px-space-md bg-surface-container hover:bg-primary hover:text-on-primary text-primary rounded font-label-sm text-label-sm uppercase font-semibold transition-colors shadow-xs" type="button">
+                    Generate Invoice
+                  </button>
+</td>
+</tr>
+<!-- Row 3: Summit Ridge Ventures -->
+<tr class="h-14 hover:bg-surface-container-high/60 transition-colors bg-surface-container-lowest">
+<td class="px-space-md text-center">
+<input checked="" class="rounded w-4 h-4 text-primary focus:ring-0" type="checkbox"/>
+</td>
+<td class="px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-on-surface">Summit Ridge Ventures</span>
+<span class="font-caption text-caption text-secondary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+                      Special Purpose Vehicle (SPV) Audit Prep • #ENG-7734
+                    </span>
+</div>
+</td>
+<td class="px-space-md">
+<div class="flex items-center gap-2">
+<img class="w-6 h-6 rounded-full object-cover" data-alt="Corporate headshot of woman CPA audit director in gray professional suit smiling confident" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArriSVTBUexG4Xwq5_3WLX7aOPf-mxCVB65-OyAv18RZRXiTnTxLRu-okvbQ7qtkZNM5zzpZpQqvz1p_rgeVu8RLe65HV0LrNlg7lQqEMHqbcrzlpZCUZVasbpxUA8Eivg_I5IV3bDWpqoWHvYafYmPw3ruuOP-PIOu79j6sk7kH5mpIO6NXsVBs2GoxH85ITerwncSJzwbwDULCjeYxl7-za5zRyMkNOuaThp8k1ZINZSi9OFVnTs1Q"/>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Claire Beauchamp</span>
+</div>
+</td>
+<td class="px-space-md text-right font-mono font-medium text-on-surface">
+                  8.2 hrs
+                </td>
+<td class="px-space-md text-right font-mono text-secondary">
+                  $300.00
+                </td>
+<td class="px-space-md text-right">
+<span class="font-metric-md text-metric-md font-bold font-mono text-primary">$2,460.00</span>
+</td>
+<td class="px-space-md text-center">
+<button class="h-8 px-space-md bg-surface-container hover:bg-primary hover:text-on-primary text-primary rounded font-label-sm text-label-sm uppercase font-semibold transition-colors shadow-xs" type="button">
+                    Generate Invoice
+                  </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination / Summary Footer -->
+<div class="p-space-md bg-surface-container-low/50 flex flex-col sm:flex-row items-center justify-between gap-space-sm text-caption text-secondary">
+<div class="flex items-center gap-space-md">
+<span>3 client engagements selected for batch conversion</span>
+<span class="font-bold text-on-surface">Subtotal: $17,810.00 (60.7 Total Hours)</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-2 py-1 bg-surface-container-lowest rounded text-secondary hover:text-on-surface font-medium" type="button">Clear All</button>
+<button class="px-2 py-1 bg-surface-container-lowest rounded text-on-surface hover:bg-surface-container-high font-medium" type="button">Select All 12 Clients</button>
+</div>
+</div>
+</div>
+<!-- SECTION 2: AR Aging & Outstanding Invoices Ledger -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="p-space-lg bg-surface-container-lowest flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[22px]">account_balance_wallet</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">AR Aging &amp; Outstanding Invoices Ledger</h2>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5">Real-time payment tracking, ACH auto-draw triggers, and aging alerts.</p>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="h-8 px-space-md bg-surface-container-low hover:bg-surface-container-high text-on-surface rounded font-label-sm text-label-sm uppercase tracking-wider flex items-center gap-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+<span>Export AR Matrix</span>
+</button>
+<button class="h-8 px-space-md bg-surface-container-low hover:bg-surface-container-high text-on-surface rounded font-label-sm text-label-sm uppercase tracking-wider flex items-center gap-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">mark_email_read</span>
+<span>Bulk Statement Blast</span>
+</button>
+</div>
+</div>
+<!-- Ledger Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-md text-body-md border-collapse">
+<thead>
+<tr class="h-9 bg-surface-container-low text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+<th class="px-space-md font-semibold">Invoice #</th>
+<th class="px-space-md font-semibold">Client Name</th>
+<th class="px-space-md font-semibold">Issue Date</th>
+<th class="px-space-md font-semibold">Due Date</th>
+<th class="px-space-md font-semibold text-right">Amount</th>
+<th class="px-space-md font-semibold text-center">Status</th>
+<th class="px-space-md font-semibold text-center">Auto-Pay</th>
+<th class="px-space-md font-semibold text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="text-on-surface">
+<!-- Item 1: Overdue -->
+<tr class="h-14 hover:bg-surface-container-high/60 transition-colors bg-surface-container-lowest">
+<td class="px-space-md font-mono text-primary font-semibold">
+                  INV-2024-0418
+                </td>
+<td class="px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Kodiak Energy Holdings</span>
+<span class="font-caption text-caption text-secondary">Tax Prep / Tier 1 Retainer</span>
+</div>
+</td>
+<td class="px-space-md font-caption text-caption text-secondary">Apr 01, 2024</td>
+<td class="px-space-md font-caption text-caption font-semibold text-error">Apr 15, 2024</td>
+<td class="px-space-md text-right font-mono font-bold text-on-surface">
+                  $8,000.00
+                </td>
+<td class="px-space-md text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-error bg-error-container/40 font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                    Overdue 14 Days
+                  </span>
+</td>
+<td class="px-space-md text-center">
+<span class="inline-flex items-center gap-1 text-secondary font-caption text-caption">
+<span class="material-symbols-outlined text-[16px] text-outline">cancel</span>
+                    Manual Check
+                  </span>
+</td>
+<td class="px-space-md text-right">
+<button class="h-7 px-2.5 bg-error-container/40 hover:bg-error-container text-error rounded font-label-sm text-label-sm font-semibold transition-colors inline-flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">send</span>
+<span>Demand Notice</span>
+</button>
+</td>
+</tr>
+<!-- Item 2: Due Soon -->
+<tr class="h-14 hover:bg-surface-container-high/60 transition-colors bg-surface-container-lowest">
+<td class="px-space-md font-mono text-primary font-semibold">
+                  INV-2024-0429
+                </td>
+<td class="px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Borealis Biotech Labs</span>
+<span class="font-caption text-caption text-secondary">R&amp;D Tax Credit Study</span>
+</div>
+</td>
+<td class="px-space-md font-caption text-caption text-secondary">Apr 10, 2024</td>
+<td class="px-space-md font-caption text-caption font-semibold text-on-surface">May 05, 2024</td>
+<td class="px-space-md text-right font-mono font-bold text-on-surface">
+                  $14,200.00
+                </td>
+<td class="px-space-md text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-tertiary-container bg-surface-container font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                    Due in 5 Days
+                  </span>
+</td>
+<td class="px-space-md text-center">
+<span class="inline-flex items-center gap-1 text-primary font-caption text-caption font-semibold">
+<span class="material-symbols-outlined text-[16px] text-primary">credit_card</span>
+                    ACH Enrolled
+                  </span>
+</td>
+<td class="px-space-md text-right">
+<button class="h-7 px-2.5 bg-surface-container hover:bg-surface-container-high text-on-surface rounded font-label-sm text-label-sm font-medium transition-colors inline-flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">notifications</span>
+<span>Ping Auto-Draw</span>
+</button>
+</td>
+</tr>
+<!-- Item 3: Paid & Settled -->
+<tr class="h-14 hover:bg-surface-container-high/60 transition-colors bg-surface-container-lowest">
+<td class="px-space-md font-mono text-primary font-semibold">
+                  INV-2024-0402
+                </td>
+<td class="px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Starlight Horizon Media</span>
+<span class="font-caption text-caption text-secondary">Quarterly Retainer • Automated</span>
+</div>
+</td>
+<td class="px-space-md font-caption text-caption text-secondary">Apr 01, 2024</td>
+<td class="px-space-md font-caption text-caption text-secondary">Apr 01, 2024</td>
+<td class="px-space-md text-right font-mono font-bold text-on-surface">
+                  $62,000.00
+                </td>
+<td class="px-space-md text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-primary font-label-sm text-label-sm font-semibold bg-primary-fixed/60">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                    Settled • Paid
+                  </span>
+</td>
+<td class="px-space-md text-center">
+<span class="inline-flex items-center gap-1 text-primary font-caption text-caption font-semibold">
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+                    Direct Debit
+                  </span>
+</td>
+<td class="px-space-md text-right">
+<button class="h-7 px-2.5 bg-surface-container-low hover:bg-surface-container text-secondary rounded font-label-sm text-label-sm font-medium transition-colors inline-flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">receipt</span>
+<span>Receipt PDF</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-space-md bg-surface-container-low/30 flex items-center justify-between text-caption text-secondary">
+<span>Displaying 3 of 32 total outstanding &amp; reconciled customer invoices</span>
+<div class="flex items-center gap-1">
+<span class="font-mono">Total AR Current: $62,000.00</span>
+<span class="mx-1">•</span>
+<span class="font-mono text-error font-semibold">Overdue Balance: $8,000.00</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Utility Column: Section 3 Breakdown & Quick Drawer Preview (4 Cols) -->
+<div class="xl:col-span-4 flex flex-col gap-space-lg">
+<!-- WIP Aging & Practice Breakdown Interactive Visualization -->
+<div class="p-space-lg bg-surface-container-lowest rounded-xl shadow-sm flex flex-col">
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex flex-col">
+<span class="font-caption text-caption uppercase tracking-wider text-secondary font-semibold">Practice Inventory Mix</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">WIP by Practice Group</h3>
+</div>
+<span class="material-symbols-outlined text-secondary text-[20px]">pie_chart</span>
+</div>
+<!-- SVG Donut Chart + Central Metric -->
+<div class="relative flex items-center justify-center my-space-sm">
+<svg class="w-44 h-44 transform -rotate-90" viewbox="0 0 100 100">
+<!-- Background track -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#e5eeff" stroke-width="14"></circle>
+<!-- Tax Group: 52% (dasharray ~ 130.6) -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#0037b0" stroke-dasharray="130.6 251.2" stroke-dashoffset="0" stroke-width="14"></circle>
+<!-- Audit & Assurance: 26% (dasharray ~ 65.3) -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#1d4ed8" stroke-dasharray="65.3 251.2" stroke-dashoffset="-130.6" stroke-width="14"></circle>
+<!-- Advisory & M&A: 14% (dasharray ~ 35.1) -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#565e74" stroke-dasharray="35.1 251.2" stroke-dashoffset="-195.9" stroke-width="14"></circle>
+<!-- Bookkeeping: 8% (dasharray ~ 20.1) -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#374559" stroke-dasharray="20.1 251.2" stroke-dashoffset="-231" stroke-width="14"></circle>
+</svg>
+<div class="absolute flex flex-col items-center justify-center text-center">
+<span class="font-caption text-caption text-secondary uppercase tracking-wider">Total WIP</span>
+<span class="font-metric-lg text-metric-lg font-bold text-on-surface">$218.4k</span>
+<span class="font-caption text-caption text-primary font-semibold">1,140 Hrs</span>
+</div>
+</div>
+<!-- Practice Legend Breakdown -->
+<div class="flex flex-col gap-space-xs mt-space-md">
+<div class="p-space-xs rounded bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Corporate &amp; Multi-State Tax</span>
+</div>
+<div class="flex items-center gap-2 font-mono text-body-sm">
+<span class="font-semibold text-on-surface">$113,600</span>
+<span class="text-secondary text-caption font-normal">52%</span>
+</div>
+</div>
+<div class="p-space-xs rounded bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Assurance &amp; Attestation</span>
+</div>
+<div class="flex items-center gap-2 font-mono text-body-sm">
+<span class="font-semibold text-on-surface">$56,800</span>
+<span class="text-secondary text-caption font-normal">26%</span>
+</div>
+</div>
+<div class="p-space-xs rounded bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Strategic Advisory &amp; M&amp;A</span>
+</div>
+<div class="flex items-center gap-2 font-mono text-body-sm">
+<span class="font-semibold text-on-surface">$30,580</span>
+<span class="text-secondary text-caption font-normal">14%</span>
+</div>
+</div>
+<div class="p-space-xs rounded bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Outsourced Controller</span>
+</div>
+<div class="flex items-center gap-2 font-mono text-body-sm">
+<span class="font-semibold text-on-surface">$17,470</span>
+<span class="text-secondary text-caption font-normal">8%</span>
+</div>
+</div>
+</div>
+<!-- Aging Bar Chart Metric -->
+<div class="mt-space-lg pt-space-md bg-surface-container-low/40 -mx-space-lg -mb-space-lg p-space-lg rounded-b-xl flex flex-col gap-space-xs">
+<div class="flex items-center justify-between font-caption text-caption text-secondary">
+<span>WIP Aging Health (0-30 Days)</span>
+<span class="text-primary font-bold">89.2% Healthy</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 89.2%"></div>
+</div>
+</div>
+</div>
+<!-- Quick Time Entry Drawer Preview & Daily Billing Log -->
+<div class="p-space-lg bg-surface-container-lowest rounded-xl shadow-sm flex flex-col">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex flex-col">
+<span class="font-caption text-caption uppercase tracking-wider text-secondary font-semibold">Real-Time Timesheet</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Quick Time Entry</h3>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px]">timelapse</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mb-space-md">Log billable hours directly against engagement codes with automatic WIP allocation.</p>
+<!-- Fast Time Entry Form -->
+<form class="flex flex-col gap-space-sm" onsubmit="event.preventDefault();">
+<div>
+<label class="block font-caption text-caption uppercase text-secondary font-bold mb-1">Select Client / Matter</label>
+<select class="w-full h-9 bg-surface-container-low rounded-lg px-2 font-body-sm text-on-surface focus:ring-1 focus:ring-primary outline-none">
+<option>Vanguard Logistics Corp (FY23 Tax)</option>
+<option>Apex Dental Partners, LLC (Advisory)</option>
+<option>Summit Ridge Ventures (SPV Audit)</option>
+<option>Cascade Alpine Capital (Due Diligence)</option>
+</select>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div>
+<label class="block font-caption text-caption uppercase text-secondary font-bold mb-1">Billing Code</label>
+<select class="w-full h-9 bg-surface-container-low rounded-lg px-2 font-body-sm text-on-surface focus:ring-1 focus:ring-primary outline-none">
+<option>TAX-101 Partner Review</option>
+<option>AUD-302 Testing &amp; Workpapers</option>
+<option>ADV-505 Modeling &amp; Strategy</option>
+</select>
+</div>
+<div>
+<label class="block font-caption text-caption uppercase text-secondary font-bold mb-1">Hours Spent</label>
+<input class="w-full h-9 bg-surface-container-low rounded-lg px-2 font-mono font-bold text-on-surface focus:ring-1 focus:ring-primary outline-none text-right" step="0.1" type="number" value="2.5"/>
+</div>
+</div>
+<div>
+<label class="block font-caption text-caption uppercase text-secondary font-bold mb-1">Billing Rate Calculation</label>
+<div class="p-space-xs rounded bg-surface-container-low flex items-center justify-between font-caption text-caption">
+<span class="text-secondary">Standard Partner: $350.00/hr</span>
+<span class="font-mono font-bold text-primary">WIP Generated: $875.00</span>
+</div>
+</div>
+<div>
+<label class="block font-caption text-caption uppercase text-secondary font-bold mb-1">Work Description / Memo</label>
+<input class="w-full h-9 bg-surface-container-low rounded-lg px-2 font-body-sm text-on-surface focus:ring-1 focus:ring-primary outline-none" placeholder="State tax nexus review and multi-entity allocation prep..." type="text"/>
+</div>
+<button class="w-full h-9 mt-space-xs bg-primary hover:bg-primary-container text-on-primary rounded-lg font-label-md text-label-md uppercase tracking-wider flex items-center justify-center gap-1 shadow-sm transition-colors" type="submit">
+<span class="material-symbols-outlined text-[16px]">save</span>
+<span>Post to Work in Progress</span>
+</button>
+</form>
+<!-- Recent Logs Today list -->
+<div class="mt-space-lg pt-space-md bg-surface-container-low/50 -mx-space-lg -mb-space-lg p-space-lg rounded-b-xl flex flex-col gap-space-xs">
+<div class="flex items-center justify-between text-caption text-secondary uppercase font-bold mb-1">
+<span>Logged Today (Elena Vance)</span>
+<span class="font-mono text-on-surface">6.8 / 8.0 Target</span>
+</div>
+<div class="p-space-xs rounded bg-surface-container-lowest flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Summit Ridge SPV Review</span>
+<span class="font-caption text-caption text-secondary">09:15 - 11:45 AM • Partner Review</span>
+</div>
+<span class="font-mono text-body-sm font-bold text-primary">2.5 hrs</span>
+</div>
+<div class="p-space-xs rounded bg-surface-container-lowest flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Vanguard Nexus Research</span>
+<span class="font-caption text-caption text-secondary">01:00 - 05:18 PM • Corporate Tax</span>
+</div>
+<span class="font-mono text-body-sm font-bold text-primary">4.3 hrs</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Quick Time Modal (Overlay component triggered by action button) -->
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4" id="quick-time-modal">
+<div class="bg-surface-container-lowest rounded-xl shadow-xl max-w-md w-full p-space-lg flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[24px]">more_time</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Log Billable Time</h3>
+</div>
+<button class="w-8 h-8 rounded-lg hover:bg-surface-container flex items-center justify-center text-secondary" onclick="document.getElementById('quick-time-modal').classList.add('hidden')" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-secondary">Instantly record unbilled advisory or compliance time to increase practice realization.</p>
+<div class="flex flex-col gap-space-sm">
+<div>
+<label class="block font-caption text-caption uppercase text-secondary font-bold mb-1">Engagement</label>
+<select class="w-full h-9 bg-surface-container-low rounded-lg px-2 font-body-sm text-on-surface outline-none">
+<option>Vanguard Logistics Corp (FY23 Apportionment)</option>
+<option>Apex Dental Partners (Buyout Review)</option>
+<option>Summit Ridge (SPV Audit)</option>
+</select>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div>
+<label class="block font-caption text-caption uppercase text-secondary font-bold mb-1">Time (Hours)</label>
+<input class="w-full h-9 bg-surface-container-low rounded-lg px-2 font-mono text-right font-bold text-on-surface" step="0.25" type="number" value="1.75"/>
+</div>
+<div>
+<label class="block font-caption text-caption uppercase text-secondary font-bold mb-1">Date</label>
+<input class="w-full h-9 bg-surface-container-low rounded-lg px-2 font-body-sm text-on-surface" type="date" value="2024-04-24"/>
+</div>
+</div>
+<div>
+<label class="block font-caption text-caption uppercase text-secondary font-bold mb-1">Notes</label>
+<textarea class="w-full bg-surface-container-low rounded-lg p-2 font-body-sm text-on-surface" placeholder="Detail the work performed for client audit trail..." rows="3"></textarea>
+</div>
+</div>
+<div class="flex items-center justify-end gap-space-sm mt-space-xs">
+<button class="h-9 px-space-md rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md" onclick="document.getElementById('quick-time-modal').classList.add('hidden')" type="button">
+          Cancel
+        </button>
+<button class="h-9 px-space-md rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md uppercase tracking-wider" onclick="document.getElementById('quick-time-modal').classList.add('hidden')" type="button">
+          Save &amp; Accumulate WIP
+        </button>
+</div>
+</div>
+</div>
+</div></main></div></body></html>

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"surface-variant":"#d3e4fe","tertiary":"#374559","on-surface-variant":"#434655","on-tertiary":"#ffffff","surface-container-highest":"#d3e4fe","on-secondary-fixed-variant":"#3f465c","on-primary-container":"#cad3ff","surface-container-high":"#dce9ff","on-tertiary-fixed":"#0d1c2e","on-background":"#0b1c30","primary-container":"#1d4ed8","outline":"#747686","on-primary-fixed":"#001551","on-secondary-container":"#5c647a","on-tertiary-container":"#c7d6ee","on-secondary":"#ffffff","tertiary-fixed-dim":"#b9c7df","tertiary-container":"#4f5d71","surface-bright":"#f8f9ff","on-primary-fixed-variant":"#0039b5","primary-fixed-dim":"#b7c4ff","surface":"#f8f9ff","primary-fixed":"#dce1ff","surface-container":"#e5eeff","on-surface":"#0b1c30","on-primary":"#ffffff","on-error-container":"#93000a","inverse-on-surface":"#eaf1ff","surface-container-lowest":"#ffffff","surface-container-low":"#eff4ff","outline-variant":"#c4c5d7","on-tertiary-fixed-variant":"#3a485b","inverse-surface":"#213145","surface-dim":"#cbdbf5","secondary-fixed":"#dae2fd","surface-tint":"#2151da","tertiary-fixed":"#d5e3fc","on-secondary-fixed":"#131b2e","secondary-container":"#dae2fd","secondary":"#565e74","background":"#f8f9ff","secondary-fixed-dim":"#bec6e0","error-container":"#ffdad6","on-error":"#ffffff","primary":"#0037b0","inverse-primary":"#b7c4ff","error":"#ba1a1a"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-xl":"1.5rem","space-sm":"0.5rem","gutter":"1rem","space-xs":"0.25rem","space-2xl":"2rem","margin-desktop":"2rem","space-lg":"1rem","space-md":"0.75rem","gutter-mobile":"0.75rem","margin-mobile":"1rem","margin":"1.5rem","gutter-desktop":"1.5rem"},"fontFamily":{"body-lg":["Inter"],"headline-md":["Plus Jakarta Sans"],"metric-md":["Inter"],"headline-lg-mobile":["Plus Jakarta Sans"],"headline-sm":["Plus Jakarta Sans"],"display":["Plus Jakarta Sans"],"body-sm":["Inter"],"label-sm":["Inter"],"metric-lg":["Inter"],"caption":["Inter"],"body-md":["Inter"],"headline-lg":["Plus Jakarta Sans"],"label-md":["Inter"]},"fontSize":{"body-lg":["15px",{"lineHeight":"22px","fontWeight":"400"}],"headline-md":["18px",{"lineHeight":"24px","letterSpacing":"-0.01em","fontWeight":"600"}],"metric-md":["16px",{"lineHeight":"20px","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-lg-mobile":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"700"}],"headline-sm":["15px",{"lineHeight":"20px","letterSpacing":"-0.005em","fontWeight":"600"}],"display":["32px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"700"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.03em","fontWeight":"500"}],"metric-lg":["24px",{"lineHeight":"28px","letterSpacing":"-0.02em","fontWeight":"600"}],"caption":["10px",{"lineHeight":"12px","letterSpacing":"0.04em","fontWeight":"500"}],"body-md":["13px",{"lineHeight":"18px","fontWeight":"400"}],"headline-lg":["24px",{"lineHeight":"32px","letterSpacing":"-0.02em","fontWeight":"700"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"600"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-lg flex items-center gap-space-sm bg-surface-container-low"><img alt="LedgerPoint Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Vlrh8zgatY5F-wFnJukD1aPffmrpDoA9_cKRKWrShsTYEWHMh5Kt49RnENdlseBItspibPJkTB_io7M_HKG1i9hzEu6DvIKikZJdnVWnyFHGxbqG4nBikyGlxyUQO-zl8Wp4Z1SFWfDfXohTenWmg-MPLhW-71TgGkRJ3k4Y4FeJzhSXT8fuR_rycouCwE0gjkmLMNdLGNvDuFA7Q53aRIDxx7gFPdeykJuJu5knQvrLDp9Zb1bjJOErya"/><div class="flex flex-col min-w-0 leading-tight"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight truncate">LedgerPoint</span><span class="font-caption text-caption text-secondary uppercase tracking-wider truncate">CPA &amp; Advisory</span></div></div><div class="px-space-md py-space-sm"><div class="h-[1px] w-full bg-outline-variant/30"></div></div><nav class="flex flex-col gap-space-xs px-space-sm py-space-xs" data-active-classes="bg-primary-container text-on-primary font-semibold shadow-[0_1px_2px_rgba(0,0,0,0.05)]"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="overview" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="font-label-md text-label-md">Overview</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="clients" href="#"><span class="material-symbols-outlined text-[20px]">business_center</span><span class="font-label-md text-label-md">Clients</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg transition-colors bg-primary-container text-on-primary font-semibold shadow-[0_1px_2px_rgba(0,0,0,0.05)]" data-path="client-360" href="#"><span class="material-symbols-outlined text-[20px]">domain_verification</span><span class="font-label-md text-label-md">Client 360</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="workflows" href="#"><span class="material-symbols-outlined text-[20px]">view_kanban</span><span class="font-label-md text-label-md">Workflows</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="billing-and-wip" href="#"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span class="font-label-md text-label-md">Billing &amp; WIP</span></a></nav><div class="px-space-md py-space-sm"><div class="h-[1px] w-full bg-outline-variant/30"></div></div><div class="px-space-md py-space-xs"><div class="p-space-md bg-surface-container-lowest rounded-xl shadow-[0_1px_2px_rgba(15,23,42,0.05)]"><div class="flex items-center justify-between mb-space-xs"><span class="font-label-sm text-label-sm font-semibold uppercase text-secondary tracking-wider">Tax Season 2024</span><span class="font-metric-md text-metric-md text-primary font-bold">84%</span></div><div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden mb-space-xs"><div class="bg-primary h-full rounded-full" style="width: 84%"></div></div><div class="flex items-center justify-between text-secondary"><span class="font-caption text-caption">Filed &amp; Accepted</span><span class="font-caption text-caption font-semibold text-on-surface">16d to Deadline</span></div></div></div><nav class="flex flex-col gap-space-xs px-space-sm py-space-xs" data-active-classes="bg-primary-container text-on-primary font-semibold"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="firm-documents" href="#"><span class="material-symbols-outlined text-[20px]">folder_shared</span><span class="font-label-md text-label-md">Firm Documents</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[20px]">settings</span><span class="font-label-md text-label-md">Settings</span></a></nav></div><div class="p-space-md bg-surface-container-low"><div class="p-space-sm rounded-lg bg-surface-container flex items-center justify-between"><div class="flex items-center gap-space-xs min-w-0"><span class="material-symbols-outlined text-[18px] text-primary">verified_user</span><div class="flex flex-col min-w-0"><span class="font-caption text-caption text-on-surface font-semibold truncate">IRS e-File Status</span><span class="font-caption text-caption text-secondary">Connected &amp; Active</span></div></div><div class="w-2 h-2 rounded-full bg-primary"></div></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-gutter-desktop"><div class="flex items-center gap-space-lg flex-1 max-w-xl"><div class="relative w-full"><span class="material-symbols-outlined absolute left-space-md top-1/2 -translate-y-1/2 text-[18px] text-outline pointer-events-none">search</span><input class="w-full h-9 pl-9 pr-space-lg bg-surface-container-lowest rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary shadow-[0_1px_2px_rgba(15,23,42,0.05)]" placeholder="Search clients, EIN, returns, or invoices... Cmd+K" type="text"/></div></div><div class="flex items-center gap-space-md"><button class="h-9 px-space-md bg-primary hover:bg-primary-container text-on-primary rounded-lg font-label-md text-label-md uppercase tracking-wider flex items-center gap-space-xs shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">add</span><span>New Client / Engagement</span></button><div class="h-6 w-[1px] bg-outline-variant/40 mx-space-xs"></div><div class="flex items-center gap-space-xs bg-surface-container-lowest px-space-sm py-1 rounded-lg shadow-[0_1px_2px_rgba(15,23,42,0.05)]"><span class="font-caption text-caption text-secondary uppercase font-semibold">Period:</span><span class="font-label-sm text-label-sm font-semibold text-on-surface">FY 2024</span><span class="material-symbols-outlined text-[16px] text-secondary">expand_more</span></div><div class="relative flex items-center"><button aria-label="Notifications" class="w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span></button><span class="absolute top-1 right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-error text-on-error font-caption text-[10px] font-bold leading-none">3</span></div><div class="h-6 w-[1px] bg-outline-variant/40 mx-space-xs"></div><div class="flex items-center gap-space-sm pl-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-outline-variant/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM-9xcIPNgyot7olyfq9LPtH8qDEgbqi-eTkNvImZ7jgB4rGBVatMIoVqWFdU_fB4X6Lv4wrRf99Fld5IrzwFaT3WPyXXCSoYQke0aVWFi6AZBpTn5rr0jAEz-3EMXe_NtcBm_55m7474JTsImAwfRKr96sFpB8L64sJIhFzZ4zZT5YpAUJfRTb0_q4dl-XXc502pW8vYn4FC6jvwq9tI29I5wkmvUaI8TPzkh2779bctme6X08GB6IQ"/><div class="hidden lg:flex flex-col text-left leading-tight"><span class="font-label-md text-label-md font-semibold text-on-surface truncate">Elena Vance, CPA</span><span class="font-caption text-caption text-primary font-semibold uppercase tracking-wider truncate">Managing Partner</span></div><span class="material-symbols-outlined text-[18px] text-secondary">expand_more</span></div></div></header><main class="relative pt-16 bg-surface min-h-screen w-full px-gutter-desktop"><div class="flex flex-col w-full pb-space-2xl">
+<!-- Client Profile Hero Card -->
+<section class="w-full bg-surface-container-lowest rounded-xl shadow-sm p-space-xl mb-space-lg relative overflow-hidden">
+<!-- Subtle Institutional Ambient Tone -->
+<div class="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-primary/5 pointer-events-none blur-3xl"></div>
+<div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-space-lg relative z-10">
+<div class="flex items-start gap-space-lg">
+<div class="relative w-16 h-16 rounded-xl bg-surface-container flex items-center justify-center text-primary shadow-sm flex-shrink-0">
+<span class="material-symbols-outlined text-[34px]">corporate_fare</span>
+<span class="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary-container text-on-primary text-[12px] shadow-sm" title="Verified Corporate Entity">
+<span class="material-symbols-outlined text-[13px]">verified</span>
+</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex flex-wrap items-center gap-space-sm mb-space-xs">
+<h1 class="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight">
+              Vanguard Logistics Group, Inc.
+            </h1>
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container text-secondary font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Delaware S-Corp
+            </span>
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+              EIN: 84-2910482
+            </span>
+</div>
+<div class="flex flex-wrap items-center gap-y-1 gap-x-space-md text-secondary font-body-sm text-body-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-outline">local_shipping</span>
+              Freight &amp; Supply Chain Logistics
+            </span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-outline">location_on</span>
+              Wilmington, DE (HQ)
+            </span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1 text-primary font-medium">
+<span class="material-symbols-outlined text-[16px]">folder_special</span>
+              Client ID: #VL-8821
+            </span>
+</div>
+</div>
+</div>
+<!-- Quick Action Cluster -->
+<div class="flex flex-wrap items-center gap-space-xs self-start lg:self-center">
+<button class="h-9 px-space-md bg-surface-container hover:bg-surface-container-high text-on-surface rounded-lg font-label-md text-label-md flex items-center gap-space-xs shadow-sm transition-all" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">upload_file</span>
+<span>Upload Document</span>
+</button>
+<button class="h-9 px-space-md bg-surface-container hover:bg-surface-container-high text-on-surface rounded-lg font-label-md text-label-md flex items-center gap-space-xs shadow-sm transition-all" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">phone_in_talk</span>
+<span>Log Meeting</span>
+</button>
+<button class="h-9 px-space-md bg-surface-container hover:bg-surface-container-high text-on-surface rounded-lg font-label-md text-label-md flex items-center gap-space-xs shadow-sm transition-all" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">open_in_new</span>
+<span>Portal Access</span>
+</button>
+<button class="h-9 px-space-md bg-primary-container hover:bg-primary text-on-primary rounded-lg font-label-md text-label-md flex items-center gap-space-xs shadow-sm transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>New Engagement</span>
+</button>
+</div>
+</div>
+<!-- Institutional Key Metric Banner -->
+<div class="mt-space-lg pt-space-md grid grid-cols-2 sm:grid-cols-4 gap-space-md bg-surface-container-low rounded-lg p-space-md">
+<div class="flex flex-col">
+<span class="font-caption text-caption uppercase text-secondary tracking-wider font-semibold">Annual Retainer</span>
+<span class="font-metric-lg text-metric-lg text-on-surface font-bold mt-0.5">$42,000<span class="font-body-sm text-body-sm text-secondary font-normal"> / yr</span></span>
+<span class="font-caption text-caption text-secondary mt-0.5">Fixed Monthly Billing ($3,500)</span>
+</div>
+<div class="flex flex-col">
+<span class="font-caption text-caption uppercase text-secondary tracking-wider font-semibold">Engagement Tenure</span>
+<span class="font-metric-lg text-metric-lg text-on-surface font-bold mt-0.5">6.2 Years</span>
+<span class="font-caption text-caption text-primary font-medium mt-0.5">Tier 1 Sovereign Client</span>
+</div>
+<div class="flex flex-col">
+<span class="font-caption text-caption uppercase text-secondary tracking-wider font-semibold">Fiscal Year End</span>
+<span class="font-metric-lg text-metric-lg text-on-surface font-bold mt-0.5">Dec 31</span>
+<span class="font-caption text-caption text-secondary mt-0.5">Standard Calendar Year Basis</span>
+</div>
+<div class="flex flex-col">
+<span class="font-caption text-caption uppercase text-secondary tracking-wider font-semibold">Risk Classification</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+<span class="font-metric-md text-metric-md text-on-surface font-bold">Low Audit Risk</span>
+</div>
+<span class="font-caption text-caption text-secondary mt-0.5">Automated Pre-filing Verification</span>
+</div>
+</div>
+</section>
+<!-- Horizontal Section Navigation -->
+<div class="w-full flex items-center gap-space-xs overflow-x-auto pb-space-sm mb-space-lg">
+<button class="h-9 px-space-md bg-surface-container-lowest text-primary font-label-md text-label-md font-semibold rounded-lg shadow-sm whitespace-nowrap flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px]">account_tree</span>
+<span>Overview &amp; Engagements</span>
+<span class="ml-1 px-1.5 py-0.2 bg-primary/10 text-primary rounded-full text-[10px]">3 Active</span>
+</button>
+<button class="h-9 px-space-md bg-surface hover:bg-surface-container-lowest text-secondary hover:text-on-surface font-label-md text-label-md rounded-lg whitespace-nowrap flex items-center gap-space-xs transition-colors">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span>Tax &amp; Compliance Vault</span>
+</button>
+<button class="h-9 px-space-md bg-surface hover:bg-surface-container-lowest text-secondary hover:text-on-surface font-label-md text-label-md rounded-lg whitespace-nowrap flex items-center gap-space-xs transition-colors">
+<span class="material-symbols-outlined text-[18px]">query_stats</span>
+<span>Financials &amp; Bookkeeping</span>
+</button>
+<button class="h-9 px-space-md bg-surface hover:bg-surface-container-lowest text-secondary hover:text-on-surface font-label-md text-label-md rounded-lg whitespace-nowrap flex items-center gap-space-xs transition-colors">
+<span class="material-symbols-outlined text-[18px]">receipt</span>
+<span>Invoices &amp; Retainers</span>
+</button>
+<button class="h-9 px-space-md bg-surface hover:bg-surface-container-lowest text-secondary hover:text-on-surface font-label-md text-label-md rounded-lg whitespace-nowrap flex items-center gap-space-xs transition-colors">
+<span class="material-symbols-outlined text-[18px]">forum</span>
+<span>Communications &amp; Notes</span>
+<span class="w-2 h-2 rounded-full bg-error ml-0.5"></span>
+</button>
+<button class="h-9 px-space-md bg-surface hover:bg-surface-container-lowest text-secondary hover:text-on-surface font-label-md text-label-md rounded-lg whitespace-nowrap flex items-center gap-space-xs transition-colors">
+<span class="material-symbols-outlined text-[18px]">hub</span>
+<span>Entity Structure</span>
+</button>
+</div>
+<!-- Primary Asymmetric Workspace: 65% Main Data Hub / 35% Executive Context Panel -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
+<!-- Left / Main Area (Col span 8 -> approx 66%) -->
+<div class="lg:col-span-8 flex flex-col gap-space-xl">
+<!-- Engagements Section -->
+<section class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+<div class="px-space-lg py-space-md bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[20px] text-primary">dynamic_feed</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Active Engagements (FY 2024)</h2>
+</div>
+<span class="font-caption text-caption uppercase text-secondary font-semibold tracking-wider">3 Workflows In Flight</span>
+</div>
+<div class="p-space-lg flex flex-col gap-space-lg">
+<!-- Card 1: 1120-S Corporate Return -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm hover:shadow-md transition-shadow">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="w-9 h-9 rounded-lg bg-surface-variant text-primary flex items-center justify-center font-bold text-label-md">
+                  1120S
+                </span>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">
+                    2023 Form 1120-S Federal &amp; State Tax Filing
+                  </h3>
+<p class="font-body-sm text-body-sm text-secondary">Statutory annual S-Corporation tax compliance &amp; K-1 distributions schedule</p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-variant text-primary font-label-sm text-label-sm font-semibold">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+                  In Partner Review
+                </span>
+</div>
+</div>
+<!-- Reviewer & Due Date Metadata Bar -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm py-space-xs px-space-sm bg-surface-container-low rounded-lg mb-space-md text-secondary font-body-sm text-body-sm">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[16px] text-outline">assignment_ind</span>
+<span>Reviewer: <strong class="text-on-surface font-medium">Elena Vance, CPA (Managing Partner)</strong></span>
+</div>
+<div class="flex items-center gap-space-sm text-error font-medium">
+<span class="material-symbols-outlined text-[16px]">alarm</span>
+<span>Statutory Deadline: April 15, 2024 (16 days remaining)</span>
+</div>
+</div>
+<!-- Linear Visual Progress Stepper -->
+<div class="pt-space-xs pb-space-xs">
+<div class="flex items-center justify-between mb-2">
+<span class="font-caption text-caption text-secondary font-semibold uppercase tracking-wider">Workflow Verification Stages</span>
+<span class="font-caption text-caption text-primary font-semibold">Step 3 of 5 (60% Execution)</span>
+</div>
+<div class="grid grid-cols-5 gap-1.5">
+<!-- Step 1: Done -->
+<div class="flex flex-col gap-1">
+<div class="h-2 rounded-full bg-primary-container"></div>
+<span class="font-caption text-[10px] text-on-surface font-medium flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px] text-primary">check_circle</span> Intake
+                  </span>
+</div>
+<!-- Step 2: Done -->
+<div class="flex flex-col gap-1">
+<div class="h-2 rounded-full bg-primary-container"></div>
+<span class="font-caption text-[10px] text-on-surface font-medium flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px] text-primary">check_circle</span> Workpapers
+                  </span>
+</div>
+<!-- Step 3: Active Partner Review -->
+<div class="flex flex-col gap-1">
+<div class="h-2 rounded-full bg-primary relative overflow-hidden">
+<div class="absolute inset-0 bg-surface-container-lowest/30 animate-[pulse_1.5s_infinite]"></div>
+</div>
+<span class="font-caption text-[10px] text-primary font-bold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]">rate_review</span> Partner Review
+                  </span>
+</div>
+<!-- Step 4: Pending -->
+<div class="flex flex-col gap-1">
+<div class="h-2 rounded-full bg-surface-container"></div>
+<span class="font-caption text-[10px] text-secondary">Client Auth (8879)</span>
+</div>
+<!-- Step 5: Pending -->
+<div class="flex flex-col gap-1">
+<div class="h-2 rounded-full bg-surface-container"></div>
+<span class="font-caption text-[10px] text-secondary">IRS e-Filed</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2: Q1 2024 Management Accounts -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm hover:shadow-md transition-shadow">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="w-9 h-9 rounded-lg bg-surface-container-high text-on-surface flex items-center justify-center font-bold text-label-md">
+                  Q1
+                </span>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">
+                    Q1 2024 Monthly Management Accounts &amp; Reconciliation
+                  </h3>
+<p class="font-body-sm text-body-sm text-secondary">Multi-entity cash flow reconciliation, fuel ledger auditing, and GAAP adjustments</p>
+</div>
+</div>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+                Completed &amp; Locked
+              </span>
+</div>
+<div class="mt-space-md flex flex-wrap items-center justify-between gap-space-sm p-space-sm rounded-lg bg-surface-container-low text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[18px] text-primary">sync_saved_locally</span>
+<span>Auto-Reconciled with <strong>QuickBooks Online Enterprise</strong> (5 Bank feeds verified)</span>
+</div>
+<div class="flex items-center gap-space-xs text-secondary font-caption text-caption">
+<span>Sign-off: Rachel Kim</span>
+<span>•</span>
+<span>March 28, 2024</span>
+</div>
+</div>
+</div>
+<!-- Card 3: R&D Tax Credit Study -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm hover:shadow-md transition-shadow">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="w-9 h-9 rounded-lg bg-surface-container-high text-secondary flex items-center justify-center font-bold text-label-md">
+                  R&amp;D
+                </span>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">
+                    Section 41 R&amp;D Tax Credit Study &amp; Substantiation
+                  </h3>
+<p class="font-body-sm text-body-sm text-secondary">Logistics route optimization software development qualified research expenses (QRE)</p>
+</div>
+</div>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-highest text-tertiary font-label-sm text-label-sm font-semibold">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                Awaiting Documentation
+              </span>
+</div>
+<!-- Action Request Alert Box -->
+<div class="mt-space-md p-space-sm rounded-lg bg-surface-container flex items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="material-symbols-outlined text-[20px] text-secondary flex-shrink-0">pending_actions</span>
+<span class="font-body-sm text-body-sm text-on-surface truncate">
+<strong class="font-semibold text-on-background">Action Required:</strong> Missing Q3 &amp; Q4 software engineer payroll breakdown (3 schedules).
+                </span>
+</div>
+<button class="px-space-sm py-1 bg-surface-container-lowest hover:bg-surface text-on-surface text-label-sm font-label-sm font-semibold rounded shadow-sm whitespace-nowrap transition-colors" type="button">
+                Resend Portal Request
+              </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Document Vault & Tax Organizers -->
+<section class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+<div class="px-space-lg py-space-md bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[20px] text-primary">folder_managed</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Secure Document Vault &amp; Organizers</h2>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="h-8 px-space-sm bg-surface-container-lowest hover:bg-surface text-secondary hover:text-on-surface rounded font-label-sm text-label-sm flex items-center gap-1 shadow-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">filter_list</span>
+<span>Filter by Tax Year</span>
+</button>
+<button class="h-8 px-space-sm bg-primary-container text-on-primary hover:bg-primary rounded font-label-sm text-label-sm font-semibold flex items-center gap-1 shadow-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">add_task</span>
+<span>Request PBC Items</span>
+</button>
+</div>
+</div>
+<!-- Tabular Ledger Grid -->
+<div class="divide-y divide-surface-container overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50 text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-space-sm px-space-lg font-semibold">Document Title / Artifact</th>
+<th class="py-space-sm px-space-md font-semibold">Category</th>
+<th class="py-space-sm px-space-md font-semibold">Uploaded By</th>
+<th class="py-space-sm px-space-md font-semibold">Verification</th>
+<th class="py-space-sm px-space-lg font-semibold text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container font-body-sm text-body-sm text-on-surface">
+<!-- Item 1 -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[22px] text-error flex-shrink-0">picture_as_pdf</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">2023_W2_Summary_Final.pdf</span>
+<span class="font-caption text-caption text-secondary">2.4 MB • PGP Encrypted • Uploaded Mar 24, 2024</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md text-secondary">Payroll &amp; Withholdings</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-1.5">
+<span class="w-5 h-5 rounded-full bg-surface-container text-[10px] font-bold text-on-surface flex items-center justify-center">CD</span>
+<span class="text-on-surface font-medium">Claire Dupont (CFO)</span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container text-on-surface font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px] text-primary">verified</span>
+                    Digitally Signed
+                  </span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="w-8 h-8 rounded hover:bg-surface-container text-secondary hover:text-primary flex items-center justify-center transition-colors" title="Download Document" type="button">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container text-secondary hover:text-on-surface flex items-center justify-center transition-colors" title="Audit Trail" type="button">
+<span class="material-symbols-outlined text-[18px]">history</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 2 -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[22px] text-primary flex-shrink-0">table_view</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">K1_Package_PartnerAllocations.xlsx</span>
+<span class="font-caption text-caption text-secondary">840 KB • Prepared by David Miller • Updated Mar 26, 2024</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md text-secondary">K-1 Schedules</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-1.5">
+<span class="w-5 h-5 rounded-full bg-surface-container text-[10px] font-bold text-primary flex items-center justify-center">DM</span>
+<span class="text-on-surface font-medium">David Miller (Firm)</span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-variant text-primary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">fact_check</span>
+                    Tied to General Ledger
+                  </span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="w-8 h-8 rounded hover:bg-surface-container text-secondary hover:text-primary flex items-center justify-center transition-colors" title="Download Document" type="button">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container text-secondary hover:text-on-surface flex items-center justify-center transition-colors" title="Audit Trail" type="button">
+<span class="material-symbols-outlined text-[18px]">history</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 3 -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[22px] text-error flex-shrink-0">picture_as_pdf</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">1099_Consolidated_Statements.pdf</span>
+<span class="font-caption text-caption text-secondary">5.1 MB • Brokerage &amp; Merchant Statements • Feb 12, 2024</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md text-secondary">Form 1099-NEC / MISC</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-1.5">
+<span class="w-5 h-5 rounded-full bg-surface-container text-[10px] font-bold text-on-surface flex items-center justify-center">AM</span>
+<span class="text-on-surface font-medium">Alan Morris (Controller)</span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container text-on-surface font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px] text-primary">done_all</span>
+                    Matched (12/12)
+                  </span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="w-8 h-8 rounded hover:bg-surface-container text-secondary hover:text-primary flex items-center justify-center transition-colors" title="Download Document" type="button">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container text-secondary hover:text-on-surface flex items-center justify-center transition-colors" title="Audit Trail" type="button">
+<span class="material-symbols-outlined text-[18px]">history</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<!-- Right Sidebar Panel: Intelligence & Engagement Oversight (Col span 4 -> approx 34%) -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Critical Internal Firm Pinned Alert -->
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-sm relative overflow-hidden">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-[22px] text-primary flex-shrink-0 mt-0.5">notification_important</span>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm uppercase font-bold text-primary tracking-wider">Pinned Advisory Note</span>
+<span class="font-caption text-caption text-secondary">Elena Vance</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface leading-snug">
+              Client acquiring 12 new fleet assets in Q2. Review Section 179 bonus depreciation strategy before signing off on 2023 return.
+            </p>
+</div>
+</div>
+</div>
+<!-- Financial Health & WIP Dashboard -->
+<section class="bg-surface-container-lowest rounded-xl shadow-sm p-space-lg">
+<div class="flex items-center justify-between mb-space-md pb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[20px] text-primary">account_balance_wallet</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Client Billing &amp; WIP</h2>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container text-primary font-caption text-caption font-semibold">Retainer Model</span>
+</div>
+<div class="grid grid-cols-2 gap-space-sm mb-space-md">
+<div class="p-space-sm rounded-lg bg-surface-container-low">
+<span class="font-caption text-caption uppercase text-secondary font-semibold">YTD Invoiced</span>
+<div class="font-metric-lg text-metric-lg text-on-surface font-bold mt-1">$31,500</div>
+<span class="font-caption text-caption text-primary flex items-center gap-0.5 mt-0.5">
+<span class="material-symbols-outlined text-[13px]">check_circle</span> 100% Collected
+            </span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low">
+<span class="font-caption text-caption uppercase text-secondary font-semibold">Current AR</span>
+<div class="font-metric-lg text-metric-lg text-on-surface font-bold mt-1">$0.00</div>
+<span class="font-caption text-caption text-secondary mt-0.5">Auto-pay Active (ACH)</span>
+</div>
+</div>
+<!-- WIP Ledger Insight Bar -->
+<div class="p-space-md rounded-lg bg-surface">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Unbilled WIP Accumulation</span>
+<span class="font-metric-md text-metric-md text-primary font-bold">$3,250.00</span>
+</div>
+<div class="flex items-center justify-between text-secondary font-body-sm text-body-sm mb-space-sm">
+<span>14.2 Billable Hours Logged</span>
+<span>Target: Advisory Surplus</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 65%"></div>
+</div>
+</div>
+</section>
+<!-- Primary Client Contacts -->
+<section class="bg-surface-container-lowest rounded-xl shadow-sm p-space-lg">
+<div class="flex items-center justify-between mb-space-md pb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[20px] text-primary">contacts</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Primary Client Contacts</h2>
+</div>
+<button class="w-7 h-7 rounded hover:bg-surface-container text-secondary hover:text-on-surface flex items-center justify-center transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+</button>
+</div>
+<div class="flex flex-col gap-space-md">
+<!-- Contact 1 -->
+<div class="flex items-start justify-between gap-space-sm pb-space-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-primary font-bold text-label-md flex-shrink-0">
+                RS
+              </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">Robert Sterling</span>
+<span class="px-1.5 py-0.2 bg-surface-variant text-primary rounded text-[9px] font-bold uppercase">Signer</span>
+</div>
+<span class="font-caption text-caption text-secondary truncate">Founder &amp; Chief Executive Officer</span>
+<span class="font-caption text-caption text-primary truncate">+1 (302) 555-0192 • ext. 101</span>
+</div>
+</div>
+<span class="w-2.5 h-2.5 rounded-full bg-primary mt-2 flex-shrink-0" title="Client Portal Active"></span>
+</div>
+<!-- Contact 2 -->
+<div class="flex items-start justify-between gap-space-sm pb-space-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-primary font-bold text-label-md flex-shrink-0">
+                CD
+              </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">Claire Dupont, CPA</span>
+</div>
+<span class="font-caption text-caption text-secondary truncate">Chief Financial Officer</span>
+<span class="font-caption text-caption text-primary truncate">+1 (302) 555-0192 • ext. 104</span>
+</div>
+</div>
+<span class="w-2.5 h-2.5 rounded-full bg-primary mt-2 flex-shrink-0" title="Client Portal Active"></span>
+</div>
+<!-- Contact 3 -->
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-secondary font-bold text-label-md flex-shrink-0">
+                AM
+              </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">Alan Morris</span>
+</div>
+<span class="font-caption text-caption text-secondary truncate">Corporate Controller</span>
+<span class="font-caption text-caption text-primary truncate">+1 (302) 555-0192 • ext. 118</span>
+</div>
+</div>
+<span class="w-2.5 h-2.5 rounded-full bg-primary mt-2 flex-shrink-0" title="Client Portal Active"></span>
+</div>
+</div>
+</section>
+<!-- Assigned Firm Engagement Team -->
+<section class="bg-surface-container-lowest rounded-xl shadow-sm p-space-lg">
+<div class="flex items-center justify-between mb-space-md pb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[20px] text-primary">groups</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Firm Engagement Team</h2>
+</div>
+<span class="font-caption text-caption uppercase text-secondary font-semibold">Pod Delta</span>
+</div>
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-label-sm">
+                EV
+              </div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Elena Vance, CPA</span>
+<span class="font-caption text-caption text-secondary">Lead Engagement Partner</span>
+</div>
+</div>
+<span class="font-caption text-caption text-primary font-medium">8.4 hrs YTD</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-primary flex items-center justify-center font-bold text-label-sm">
+                DM
+              </div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-semibold text-on-surface">David Miller</span>
+<span class="font-caption text-caption text-secondary">Senior Tax Associate</span>
+</div>
+</div>
+<span class="font-caption text-caption text-primary font-medium">32.0 hrs YTD</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container text-on-surface flex items-center justify-center font-bold text-label-sm">
+                RK
+              </div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Rachel Kim</span>
+<span class="font-caption text-caption text-secondary">Staff Accountant &amp; Bookkeeper</span>
+</div>
+</div>
+<span class="font-caption text-caption text-primary font-medium">41.6 hrs YTD</span>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div></main></div></body></html>
