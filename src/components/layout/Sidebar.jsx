@@ -1,25 +1,40 @@
-import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useApp } from '../../context/AppContext';
 
 export default function Sidebar({ mobileOpen, setMobileOpen }) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const {
+    currentUser,
+    switchRole,
+    setActiveModal,
+    flagCounts,
+    totalFlagCount,
+    services,
+    clients
+  } = useApp();
 
-  const navItems = [
-    { path: '/', label: 'Overview', icon: 'dashboard' },
-    { path: '/clients', label: 'Clients', icon: 'business_center' },
-    { path: '/client-360', label: 'Client 360', icon: 'domain_verification' },
-    { path: '/workflows', label: 'Workflows', icon: 'view_kanban' },
-    { path: '/billing-and-wip', label: 'Billing & WIP', icon: 'receipt_long' },
-  ];
-
-  const secondaryNav = [
-    { path: '#documents', label: 'Firm Documents', icon: 'folder_shared' },
-    { path: '#settings', label: 'Settings', icon: 'settings' },
-  ];
+  const [servicesExpanded, setServicesExpanded] = useState(true);
+  const [quickViewExpanded, setQuickViewExpanded] = useState(true);
 
   const isCurrent = (path) => {
-    if (path === '/') return location.pathname === '/' || location.pathname === '/overview';
-    return location.pathname.startsWith(path);
+    if (path === '/quick-view') {
+      return location.pathname === '/' || location.pathname === '/quick-view';
+    }
+    return location.pathname === path || location.pathname.startsWith(`${path}/`);
+  };
+
+  const isQuickViewTab = (tab) => {
+    return (
+      (location.pathname === '/' || location.pathname === '/quick-view') &&
+      location.search.includes(`tab=${tab}`)
+    );
+  };
+
+  const handleNavClick = (path) => {
+    navigate(path);
+    if (setMobileOpen) setMobileOpen(false);
   };
 
   return (
@@ -33,111 +48,411 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
       )}
 
       <aside
-        className={`fixed left-0 top-0 h-full w-64 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between transition-transform duration-300 ${
+        className={`fixed left-0 top-0 h-full w-64 bg-surface-container-lowest border-r border-outline-variant/30 shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between transition-transform duration-300 ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
-        <div className="flex flex-col flex-1 min-h-0">
+        {/* Scrollable Upper Area */}
+        <div className="flex flex-col flex-1 min-h-0 overflow-y-auto">
           {/* Logo Brand Header */}
-          <div className="h-16 px-space-lg flex items-center justify-between bg-surface-container-low border-b border-outline-variant/20">
-            <div className="flex items-center gap-space-sm">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary font-bold shadow-sm">
+          <div className="h-16 px-space-md flex items-center justify-between border-b border-outline-variant/20 bg-surface-container-low shrink-0">
+            <div
+              onClick={() => handleNavClick('/quick-view')}
+              className="flex items-center gap-space-sm cursor-pointer group"
+            >
+              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary font-bold shadow-sm group-hover:scale-105 transition-transform">
                 <span className="material-symbols-outlined text-[20px]">account_balance</span>
               </div>
               <div className="flex flex-col min-w-0 leading-tight">
-                <span className="font-headline-sm text-headline-sm text-on-surface tracking-tight truncate font-bold">
+                <span className="font-headline-sm text-[15px] text-on-surface tracking-tight truncate font-bold flex items-center gap-1">
                   LedgerPoint
+                  <span className="text-[10px] uppercase font-bold px-1 py-0.2 bg-primary/10 text-primary rounded">
+                    MIS
+                  </span>
                 </span>
-                <span className="font-caption text-caption text-secondary uppercase tracking-wider truncate">
-                  CPA &amp; Advisory
+                <span className="font-caption text-[11px] text-secondary tracking-wider truncate">
+                  Tax &amp; Practice Manager
                 </span>
               </div>
             </div>
             <button
-              className="lg:hidden p-1 text-secondary hover:text-on-surface"
+              className="lg:hidden p-1 text-secondary hover:text-on-surface rounded-md hover:bg-surface-container"
               onClick={() => setMobileOpen(false)}
+              aria-label="Close Sidebar"
             >
               <span className="material-symbols-outlined text-[20px]">close</span>
             </button>
           </div>
 
-          <div className="px-space-md py-space-sm">
-            <div className="h-[1px] w-full bg-outline-variant/30" />
-          </div>
-
-          {/* Primary Navigation */}
-          <nav className="flex flex-col gap-space-xs px-space-sm py-space-xs">
-            {navItems.map((item) => {
-              const active = isCurrent(item.path);
-              return (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  onClick={() => setMobileOpen(false)}
-                  className={`flex items-center gap-space-sm px-space-md py-space-sm rounded-lg transition-colors ${
-                    active
-                      ? 'bg-primary-container text-on-primary font-semibold shadow-[0_1px_2px_rgba(0,0,0,0.05)]'
-                      : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
-                  }`}
+          <div className="px-space-xs py-space-xs flex flex-col gap-space-xs">
+            {/* ============================================================ */}
+            {/* 1. QUICK VIEW (FLAG SIGNS) */}
+            {/* ============================================================ */}
+            <div className="pt-2">
+              <div className="flex items-center justify-between px-space-md py-1">
+                <button
+                  type="button"
+                  onClick={() => handleNavClick('/quick-view')}
+                  className="flex items-center gap-2 text-left group flex-1"
                 >
-                  <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
-                  <span className="font-label-md text-label-md">{item.label}</span>
-                </NavLink>
-              );
-            })}
-          </nav>
+                  <span
+                    className={`material-symbols-outlined text-[18px] transition-colors ${
+                      isCurrent('/quick-view') ? 'text-primary font-bold' : 'text-secondary group-hover:text-primary'
+                    }`}
+                  >
+                    speed
+                  </span>
+                  <span
+                    className={`text-xs font-bold uppercase tracking-wider transition-colors ${
+                      isCurrent('/quick-view') ? 'text-primary' : 'text-secondary group-hover:text-on-surface'
+                    }`}
+                  >
+                    Quick View
+                  </span>
+                </button>
 
-          <div className="px-space-md py-space-sm">
-            <div className="h-[1px] w-full bg-outline-variant/30" />
-          </div>
+                <div className="flex items-center gap-1">
+                  {totalFlagCount > 0 && (
+                    <span
+                      title={`${totalFlagCount} active flag signs require attention`}
+                      className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-error-container text-error leading-none"
+                    >
+                      {totalFlagCount} Flags
+                    </span>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setQuickViewExpanded(!quickViewExpanded)}
+                    className="p-1 text-outline hover:text-on-surface rounded"
+                    aria-label="Toggle Quick View sub-items"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">
+                      {quickViewExpanded ? 'expand_less' : 'expand_more'}
+                    </span>
+                  </button>
+                </div>
+              </div>
 
-          {/* Tax Season Progress Widget */}
-          <div className="px-space-md py-space-xs">
-            <div className="p-space-md bg-surface-container-lowest rounded-xl shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
-              <div className="flex items-center justify-between mb-space-xs">
-                <span className="font-label-sm text-label-sm font-semibold uppercase text-secondary tracking-wider">
-                  Tax Season 2024
+              {/* Flag Signs Sub-Items */}
+              {quickViewExpanded && (
+                <div className="flex flex-col gap-1 mt-1 pl-space-sm pr-space-xs">
+                  {/* Flag Sign 1: Not Processed */}
+                  <NavLink
+                    to="/quick-view?tab=not_processed"
+                    onClick={() => setMobileOpen && setMobileOpen(false)}
+                    className={({ isActive }) => {
+                      const active = isActive && isQuickViewTab('not_processed');
+                      return `flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                        active
+                          ? 'bg-amber-50 text-amber-900 font-semibold border border-amber-200 shadow-xs'
+                          : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                      }`;
+                    }}
+                  >
+                    <div className="flex items-center gap-2 truncate">
+                      <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse shrink-0" />
+                      <span className="truncate">Not Processed</span>
+                    </div>
+                    <span className="ml-1.5 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300">
+                      {flagCounts.notProcessed}
+                    </span>
+                  </NavLink>
+
+                  {/* Flag Sign 2: Deadline Approaching Tasks */}
+                  <NavLink
+                    to="/quick-view?tab=deadlines"
+                    onClick={() => setMobileOpen && setMobileOpen(false)}
+                    className={({ isActive }) => {
+                      const active = isActive && isQuickViewTab('deadlines');
+                      return `flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                        active
+                          ? 'bg-orange-50 text-orange-900 font-semibold border border-orange-200 shadow-xs'
+                          : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                      }`;
+                    }}
+                  >
+                    <div className="flex items-center gap-2 truncate">
+                      <span className="material-symbols-outlined text-[15px] text-orange-500 shrink-0">
+                        schedule
+                      </span>
+                      <span className="truncate">Deadline Approaching</span>
+                    </div>
+                    <span className="ml-1.5 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-orange-100 text-orange-800 border border-orange-300">
+                      {flagCounts.deadlineApproaching}
+                    </span>
+                  </NavLink>
+
+                  {/* Flag Sign 3: Issue Tokens Not Resolved */}
+                  <NavLink
+                    to="/quick-view?tab=tokens"
+                    onClick={() => setMobileOpen && setMobileOpen(false)}
+                    className={({ isActive }) => {
+                      const active = isActive && isQuickViewTab('tokens');
+                      return `flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                        active
+                          ? 'bg-red-50 text-red-900 font-semibold border border-red-200 shadow-xs'
+                          : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                      }`;
+                    }}
+                  >
+                    <div className="flex items-center gap-2 truncate">
+                      <span className="material-symbols-outlined text-[15px] text-error shrink-0">
+                        report_problem
+                      </span>
+                      <span className="truncate">Issue Tokens</span>
+                    </div>
+                    <span className="ml-1.5 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-error-container text-error border border-error/20">
+                      {flagCounts.unresolvedTokens} open
+                    </span>
+                  </NavLink>
+                </div>
+              )}
+            </div>
+
+            <div className="px-space-md py-1">
+              <div className="h-[1px] w-full bg-outline-variant/30" />
+            </div>
+
+            {/* ============================================================ */}
+            {/* 2. SERVICES SECTION */}
+            {/* ============================================================ */}
+            <div>
+              <div className="flex items-center justify-between px-space-md py-1">
+                <span className="text-xs font-bold uppercase tracking-wider text-secondary flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[16px] text-secondary">
+                    grid_view
+                  </span>
+                  Services
                 </span>
-                <span className="font-metric-md text-metric-md text-primary font-bold">84%</span>
+
+                {/* Add More services with plus icon */}
+                <button
+                  type="button"
+                  onClick={() => setActiveModal('addService')}
+                  title="Add More Services"
+                  className="w-6 h-6 flex items-center justify-center rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-on-primary transition-colors"
+                >
+                  <span className="material-symbols-outlined text-[16px]">add</span>
+                </button>
               </div>
-              <div className="w-full bg-surface-container h-1.5 rounded-full overflow-hidden mb-space-xs">
-                <div className="bg-primary h-full rounded-full transition-all duration-500" style={{ width: '84%' }} />
+
+              {/* Service Navigation Items */}
+              <nav className="flex flex-col gap-0.5 mt-1 px-space-xs">
+                {/* 1. Business Activity Statement (BAS) */}
+                <NavLink
+                  to="/services/bas"
+                  onClick={() => setMobileOpen && setMobileOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${
+                      isActive
+                        ? 'bg-primary text-on-primary font-semibold shadow-xs'
+                        : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                    }`
+                  }
+                >
+                  <div className="flex items-center gap-space-sm truncate">
+                    <span className="material-symbols-outlined text-[18px]">receipt_long</span>
+                    <span className="truncate">Business Activity Statement (BAS)</span>
+                  </div>
+                </NavLink>
+
+                {/* 2. Payslip / Wage Management */}
+                <NavLink
+                  to="/services/payslips"
+                  onClick={() => setMobileOpen && setMobileOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${
+                      isActive
+                        ? 'bg-primary text-on-primary font-semibold shadow-xs'
+                        : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                    }`
+                  }
+                >
+                  <div className="flex items-center gap-space-sm truncate">
+                    <span className="material-symbols-outlined text-[18px]">payments</span>
+                    <span className="truncate">Payslip / Wage Management</span>
+                  </div>
+                </NavLink>
+
+                {/* 3. Superannuation */}
+                <NavLink
+                  to="/services/superannuation"
+                  onClick={() => setMobileOpen && setMobileOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${
+                      isActive
+                        ? 'bg-primary text-on-primary font-semibold shadow-xs'
+                        : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                    }`
+                  }
+                >
+                  <div className="flex items-center gap-space-sm truncate">
+                    <span className="material-symbols-outlined text-[18px]">savings</span>
+                    <span className="truncate">Superannuation</span>
+                  </div>
+                </NavLink>
+
+                {/* Dynamic custom service types added with plus icon */}
+                {services
+                  .filter((s) => !s.isDefault)
+                  .map((service) => (
+                    <NavLink
+                      key={service.id}
+                      to={service.path}
+                      onClick={() => setMobileOpen && setMobileOpen(false)}
+                      className={({ isActive }) =>
+                        `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${
+                          isActive
+                            ? 'bg-primary text-on-primary font-semibold shadow-xs'
+                            : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                        }`
+                      }
+                    >
+                      <div className="flex items-center gap-space-sm truncate">
+                        <span className="material-symbols-outlined text-[18px]">{service.icon}</span>
+                        <span className="truncate">{service.name}</span>
+                      </div>
+                      <span className="text-[10px] px-1 py-0.2 rounded bg-surface-container text-secondary">
+                        Custom
+                      </span>
+                    </NavLink>
+                  ))}
+
+                {/* Quick Add More Services Link */}
+                <button
+                  type="button"
+                  onClick={() => setActiveModal('addService')}
+                  className="flex items-center gap-2 px-space-md py-1.5 mt-1 rounded-lg text-xs text-primary hover:bg-primary-fixed/20 transition-colors font-medium border border-dashed border-primary/30"
+                >
+                  <span className="material-symbols-outlined text-[16px]">add_circle</span>
+                  <span>Add More Services</span>
+                </button>
+              </nav>
+            </div>
+
+            <div className="px-space-md py-1">
+              <div className="h-[1px] w-full bg-outline-variant/30" />
+            </div>
+
+            {/* ============================================================ */}
+            {/* 3. CLIENTS SECTION */}
+            {/* ============================================================ */}
+            <div className="px-space-xs">
+              <div className="px-space-md py-1 flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-secondary flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[16px] text-secondary">
+                    business_center
+                  </span>
+                  Clients Directory
+                </span>
+                <span className="text-[10px] font-semibold px-1.5 py-0.2 bg-surface-container rounded-full text-secondary">
+                  {clients.length}
+                </span>
               </div>
-              <div className="flex items-center justify-between text-secondary">
-                <span className="font-caption text-caption">Filed &amp; Accepted</span>
-                <span className="font-caption text-caption font-semibold text-on-surface">16d to Deadline</span>
-              </div>
+
+              <NavLink
+                to="/clients"
+                onClick={() => setMobileOpen && setMobileOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${
+                    isActive
+                      ? 'bg-primary text-on-primary font-semibold shadow-xs'
+                      : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                  }`
+                }
+              >
+                <div className="flex items-center gap-space-sm">
+                  <span className="material-symbols-outlined text-[18px]">domain</span>
+                  <span className="font-medium">All Clients</span>
+                </div>
+                <span className="text-[11px] opacity-80">View List &rarr;</span>
+              </NavLink>
             </div>
           </div>
-
-          {/* Secondary Navigation */}
-          <nav className="flex flex-col gap-space-xs px-space-sm py-space-xs">
-            {secondaryNav.map((item) => (
-              <a
-                key={item.label}
-                href={item.path}
-                className="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"
-              >
-                <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
-                <span className="font-label-md text-label-md">{item.label}</span>
-              </a>
-            ))}
-          </nav>
         </div>
 
-        {/* Bottom IRS Live Status Card */}
-        <div className="p-space-md bg-surface-container-low border-t border-outline-variant/20">
-          <div className="p-space-sm rounded-lg bg-surface-container flex items-center justify-between">
-            <div className="flex items-center gap-space-xs min-w-0">
-              <span className="material-symbols-outlined text-[18px] text-primary">verified_user</span>
-              <div className="flex flex-col min-w-0">
-                <span className="font-caption text-caption text-on-surface font-semibold truncate">
-                  IRS e-File Status
-                </span>
-                <span className="font-caption text-caption text-secondary">Connected &amp; Active</span>
+        {/* ============================================================ */}
+        {/* 4. LOGIN / SIGNUP (ADMIN / USER) AT THE BOTTOM */}
+        {/* ============================================================ */}
+        <div className="p-space-sm border-t border-outline-variant/20 bg-surface-container-low shrink-0 flex flex-col gap-2">
+          {/* Active Account Identity Card */}
+          <div className="p-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/30 shadow-xs flex flex-col gap-2">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2 min-w-0">
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs shrink-0 shadow-xs ${
+                    currentUser.role === 'Admin'
+                      ? 'bg-primary text-on-primary'
+                      : 'bg-secondary text-on-secondary'
+                  }`}
+                >
+                  {currentUser.avatar || 'US'}
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-xs font-bold text-on-surface truncate leading-tight">
+                    {currentUser.name}
+                  </span>
+                  <span className="text-[11px] text-secondary truncate leading-tight">
+                    {currentUser.email}
+                  </span>
+                </div>
+              </div>
+
+              {/* Role Badge: Admin vs User */}
+              <span
+                className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider shrink-0 ${
+                  currentUser.role === 'Admin'
+                    ? 'bg-primary/10 text-primary border border-primary/30'
+                    : 'bg-surface-container text-secondary border border-outline-variant/30'
+                }`}
+              >
+                {currentUser.role}
+              </span>
+            </div>
+
+            {/* Quick Role Switcher Button */}
+            <div className="flex items-center justify-between pt-1 border-t border-outline-variant/20 text-[11px]">
+              <span className="text-secondary font-medium">Active Mode:</span>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => switchRole('Admin')}
+                  className={`px-2 py-0.5 rounded text-[10px] font-bold transition ${
+                    currentUser.role === 'Admin'
+                      ? 'bg-primary text-on-primary shadow-2xs'
+                      : 'text-secondary hover:text-on-surface'
+                  }`}
+                >
+                  Admin
+                </button>
+                <span className="text-outline-variant">|</span>
+                <button
+                  type="button"
+                  onClick={() => switchRole('User')}
+                  className={`px-2 py-0.5 rounded text-[10px] font-bold transition ${
+                    currentUser.role === 'User'
+                      ? 'bg-secondary text-on-secondary shadow-2xs'
+                      : 'text-secondary hover:text-on-surface'
+                  }`}
+                >
+                  User
+                </button>
               </div>
             </div>
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          </div>
+
+          {/* Login / Signup Modal Trigger Button */}
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => setActiveModal('auth')}
+              className="flex-1 h-8 px-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors border border-outline-variant/30"
+            >
+              <span className="material-symbols-outlined text-[16px] text-primary">
+                lock_person
+              </span>
+              <span>Login / Signup</span>
+            </button>
           </div>
         </div>
       </aside>

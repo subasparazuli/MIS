@@ -3,25 +3,36 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
 
 export default function GlobalSearchModal() {
-  const { activeModal, setActiveModal, clients, setSelectedClientId } = useApp();
+  const { activeModal, setActiveModal, clients, setSelectedClientId, services } = useApp();
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
 
   if (activeModal !== 'globalSearch') return null;
 
-  const filtered = query.trim() === ''
+  const q = query.toLowerCase().trim();
+  const filteredClients = q === ''
     ? clients.slice(0, 5)
-    : clients.filter(c =>
-        c.name.toLowerCase().includes(query.toLowerCase()) ||
-        c.ein.includes(query) ||
-        c.id.toLowerCase().includes(query.toLowerCase()) ||
-        c.industry.toLowerCase().includes(query.toLowerCase())
+    : clients.filter((c) =>
+        c.name.toLowerCase().includes(q) ||
+        (c.abn && c.abn.replace(/\s/g, '').includes(q.replace(/\s/g, ''))) ||
+        c.id.toLowerCase().includes(q) ||
+        (c.director && c.director.toLowerCase().includes(q)) ||
+        (c.industry && c.industry.toLowerCase().includes(q))
       );
+
+  const filteredServices = q === ''
+    ? []
+    : services.filter((s) => s.name.toLowerCase().includes(q) || s.description.toLowerCase().includes(q));
 
   const handleSelectClient = (c) => {
     setSelectedClientId(c.id);
     setActiveModal(null);
-    navigate('/client-360');
+    navigate(`/clients/${c.id}`);
+  };
+
+  const handleSelectService = (s) => {
+    setActiveModal(null);
+    navigate(s.path);
   };
 
   return (
@@ -32,15 +43,16 @@ export default function GlobalSearchModal() {
           <input
             autoFocus
             type="text"
-            placeholder="Type a client name, EIN, return, or partner..."
+            placeholder="Type client name, ABN, director, or service..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="flex-1 bg-transparent font-body-lg text-body-lg text-on-surface placeholder:text-outline focus:outline-none"
+            className="flex-1 bg-transparent text-xs text-on-surface placeholder:text-outline focus:outline-none"
           />
-          <kbd className="px-2 py-0.5 text-[11px] font-mono bg-surface-container text-secondary rounded">
+          <kbd className="px-2 py-0.5 text-[10px] font-mono bg-surface-container text-secondary rounded">
             ESC
           </kbd>
           <button
+            type="button"
             onClick={() => setActiveModal(null)}
             className="text-secondary hover:text-on-surface"
           >
@@ -49,37 +61,57 @@ export default function GlobalSearchModal() {
         </div>
 
         <div className="p-2 max-h-96 overflow-y-auto">
-          <div className="px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-secondary">
-            Clients &amp; Corporate Entities
+          {filteredServices.length > 0 && (
+            <div className="mb-2">
+              <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-secondary">
+                Services
+              </div>
+              {filteredServices.map((s) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => handleSelectService(s)}
+                  className="w-full text-left px-3 py-2 rounded-lg hover:bg-surface-container flex items-center justify-between transition text-xs"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-[18px] text-primary">{s.icon}</span>
+                    <span className="font-semibold text-on-surface">{s.name}</span>
+                  </div>
+                  <span className="text-[10px] text-secondary">Open Service &rarr;</span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-secondary">
+            Clients &amp; Business Entities
           </div>
-          {filtered.length === 0 ? (
-            <div className="p-6 text-center text-secondary font-body-sm">
+          {filteredClients.length === 0 ? (
+            <div className="p-6 text-center text-secondary text-xs">
               No matching clients found for "{query}".
             </div>
           ) : (
-            filtered.map(c => (
+            filteredClients.map((c) => (
               <button
                 key={c.id}
+                type="button"
                 onClick={() => handleSelectClient(c)}
-                className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface-container flex items-center justify-between transition group"
+                className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface-container flex items-center justify-between transition group text-xs"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-surface-container-low group-hover:bg-primary-container group-hover:text-on-primary flex items-center justify-center text-primary font-bold text-label-sm transition">
-                    {c.id.split('-')[0]}
+                  <div className="w-8 h-8 rounded-lg bg-surface-container-low group-hover:bg-primary group-hover:text-on-primary flex items-center justify-center text-primary font-bold text-xs transition">
+                    <span className="material-symbols-outlined text-[16px]">corporate_fare</span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="font-label-md text-label-md font-semibold text-on-surface group-hover:text-primary transition">
+                    <span className="font-bold text-on-surface group-hover:text-primary transition">
                       {c.name}
                     </span>
-                    <span className="font-caption text-caption text-secondary">
-                      {c.entityType} • EIN: {c.ein} • {c.leadPartner}
+                    <span className="text-[11px] text-secondary">
+                      {c.entityType} • ABN: {c.abn} • Director: {c.director}
                     </span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="font-caption text-caption px-2 py-0.5 rounded bg-surface-container text-secondary">
-                    {c.id}
-                  </span>
                   <span className="material-symbols-outlined text-[16px] text-outline group-hover:text-primary">
                     arrow_forward
                   </span>
@@ -89,9 +121,9 @@ export default function GlobalSearchModal() {
           )}
         </div>
 
-        <div className="px-4 py-2 bg-surface-container-low/60 border-t border-outline-variant/20 flex items-center justify-between text-caption text-secondary">
-          <span>Quick actions: <strong>Click</strong> to open 360 Hub</span>
-          <span>Press <strong>ESC</strong> to dismiss</span>
+        <div className="px-4 py-2 bg-surface-container-low/60 border-t border-outline-variant/20 flex items-center justify-between text-[11px] text-secondary">
+          <span>Click to open Client Profile</span>
+          <span>Press ESC to dismiss</span>
         </div>
       </div>
     </div>

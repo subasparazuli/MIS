@@ -2,185 +2,247 @@ import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 
 export default function AddClientModal() {
-  const { activeModal, setActiveModal, addClient } = useApp();
+  const { activeModal, setActiveModal, addClient, currentUser } = useApp();
 
-  const [formData, setFormData] = useState({
-    name: '',
-    ein: '',
-    entityType: 'S-Corp',
-    state: 'DE',
-    city: '',
-    industry: '',
-    leadPartner: 'Elena Vance, CPA',
-    retainerTier: 'Tier 2 ($36k/yr)',
-    annualRetainer: 36000,
-  });
+  const [name, setName] = useState('');
+  const [abn, setAbn] = useState('');
+  const [acn, setAcn] = useState('');
+  const [entityType, setEntityType] = useState('Proprietary Limited Company');
+  const [director, setDirector] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactPhone, setContactPhone] = useState('');
+  const [city, setCity] = useState('Sydney');
+  const [state, setState] = useState('NSW');
+  const [postcode, setPostcode] = useState('2000');
+  const [industry, setIndustry] = useState('Professional Services & Tech');
+  const [gstBasis, setGstBasis] = useState('Accruals');
+  const [lodgementCycle, setLodgementCycle] = useState('Quarterly');
+  const [payrollFrequency, setPayrollFrequency] = useState('Fortnightly');
+  const [employeeCount, setEmployeeCount] = useState(5);
+  const [activeServices, setActiveServices] = useState(['bas', 'payslip', 'superannuation']);
 
   if (activeModal !== 'addClient') return null;
 
+  const handleToggleService = (svc) => {
+    setActiveServices((prev) =>
+      prev.includes(svc) ? prev.filter((s) => s !== svc) : [...prev, svc]
+    );
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.name) return;
-    addClient(formData);
-    setActiveModal(null);
-    setFormData({
-      name: '',
-      ein: '',
-      entityType: 'S-Corp',
-      state: 'DE',
-      city: '',
-      industry: '',
-      leadPartner: 'Elena Vance, CPA',
-      retainerTier: 'Tier 2 ($36k/yr)',
-      annualRetainer: 36000,
+    if (!name.trim() || !abn.trim()) return;
+
+    addClient({
+      name: name.trim(),
+      abn: abn.trim(),
+      acn: acn.trim() || '-',
+      entityType,
+      director: director.trim() || 'Principal Officer',
+      primaryContact: `${director.trim()} (Director)`,
+      contactEmail: contactEmail.trim(),
+      contactPhone: contactPhone.trim(),
+      city: city.trim(),
+      state,
+      postcode: postcode.trim(),
+      industry,
+      gstBasis,
+      lodgementCycle,
+      payrollFrequency,
+      employeeCount: parseInt(employeeCount, 10) || 1,
+      activeServices,
+      leadPartner: currentUser.name || "Elena Vance, CA"
     });
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
-      <div className="bg-surface-container-lowest rounded-xl shadow-2xl max-w-lg w-full p-space-lg flex flex-col gap-space-md border border-outline-variant/30">
-        <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-sm">
-          <div className="flex items-center gap-space-xs">
-            <span className="material-symbols-outlined text-primary text-[24px]">business_center</span>
-            <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-              Add New Client Entity
-            </h3>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-surface/50 backdrop-blur-xs">
+      <div className="w-full max-w-xl bg-surface-container-lowest rounded-2xl shadow-2xl border border-outline-variant/30 overflow-hidden flex flex-col max-h-[92vh]">
+        {/* Header */}
+        <div className="px-space-lg py-space-md border-b border-outline-variant/20 flex items-center justify-between bg-surface-container-low shrink-0">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-primary text-on-primary flex items-center justify-center">
+              <span className="material-symbols-outlined text-[18px]">domain_add</span>
+            </div>
+            <div>
+              <h2 className="font-bold text-sm text-on-surface">Add New Australian Client Entity</h2>
+              <span className="text-[11px] text-secondary">Onboard entity into practice MIS registry</span>
+            </div>
           </div>
           <button
-            onClick={() => setActiveModal(null)}
-            className="w-8 h-8 rounded-lg hover:bg-surface-container flex items-center justify-center text-secondary"
             type="button"
+            onClick={() => setActiveModal(null)}
+            className="p-1 rounded-md text-secondary hover:text-on-surface hover:bg-surface-container"
           >
             <span className="material-symbols-outlined text-[20px]">close</span>
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-space-sm">
+        {/* Form Body */}
+        <form onSubmit={handleSubmit} className="p-space-lg flex flex-col gap-3 overflow-y-auto text-xs">
           <div>
-            <label className="block font-caption text-caption uppercase text-secondary font-bold mb-1">
-              Legal Business Name *
-            </label>
+            <label className="font-bold text-on-surface block mb-1">Company / Entity Legal Name *</label>
             <input
               type="text"
               required
-              placeholder="e.g. Acme Logistics Group, Inc."
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full h-9 bg-surface-container-low rounded-lg px-3 font-body-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-1 focus:ring-primary"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="e.g. Apex Pacific Logistics Pty Ltd"
+              className="w-full h-8 px-2.5 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-space-sm">
+          <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block font-caption text-caption uppercase text-secondary font-bold mb-1">
-                Employer ID Number (EIN)
-              </label>
+              <label className="font-bold text-on-surface block mb-1">Australian Business Number (ABN) *</label>
               <input
                 type="text"
-                placeholder="XX-XXXXXXX"
-                value={formData.ein}
-                onChange={(e) => setFormData({ ...formData, ein: e.target.value })}
-                className="w-full h-9 bg-surface-container-low rounded-lg px-3 font-body-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-1 focus:ring-primary"
+                required
+                value={abn}
+                onChange={(e) => setAbn(e.target.value)}
+                placeholder="XX XXX XXX XXX"
+                className="w-full h-8 px-2.5 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs font-mono text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
 
             <div>
-              <label className="block font-caption text-caption uppercase text-secondary font-bold mb-1">
-                Entity Structure
-              </label>
+              <label className="font-bold text-on-surface block mb-1">Entity Type</label>
               <select
-                value={formData.entityType}
-                onChange={(e) => setFormData({ ...formData, entityType: e.target.value })}
-                className="w-full h-9 bg-surface-container-low rounded-lg px-2 font-body-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-1 focus:ring-primary"
+                value={entityType}
+                onChange={(e) => setEntityType(e.target.value)}
+                className="w-full h-8 px-2.5 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs font-semibold focus:outline-none"
               >
-                <option value="S-Corp">S-Corporation (1120-S)</option>
-                <option value="Partnership">Partnership / LP (1065)</option>
-                <option value="C-Corp">C-Corporation (1120)</option>
-                <option value="LLC">Single-Member LLC</option>
-                <option value="Individual">Individual High-Net-Worth (1040)</option>
+                <option value="Proprietary Limited Company">Proprietary Limited Company (Pty Ltd)</option>
+                <option value="Discretionary Investment Trust">Discretionary Trust</option>
+                <option value="Partnership">Partnership</option>
+                <option value="Sole Trader">Sole Trader</option>
               </select>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-space-sm">
+          <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="block font-caption text-caption uppercase text-secondary font-bold mb-1">
-                Domicile State / HQ City
-              </label>
+              <label className="font-bold text-on-surface block mb-1">Director / Officer</label>
               <input
                 type="text"
-                placeholder="Wilmington, DE"
-                value={formData.city}
-                onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                className="w-full h-9 bg-surface-container-low rounded-lg px-3 font-body-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-1 focus:ring-primary"
+                required
+                value={director}
+                onChange={(e) => setDirector(e.target.value)}
+                placeholder="Full Name"
+                className="w-full h-8 px-2.5 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs text-on-surface focus:outline-none"
               />
             </div>
-
             <div>
-              <label className="block font-caption text-caption uppercase text-secondary font-bold mb-1">
-                Industry Sector
-              </label>
+              <label className="font-bold text-on-surface block mb-1">Email</label>
+              <input
+                type="email"
+                required
+                value={contactEmail}
+                onChange={(e) => setContactEmail(e.target.value)}
+                placeholder="contact@entity.com.au"
+                className="w-full h-8 px-2.5 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs text-on-surface focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="font-bold text-on-surface block mb-1">Phone</label>
               <input
                 type="text"
-                placeholder="Logistics, Tech, Healthcare..."
-                value={formData.industry}
-                onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
-                className="w-full h-9 bg-surface-container-low rounded-lg px-3 font-body-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-1 focus:ring-primary"
+                value={contactPhone}
+                onChange={(e) => setContactPhone(e.target.value)}
+                placeholder="+61 2 9..."
+                className="w-full h-8 px-2.5 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs text-on-surface focus:outline-none"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-space-sm">
+          <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="block font-caption text-caption uppercase text-secondary font-bold mb-1">
-                Assigned Lead Partner
-              </label>
+              <label className="font-bold text-on-surface block mb-1">City</label>
+              <input
+                type="text"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                className="w-full h-8 px-2 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs text-on-surface focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="font-bold text-on-surface block mb-1">State</label>
               <select
-                value={formData.leadPartner}
-                onChange={(e) => setFormData({ ...formData, leadPartner: e.target.value })}
-                className="w-full h-9 bg-surface-container-low rounded-lg px-2 font-body-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-1 focus:ring-primary"
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+                className="w-full h-8 px-2 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs font-semibold focus:outline-none"
               >
-                <option value="Elena Vance, CPA">Elena Vance, CPA (Managing)</option>
-                <option value="Marcus Reed">Marcus Reed (Tax Partner)</option>
-                <option value="Sarah Jenkins">Sarah Jenkins (Audit Lead)</option>
-                <option value="David Miller">David Miller (Senior Associate)</option>
+                <option value="NSW">NSW</option>
+                <option value="VIC">VIC</option>
+                <option value="QLD">QLD</option>
+                <option value="WA">WA</option>
+                <option value="SA">SA</option>
+                <option value="TAS">TAS</option>
+                <option value="ACT">ACT</option>
+                <option value="NT">NT</option>
               </select>
             </div>
-
             <div>
-              <label className="block font-caption text-caption uppercase text-secondary font-bold mb-1">
-                Retainer Tier / Annual Value
-              </label>
-              <select
-                value={formData.retainerTier}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  const amt = val.includes('65k') ? 65000 : val.includes('48k') ? 48000 : val.includes('36k') ? 36000 : 18000;
-                  setFormData({ ...formData, retainerTier: val, annualRetainer: amt });
-                }}
-                className="w-full h-9 bg-surface-container-low rounded-lg px-2 font-body-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-1 focus:ring-primary"
-              >
-                <option value="Tier 1 ($65k/yr)">Tier 1 — Enterprise ($65,000/yr)</option>
-                <option value="Tier 1 ($48k/yr)">Tier 1 — Corporate ($48,000/yr)</option>
-                <option value="Tier 2 ($36k/yr)">Tier 2 — Standard ($36,000/yr)</option>
-                <option value="Tier 3 ($18k/yr)">Tier 3 — Emerging ($18,000/yr)</option>
-              </select>
+              <label className="font-bold text-on-surface block mb-1">Postcode</label>
+              <input
+                type="text"
+                value={postcode}
+                onChange={(e) => setPostcode(e.target.value)}
+                className="w-full h-8 px-2 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs text-on-surface focus:outline-none"
+              />
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-space-sm mt-space-md pt-space-xs border-t border-outline-variant/20">
+          {/* Active Services Enrolled */}
+          <div className="p-3 rounded-xl bg-surface-container-low border border-outline-variant/20 flex flex-col gap-2">
+            <span className="font-bold text-on-surface block">Subscribed Practice Services:</span>
+            <div className="flex flex-wrap gap-3">
+              <label className="flex items-center gap-1.5 cursor-pointer font-medium">
+                <input
+                  type="checkbox"
+                  checked={activeServices.includes('bas')}
+                  onChange={() => handleToggleService('bas')}
+                  className="rounded text-primary focus:ring-0"
+                />
+                <span>Business Activity Statement (BAS)</span>
+              </label>
+
+              <label className="flex items-center gap-1.5 cursor-pointer font-medium">
+                <input
+                  type="checkbox"
+                  checked={activeServices.includes('payslip')}
+                  onChange={() => handleToggleService('payslip')}
+                  className="rounded text-primary focus:ring-0"
+                />
+                <span>Payslip &amp; Wage Management</span>
+              </label>
+
+              <label className="flex items-center gap-1.5 cursor-pointer font-medium">
+                <input
+                  type="checkbox"
+                  checked={activeServices.includes('superannuation')}
+                  onChange={() => handleToggleService('superannuation')}
+                  className="rounded text-primary focus:ring-0"
+                />
+                <span>Superannuation Guarantee (SG)</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="pt-2 border-t border-outline-variant/20 flex items-center justify-end gap-2">
             <button
               type="button"
               onClick={() => setActiveModal(null)}
-              className="h-9 px-space-md rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition"
+              className="h-8 px-3 rounded-lg text-xs font-semibold text-secondary hover:text-on-surface"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="h-9 px-space-md rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md uppercase tracking-wider transition shadow-sm"
+              className="h-9 px-4 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-xs font-bold shadow-2xs transition"
             >
-              Save &amp; Ingest Entity
+              Add Client Entity
             </button>
           </div>
         </form>
