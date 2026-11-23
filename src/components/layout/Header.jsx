@@ -15,7 +15,9 @@ export default function Header({ setMobileOpen }) {
     globalSearch,
     setGlobalSearch,
     period,
-    setPeriod
+    setPeriod,
+    sidebarVisible,
+    toggleSidebar
   } = useApp();
 
   const [showNotifications, setShowNotifications] = useState(false);
@@ -30,15 +32,25 @@ export default function Header({ setMobileOpen }) {
   ];
 
   return (
-    <header className="fixed top-0 left-0 lg:left-64 right-0 h-16 bg-surface/90 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-gutter-desktop transition-all">
-      {/* Left Search and Mobile Toggle */}
-      <div className="flex items-center gap-space-md flex-1 max-w-xl">
+    <header className={`fixed top-0 ${sidebarVisible ? 'lg:left-64' : 'lg:left-0'} left-0 right-0 h-16 bg-surface/90 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-gutter-desktop transition-all duration-300`}>
+      {/* Left Search and Sidebar Toggle */}
+      <div className="flex items-center gap-space-sm sm:gap-space-md flex-1 max-w-xl">
         <button
-          className="lg:hidden p-1.5 text-secondary hover:text-on-surface rounded-lg hover:bg-surface-container"
-          onClick={() => setMobileOpen(true)}
-          aria-label="Toggle Navigation"
+          type="button"
+          onClick={() => {
+            if (window.innerWidth < 1024) {
+              setMobileOpen(true);
+            } else {
+              toggleSidebar();
+            }
+          }}
+          className="p-1.5 text-secondary hover:text-on-surface rounded-lg hover:bg-surface-container transition flex items-center justify-center shrink-0"
+          aria-label="Toggle Sidebar"
+          title={sidebarVisible ? "Hide Sidebar" : "Show Sidebar"}
         >
-          <span className="material-symbols-outlined text-[24px]">menu</span>
+          <span className="material-symbols-outlined text-[22px]">
+            {sidebarVisible ? 'menu_open' : 'menu'}
+          </span>
         </button>
 
         <div className="relative w-full">

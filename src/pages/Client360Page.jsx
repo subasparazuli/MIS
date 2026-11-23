@@ -224,7 +224,7 @@ export default function Client360Page() {
                           FY23 Form 1120-S &amp; Multi-State Apportionment
                         </span>
                         <span className="font-caption text-caption text-secondary">
-                          State returns: DE-1100S, PA-20S, NJ-CBT • Lead: David Miller
+                          State returns: DE-1100S, PA-20S, NJ-CBT • Lead: Manoj Khanal
                         </span>
                         <div className="w-48 bg-surface-container h-1.5 rounded-full overflow-hidden mt-2">
                           <div className="bg-primary h-full rounded-full" style={{ width: '75%' }} />
@@ -362,18 +362,18 @@ export default function Client360Page() {
 
                   <div className="p-space-sm rounded-lg bg-surface-container-low flex items-start gap-space-sm border border-outline-variant/20">
                     <div className="w-9 h-9 rounded-full bg-surface-container text-primary font-bold flex items-center justify-center text-xs shrink-0">
-                      MR
+                      AS
                     </div>
                     <div className="flex flex-col min-w-0">
                       <span className="font-label-md text-label-md font-semibold text-on-surface">
-                        Marcus Reed
+                        Ashmita
                       </span>
                       <span className="font-caption text-caption text-secondary">VP of Finance / CFO</span>
                       <span className="font-caption text-caption text-primary mt-1">
                         +1 (302) 555-0190
                       </span>
                       <span className="font-caption text-caption text-secondary">
-                        mreed@vanguardlogistics.com
+                        ashmita@vanguardlogistics.com
                       </span>
                     </div>
                   </div>

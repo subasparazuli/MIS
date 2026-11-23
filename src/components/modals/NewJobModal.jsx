@@ -6,7 +6,7 @@ export default function NewJobModal() {
 
   const [clientName, setClientName] = useState(clients[0]?.name || "Vanguard Logistics Group, Inc.");
   const [formType, setFormType] = useState("Form 1120-S");
-  const [leadPartner, setLeadPartner] = useState("Elena Vance, CPA");
+  const [leadPartner, setLeadPartner] = useState("Manoj Khanal, CA");
   const [dueDate, setDueDate] = useState("Apr 15, 2024");
   const [notes, setNotes] = useState("");
 
@@ -14,7 +14,7 @@ export default function NewJobModal() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const initials = leadPartner.includes("Elena") ? "EV" : leadPartner.includes("Marcus") ? "MR" : leadPartner.includes("Sarah") ? "SJ" : "DM";
+    const initials = leadPartner.includes("Manoj") ? "MK" : leadPartner.includes("Ashmita") ? "AS" : leadPartner.includes("Sobina") ? "SO" : "DP";
     addWorkflowJob({
       clientName,
       formType,
@@ -99,10 +99,10 @@ export default function NewJobModal() {
               onChange={(e) => setLeadPartner(e.target.value)}
               className="w-full h-9 bg-surface-container-low rounded-lg px-2 font-body-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-1 focus:ring-primary"
             >
-              <option value="Elena Vance, CPA">Elena Vance, CPA</option>
-              <option value="Marcus Reed">Marcus Reed</option>
-              <option value="Sarah Jenkins">Sarah Jenkins</option>
-              <option value="David Miller">David Miller</option>
+              <option value="Manoj Khanal, CA">Manoj Khanal, CA</option>
+              <option value="Ashmita">Ashmita</option>
+              <option value="Sobina">Sobina</option>
+              <option value="Deepika">Deepika</option>
             </select>
           </div>
 

@@ -10,15 +10,14 @@ export default function ClientProfilePage() {
     selectedClientId,
     setSelectedClientId,
     basRecords,
-    payslips,
-    payRuns,
+    payslipTracking,
+    updatePayslipTrackingField,
     superAllocations,
     notProcessedItems,
     deadlineApproachingTasks,
     issueTokens,
     resolveIssueToken,
     setActiveModal,
-    setSelectedPayslip,
     setSelectedBas,
     showToast
   } = useApp();
@@ -31,19 +30,15 @@ export default function ClientProfilePage() {
 
   // Specific data slices for this client
   const clientBas = basRecords.filter((b) => b.clientId === client.id);
-  const clientPayslips = payslips.filter((ps) => ps.clientId === client.id);
-  const clientPayRuns = payRuns.filter((pr) => pr.clientId === client.id);
+  const clientTrackingRows = payslipTracking.filter(
+    (pt) => pt.clientId === client.id || (pt.company && client.name && pt.company.toLowerCase() === client.name.toLowerCase())
+  );
   const clientSuper = superAllocations.filter((sa) => sa.clientId === client.id);
   const clientNotProcessed = notProcessedItems.filter((np) => np.clientId === client.id && np.status !== 'Processed');
   const clientDeadlines = deadlineApproachingTasks.filter((dl) => dl.clientId === client.id && !dl.completed);
   const clientTokens = issueTokens.filter((tk) => tk.clientId === client.id);
 
   const clientTotalFlags = clientNotProcessed.length + clientDeadlines.length + clientTokens.filter(t => t.status !== 'Resolved').length;
-
-  const handleOpenPayslip = (ps) => {
-    setSelectedPayslip(ps);
-    setActiveModal('viewPayslip');
-  };
 
   const handleOpenBas = (bas) => {
     setSelectedBas(bas);
@@ -79,7 +74,7 @@ export default function ClientProfilePage() {
           >
             {clients.map((c) => (
               <option key={c.id} value={c.id}>
-                {c.name} ({c.id})
+                {c.name} ({c.software || 'Quickbook'})
               </option>
             ))}
           </select>
@@ -99,6 +94,15 @@ export default function ClientProfilePage() {
                 <h1 className="font-headline-lg text-xl sm:text-2xl font-bold text-on-surface tracking-tight">
                   {client.name}
                 </h1>
+                <span
+                  className={`px-2 py-0.5 rounded text-[11px] font-bold border ${
+                    client.software === 'Xero'
+                      ? 'bg-sky-50 text-sky-800 border-sky-300'
+                      : 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                  }`}
+                >
+                  {client.software || 'Quickbook'}
+                </span>
                 <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-surface-container text-secondary">
                   {client.entityType}
                 </span>
@@ -109,27 +113,28 @@ export default function ClientProfilePage() {
                   </span>
                 ) : (
                   <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
-                    Compliant &amp; Healthy
+                    Compliant &amp; Active
                   </span>
                 )}
               </div>
 
               <div className="flex flex-wrap items-center gap-y-1 gap-x-4 text-xs text-secondary">
                 <span className="font-mono font-bold text-on-surface">ABN: {client.abn}</span>
-                {client.acn && client.acn !== '-' && (
-                  <span className="font-mono text-secondary">ACN: {client.acn}</span>
+                {client.contactEmail && (
+                  <span className="flex items-center gap-1 font-mono text-[11px]">
+                    <span className="material-symbols-outlined text-[14px]">mail</span>
+                    {client.contactEmail}
+                  </span>
+                )}
+                {client.contactCc && (
+                  <span className="flex items-center gap-1 font-mono text-[11px] text-secondary">
+                    <span className="material-symbols-outlined text-[14px]">forward_to_inbox</span>
+                    CC: {client.contactCc}
+                  </span>
                 )}
                 <span className="flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">location_on</span>
-                  {client.city}, {client.state} {client.postcode}
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">mail</span>
-                  {client.contactEmail}
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">call</span>
-                  {client.contactPhone}
+                  <span className="material-symbols-outlined text-[14px]">schedule</span>
+                  Payrun: {client.payrollFrequency || 'Fortnightly'}
                 </span>
               </div>
             </div>
@@ -151,11 +156,11 @@ export default function ClientProfilePage() {
 
             <button
               type="button"
-              onClick={() => setActiveModal('createPayRun')}
+              onClick={() => navigate('/services/payslips')}
               className="h-8 px-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-semibold flex items-center gap-1 border border-outline-variant/30 transition shadow-2xs"
             >
               <span className="material-symbols-outlined text-[16px]">payments</span>
-              <span>Run Payroll</span>
+              <span>Payslip Master Sheet</span>
             </button>
 
             <button
@@ -173,7 +178,7 @@ export default function ClientProfilePage() {
         <div className="pt-3 mt-3 border-t border-outline-variant/20 flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-1.5 text-xs">
             <span className="text-secondary font-semibold mr-1">Active Practice Services:</span>
-            {client.activeServices.map((svc) => (
+            {(client.activeServices || ['bas', 'payslip', 'superannuation']).map((svc) => (
               <span
                 key={svc}
                 className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary border border-primary/20 flex items-center gap-1"
@@ -191,7 +196,7 @@ export default function ClientProfilePage() {
           </div>
 
           <span className="text-[11px] text-secondary font-medium">
-            Lead Partner: <strong className="text-on-surface">{client.leadPartner}</strong>
+            Accounting Software: <strong className="text-on-surface">{client.software || 'Quickbook'}</strong>
           </span>
         </div>
       </div>
@@ -251,6 +256,19 @@ export default function ClientProfilePage() {
 
         <button
           type="button"
+          onClick={() => setActiveTab('payroll')}
+          className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
+            activeTab === 'payroll'
+              ? 'bg-primary text-on-primary shadow-xs'
+              : 'bg-surface-container text-secondary hover:text-on-surface'
+          }`}
+        >
+          <span className="material-symbols-outlined text-[16px]">payments</span>
+          <span>Payslip &amp; Wage Tracking ({clientTrackingRows.length})</span>
+        </button>
+
+        <button
+          type="button"
           onClick={() => setActiveTab('bas')}
           className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
             activeTab === 'bas'
@@ -260,19 +278,6 @@ export default function ClientProfilePage() {
         >
           <span className="material-symbols-outlined text-[16px]">receipt_long</span>
           <span>BAS Lodgements ({clientBas.length})</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab('payroll')}
-          className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
-            activeTab === 'payroll'
-              ? 'bg-primary text-on-primary shadow-xs'
-              : 'bg-surface-container text-secondary hover:text-on-surface'
-          }`}
-        >
-          <span className="material-symbols-outlined text-[16px]">payments</span>
-          <span>Payslips &amp; Wages ({clientPayslips.length})</span>
         </button>
 
         <button
@@ -310,67 +315,157 @@ export default function ClientProfilePage() {
           <div className="p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant/30 shadow-xs flex flex-col gap-3">
             <h3 className="text-sm font-bold text-on-surface flex items-center gap-1.5">
               <span className="material-symbols-outlined text-[18px] text-primary">gavel</span>
-              Australian Statutory &amp; Tax Profile
+              Australian Statutory &amp; Software Profile
             </h3>
 
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="p-2.5 rounded-lg bg-surface-container-low">
-                <span className="text-secondary block">GST Accounting Basis:</span>
-                <span className="font-bold text-on-surface">{client.gstBasis} Method</span>
-              </div>
-              <div className="p-2.5 rounded-lg bg-surface-container-low">
-                <span className="text-secondary block">BAS Lodgement Cycle:</span>
-                <span className="font-bold text-on-surface">{client.lodgementCycle}</span>
+                <span className="text-secondary block">Accounting Software:</span>
+                <span className="font-bold text-on-surface text-sm text-primary">{client.software || 'Quickbook'}</span>
               </div>
               <div className="p-2.5 rounded-lg bg-surface-container-low">
                 <span className="text-secondary block">Payroll Cycle:</span>
-                <span className="font-bold text-on-surface">{client.payrollFrequency}</span>
+                <span className="font-bold text-on-surface">{client.payrollFrequency || 'Fortnightly'}</span>
               </div>
               <div className="p-2.5 rounded-lg bg-surface-container-low">
-                <span className="text-secondary block">Total Active Staff:</span>
-                <span className="font-bold text-on-surface">{client.employeeCount} Employees</span>
+                <span className="text-secondary block">GST Accounting Basis:</span>
+                <span className="font-bold text-on-surface">{client.gstBasis || 'Accruals'} Method</span>
+              </div>
+              <div className="p-2.5 rounded-lg bg-surface-container-low">
+                <span className="text-secondary block">BAS Lodgement Cycle:</span>
+                <span className="font-bold text-on-surface">{client.lodgementCycle || 'Quarterly'}</span>
               </div>
             </div>
 
             <div className="p-2.5 rounded-lg bg-surface-container-low text-xs">
               <span className="text-secondary block font-semibold mb-0.5">Special Engagement Notes:</span>
-              <p className="text-on-surface">{client.notes}</p>
+              <p className="text-on-surface">{client.notes || 'Fixed until said'}</p>
             </div>
           </div>
 
           <div className="p-space-md rounded-xl bg-surface-container-lowest border border-outline-variant/30 shadow-xs flex flex-col gap-3">
             <h3 className="text-sm font-bold text-on-surface flex items-center gap-1.5">
               <span className="material-symbols-outlined text-[18px] text-primary">contacts</span>
-              Primary Contact &amp; Officer
+              Primary Contact &amp; Email Dispatch
             </h3>
 
             <div className="flex flex-col gap-2 text-xs">
               <div className="flex items-center justify-between p-2 rounded bg-surface-container-low">
-                <span className="text-secondary">Director / Key Officer:</span>
-                <span className="font-bold text-on-surface">{client.director}</span>
-              </div>
-              <div className="flex items-center justify-between p-2 rounded bg-surface-container-low">
-                <span className="text-secondary">Direct Email:</span>
-                <a href={`mailto:${client.contactEmail}`} className="font-semibold text-primary hover:underline">
-                  {client.contactEmail}
-                </a>
-              </div>
-              <div className="flex items-center justify-between p-2 rounded bg-surface-container-low">
-                <span className="text-secondary">Phone Number:</span>
-                <span className="font-semibold text-on-surface">{client.contactPhone}</span>
-              </div>
-              <div className="flex items-center justify-between p-2 rounded bg-surface-container-low">
-                <span className="text-secondary">Registered Office:</span>
-                <span className="font-semibold text-on-surface">
-                  {client.city}, {client.state} {client.postcode}, Australia
+                <span className="text-secondary">Primary Email:</span>
+                <span className="font-mono font-semibold text-primary">
+                  {client.contactEmail || 'Not recorded'}
                 </span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded bg-surface-container-low">
+                <span className="text-secondary">CC Email:</span>
+                <span className="font-mono font-semibold text-secondary">
+                  {client.contactCc || 'None'}
+                </span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded bg-surface-container-low">
+                <span className="text-secondary">Registered Location:</span>
+                <span className="font-semibold text-on-surface">
+                  {client.city || 'Adelaide'}, {client.state || 'SA'} {client.postcode || '5000'}
+                </span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded bg-surface-container-low">
+                <span className="text-secondary">Lead Partner:</span>
+                <span className="font-semibold text-on-surface">{client.leadPartner || 'Manoj Khanal, CA'}</span>
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* 2. BAS TAB */}
+      {/* 2. PAYROLL TRACKING TAB */}
+      {activeTab === 'payroll' && (
+        <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-xs overflow-hidden">
+          <div className="p-3 border-b border-outline-variant/20 flex items-center justify-between">
+            <div>
+              <h3 className="font-bold text-xs uppercase tracking-wider text-secondary">
+                Payslip Tracking Entries for {client.name}
+              </h3>
+              <span className="text-[11px] text-secondary">Synced with master payslip tracking sheet</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate('/services/payslips')}
+              className="text-xs text-primary font-bold hover:underline flex items-center gap-1"
+            >
+              <span className="material-symbols-outlined text-[16px]">open_in_new</span>
+              Open Master Sheet
+            </button>
+          </div>
+
+          {clientTrackingRows.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr className="bg-surface-container-low border-b border-outline-variant/20 text-secondary uppercase font-semibold">
+                    <th className="py-2.5 px-3">Software</th>
+                    <th className="py-2.5 px-3">Updates / Instructions</th>
+                    <th className="py-2.5 px-3">Payrun Period</th>
+                    <th className="py-2.5 px-3">Super Status</th>
+                    <th className="py-2.5 px-3">Payslip Status</th>
+                    <th className="py-2.5 px-3">Notes</th>
+                    <th className="py-2.5 px-3">Processed</th>
+                    <th className="py-2.5 px-3">Email &amp; CC</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-outline-variant/15">
+                  {clientTrackingRows.map((r) => (
+                    <tr key={r.id} className="hover:bg-surface-container-low/50">
+                      <td className="py-3 px-3">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                          r.software === 'Xero' ? 'bg-sky-50 text-sky-800 border-sky-300' : 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                        }`}>
+                          {r.software}
+                        </span>
+                      </td>
+                      <td className="py-3 px-3 max-w-[200px]">
+                        <input
+                          type="text"
+                          value={r.updates || ''}
+                          onChange={(e) => updatePayslipTrackingField(r.id, 'updates', e.target.value)}
+                          placeholder="Add updates..."
+                          className="w-full text-xs bg-transparent border-b border-outline-variant/30 focus:border-primary focus:outline-none py-0.5"
+                        />
+                      </td>
+                      <td className="py-3 px-3 font-medium text-on-surface">{r.payrunPeriod}</td>
+                      <td className="py-3 px-3">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                          r.superStatus === 'Submitted' ? 'bg-emerald-100 text-emerald-800' : r.superStatus ? 'bg-amber-100 text-amber-900' : 'bg-surface-container text-secondary'
+                        }`}>
+                          {r.superStatus || 'Not submitted'}
+                        </span>
+                      </td>
+                      <td className="py-3 px-3">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                          r.payslipStatus === 'Payslip sent' ? 'bg-emerald-100 text-emerald-800' : r.payslipStatus ? 'bg-rose-100 text-rose-800' : 'bg-surface-container text-secondary'
+                        }`}>
+                          {r.payslipStatus || 'Pending'}
+                        </span>
+                      </td>
+                      <td className="py-3 px-3 text-secondary">{r.notes}</td>
+                      <td className="py-3 px-3 font-semibold text-primary">{r.processed}</td>
+                      <td className="py-3 px-3 font-mono text-[11px] text-secondary">
+                        <div>{r.email || '-'}</div>
+                        {r.cc && <div className="text-[10px] text-outline">CC: {r.cc}</div>}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="p-8 text-center text-xs text-secondary">
+              No payslip tracking entries found for this specific entity.
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 3. BAS TAB */}
       {activeTab === 'bas' && (
         <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-xs overflow-hidden">
           <div className="p-3 border-b border-outline-variant/20 flex items-center justify-between">
@@ -434,74 +529,6 @@ export default function ClientProfilePage() {
           ) : (
             <div className="p-8 text-center text-xs text-secondary">
               No BAS records on file for this client. Click "Prepare BAS" to draft one.
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* 3. PAYSLIPS & WAGES TAB */}
-      {activeTab === 'payroll' && (
-        <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-xs overflow-hidden">
-          <div className="p-3 border-b border-outline-variant/20 flex items-center justify-between">
-            <h3 className="font-bold text-xs uppercase tracking-wider text-secondary">
-              Employee Payslips for {client.name}
-            </h3>
-            <button
-              type="button"
-              onClick={() => setActiveModal('createPayRun')}
-              className="text-xs text-primary font-bold hover:underline flex items-center gap-1"
-            >
-              <span className="material-symbols-outlined text-[15px]">add</span>
-              Create Pay Run
-            </button>
-          </div>
-
-          {clientPayslips.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs">
-                <thead>
-                  <tr className="bg-surface-container-low border-b border-outline-variant/20 text-secondary uppercase font-semibold">
-                    <th className="py-2.5 px-3">Employee</th>
-                    <th className="py-2.5 px-3">Pay Period</th>
-                    <th className="py-2.5 px-3 text-right">Gross Pay</th>
-                    <th className="py-2.5 px-3 text-right">PAYG Tax</th>
-                    <th className="py-2.5 px-3 text-right">Super (11.5%)</th>
-                    <th className="py-2.5 px-3 text-right">Net Pay</th>
-                    <th className="py-2.5 px-3">Status</th>
-                    <th className="py-2.5 px-3 text-right">View</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-outline-variant/15">
-                  {clientPayslips.map((ps) => (
-                    <tr key={ps.id} className="hover:bg-surface-container-low/50">
-                      <td className="py-3 px-3 font-semibold text-on-surface">{ps.employeeName}</td>
-                      <td className="py-3 px-3 text-secondary">{ps.payPeriod}</td>
-                      <td className="py-3 px-3 text-right font-medium">${ps.totalGross.toFixed(2)}</td>
-                      <td className="py-3 px-3 text-right text-error font-medium">-${ps.paygWithholding.toFixed(2)}</td>
-                      <td className="py-3 px-3 text-right text-emerald-700 font-medium">${ps.superGuaranteeAmount.toFixed(2)}</td>
-                      <td className="py-3 px-3 text-right font-bold text-on-surface">${ps.netPay.toFixed(2)}</td>
-                      <td className="py-3 px-3">
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
-                          {ps.status}
-                        </span>
-                      </td>
-                      <td className="py-3 px-3 text-right">
-                        <button
-                          type="button"
-                          onClick={() => handleOpenPayslip(ps)}
-                          className="h-7 px-2.5 rounded bg-primary text-on-primary text-[11px] font-semibold"
-                        >
-                          View Slip
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <div className="p-8 text-center text-xs text-secondary">
-              No employee payslips found for this entity.
             </div>
           )}
         </div>

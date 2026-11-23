@@ -3,10 +3,13 @@
 @tailwind utilities;
 
 @layer base {
-  html, body {
+
+  html,
+  body {
     margin: 0;
     padding: 0;
   }
+
   body {
     overscroll-behavior: none;
     background-color: #f8f9ff;
@@ -42,13 +45,114 @@
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #c4c5d7;
   border-radius: 9999px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #747686;
+}
+
+/* Printable Monthly Report Styles */
+@media print {
+  /* Hide application chrome, sidebars, headers, toolbars, and action controls */
+  aside,
+  header,
+  nav,
+  .no-print,
+  .print\\:hidden,
+  button,
+  .app-sidebar,
+  .app-header {
+    display: none !important;
+  }
+
+  body, #root, main {
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    overflow: visible !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  /* Table print optimization */
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+
+  th, td {
+    border: 1px solid #cbd5e1 !important;
+    padding: 5px 8px !important;
+    font-size: 10px !important;
+    color: #0f172a !important;
+  }
+
+  thead {
+    display: table-header-group !important;
+  }
+
+  tr {
+    page-break-inside: avoid !important;
+  }
+}
+
+/* Printable Monthly Report Styles */
+@media print {
+  /* Hide application chrome, sidebars, headers, toolbars, and action controls */
+  aside,
+  header,
+  nav,
+  .no-print,
+  .print\\:hidden,
+  button,
+  .app-sidebar,
+  .app-header {
+    display: none !important;
+  }
+
+  body, #root, main {
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    overflow: visible !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  /* Table print optimization */
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+
+  th, td {
+    border: 1px solid #cbd5e1 !important;
+    padding: 5px 8px !important;
+    font-size: 10px !important;
+    color: #0f172a !important;
+  }
+
+  thead {
+    display: table-header-group !important;
+  }
+
+  tr {
+    page-break-inside: avoid !important;
+  }
 }

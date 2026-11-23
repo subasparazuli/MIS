@@ -5,16 +5,18 @@ export default function AddClientModal() {
   const { activeModal, setActiveModal, addClient, currentUser } = useApp();
 
   const [name, setName] = useState('');
+  const [software, setSoftware] = useState('Quickbook');
   const [abn, setAbn] = useState('');
   const [acn, setAcn] = useState('');
   const [entityType, setEntityType] = useState('Proprietary Limited Company');
   const [director, setDirector] = useState('');
   const [contactEmail, setContactEmail] = useState('');
+  const [contactCc, setContactCc] = useState('');
   const [contactPhone, setContactPhone] = useState('');
-  const [city, setCity] = useState('Sydney');
-  const [state, setState] = useState('NSW');
-  const [postcode, setPostcode] = useState('2000');
-  const [industry, setIndustry] = useState('Professional Services & Tech');
+  const [city, setCity] = useState('Adelaide');
+  const [state, setState] = useState('SA');
+  const [postcode, setPostcode] = useState('5000');
+  const [industry, setIndustry] = useState('General Commercial & Advisory');
   const [gstBasis, setGstBasis] = useState('Accruals');
   const [lodgementCycle, setLodgementCycle] = useState('Quarterly');
   const [payrollFrequency, setPayrollFrequency] = useState('Fortnightly');
@@ -31,16 +33,18 @@ export default function AddClientModal() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name.trim() || !abn.trim()) return;
+    if (!name.trim()) return;
 
     addClient({
       name: name.trim(),
-      abn: abn.trim(),
+      software,
+      abn: abn.trim() || '98 123 456 789',
       acn: acn.trim() || '-',
       entityType,
       director: director.trim() || 'Principal Officer',
-      primaryContact: `${director.trim()} (Director)`,
+      primaryContact: `${director.trim() || 'Principal'} (Director)`,
       contactEmail: contactEmail.trim(),
+      contactCc: contactCc.trim(),
       contactPhone: contactPhone.trim(),
       city: city.trim(),
       state,
@@ -51,7 +55,7 @@ export default function AddClientModal() {
       payrollFrequency,
       employeeCount: parseInt(employeeCount, 10) || 1,
       activeServices,
-      leadPartner: currentUser.name || "Elena Vance, CA"
+      leadPartner: currentUser.name || "Manoj Khanal, CA"
     });
   };
 
@@ -66,7 +70,7 @@ export default function AddClientModal() {
             </div>
             <div>
               <h2 className="font-bold text-sm text-on-surface">Add New Australian Client Entity</h2>
-              <span className="text-[11px] text-secondary">Onboard entity into practice MIS registry</span>
+              <span className="text-[11px] text-secondary">Onboard entity into practice MIS registry &amp; tracking sheet</span>
             </div>
           </div>
           <button
@@ -80,24 +84,38 @@ export default function AddClientModal() {
 
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-space-lg flex flex-col gap-3 overflow-y-auto text-xs">
-          <div>
-            <label className="font-bold text-on-surface block mb-1">Company / Entity Legal Name *</label>
-            <input
-              type="text"
-              required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Apex Pacific Logistics Pty Ltd"
-              className="w-full h-8 px-2.5 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
-            />
+          <div className="grid grid-cols-3 gap-3">
+            <div className="col-span-2">
+              <label className="font-bold text-on-surface block mb-1">Company / Entity Legal Name *</label>
+              <input
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="e.g. Apex Pacific Logistics Pty Ltd"
+                className="w-full h-8 px-2.5 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
+              />
+            </div>
+
+            <div>
+              <label className="font-bold text-on-surface block mb-1">Software</label>
+              <select
+                value={software}
+                onChange={(e) => setSoftware(e.target.value)}
+                className="w-full h-8 px-2.5 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs font-semibold focus:outline-none"
+              >
+                <option value="Quickbook">Quickbook</option>
+                <option value="Xero">Xero</option>
+                <option value="MYOB">MYOB</option>
+              </select>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="font-bold text-on-surface block mb-1">Australian Business Number (ABN) *</label>
+              <label className="font-bold text-on-surface block mb-1">Australian Business Number (ABN)</label>
               <input
                 type="text"
-                required
                 value={abn}
                 onChange={(e) => setAbn(e.target.value)}
                 placeholder="XX XXX XXX XXX"
@@ -125,7 +143,6 @@ export default function AddClientModal() {
               <label className="font-bold text-on-surface block mb-1">Director / Officer</label>
               <input
                 type="text"
-                required
                 value={director}
                 onChange={(e) => setDirector(e.target.value)}
                 placeholder="Full Name"
@@ -133,10 +150,9 @@ export default function AddClientModal() {
               />
             </div>
             <div>
-              <label className="font-bold text-on-surface block mb-1">Email</label>
+              <label className="font-bold text-on-surface block mb-1">Primary Email</label>
               <input
                 type="email"
-                required
                 value={contactEmail}
                 onChange={(e) => setContactEmail(e.target.value)}
                 placeholder="contact@entity.com.au"
@@ -144,12 +160,12 @@ export default function AddClientModal() {
               />
             </div>
             <div>
-              <label className="font-bold text-on-surface block mb-1">Phone</label>
+              <label className="font-bold text-on-surface block mb-1">CC Email</label>
               <input
-                type="text"
-                value={contactPhone}
-                onChange={(e) => setContactPhone(e.target.value)}
-                placeholder="+61 2 9..."
+                type="email"
+                value={contactCc}
+                onChange={(e) => setContactCc(e.target.value)}
+                placeholder="director@entity.com.au"
                 className="w-full h-8 px-2.5 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs text-on-surface focus:outline-none"
               />
             </div>
@@ -157,13 +173,16 @@ export default function AddClientModal() {
 
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="font-bold text-on-surface block mb-1">City</label>
-              <input
-                type="text"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                className="w-full h-8 px-2 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs text-on-surface focus:outline-none"
-              />
+              <label className="font-bold text-on-surface block mb-1">Payrun Cycle</label>
+              <select
+                value={payrollFrequency}
+                onChange={(e) => setPayrollFrequency(e.target.value)}
+                className="w-full h-8 px-2 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs font-semibold focus:outline-none"
+              >
+                <option value="Fortnightly">Fortnightly</option>
+                <option value="Weekly">Weekly</option>
+                <option value="Monthly">Monthly</option>
+              </select>
             </div>
             <div>
               <label className="font-bold text-on-surface block mb-1">State</label>
@@ -172,11 +191,11 @@ export default function AddClientModal() {
                 onChange={(e) => setState(e.target.value)}
                 className="w-full h-8 px-2 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs font-semibold focus:outline-none"
               >
+                <option value="SA">SA</option>
                 <option value="NSW">NSW</option>
                 <option value="VIC">VIC</option>
                 <option value="QLD">QLD</option>
                 <option value="WA">WA</option>
-                <option value="SA">SA</option>
                 <option value="TAS">TAS</option>
                 <option value="ACT">ACT</option>
                 <option value="NT">NT</option>

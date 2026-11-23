@@ -12,11 +12,13 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
     flagCounts,
     totalFlagCount,
     services,
-    clients
+    clients,
+    sidebarVisible,
+    toggleSidebar
   } = useApp();
 
   const [servicesExpanded, setServicesExpanded] = useState(true);
-  const [quickViewExpanded, setQuickViewExpanded] = useState(true);
+  const [quickViewExpanded, setQuickViewExpanded] = useState(false);
 
   const isCurrent = (path) => {
     if (path === '/quick-view') {
@@ -48,9 +50,8 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
       )}
 
       <aside
-        className={`fixed left-0 top-0 h-full w-64 bg-surface-container-lowest border-r border-outline-variant/30 shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between transition-transform duration-300 ${
-          mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-        }`}
+        className={`fixed left-0 top-0 h-full w-64 bg-surface-container-lowest border-r border-outline-variant/30 shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between transition-all duration-300 ${mobileOpen ? 'translate-x-0' : sidebarVisible ? 'translate-x-0' : '-translate-x-full'
+          }`}
       >
         {/* Scrollable Upper Area */}
         <div className="flex flex-col flex-1 min-h-0 overflow-y-auto">
@@ -75,12 +76,22 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
                 </span>
               </div>
             </div>
+
+            {/* Show / Hide Sidebar Toggle Icon Button */}
             <button
-              className="lg:hidden p-1 text-secondary hover:text-on-surface rounded-md hover:bg-surface-container"
-              onClick={() => setMobileOpen(false)}
-              aria-label="Close Sidebar"
+              type="button"
+              onClick={() => {
+                if (window.innerWidth < 1024) {
+                  setMobileOpen(false);
+                } else {
+                  toggleSidebar();
+                }
+              }}
+              className="p-1.5 text-secondary hover:text-on-surface rounded-lg hover:bg-surface-container transition flex items-center justify-center"
+              aria-label="Hide Sidebar"
+              title="Hide Sidebar"
             >
-              <span className="material-symbols-outlined text-[20px]">close</span>
+              <span className="material-symbols-outlined text-[20px]">menu_open</span>
             </button>
           </div>
 
@@ -96,16 +107,14 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
                   className="flex items-center gap-2 text-left group flex-1"
                 >
                   <span
-                    className={`material-symbols-outlined text-[18px] transition-colors ${
-                      isCurrent('/quick-view') ? 'text-primary font-bold' : 'text-secondary group-hover:text-primary'
-                    }`}
+                    className={`material-symbols-outlined text-[18px] transition-colors ${isCurrent('/quick-view') ? 'text-primary font-bold' : 'text-secondary group-hover:text-primary'
+                      }`}
                   >
                     speed
                   </span>
                   <span
-                    className={`text-xs font-bold uppercase tracking-wider transition-colors ${
-                      isCurrent('/quick-view') ? 'text-primary' : 'text-secondary group-hover:text-on-surface'
-                    }`}
+                    className={`text-xs font-bold uppercase tracking-wider transition-colors ${isCurrent('/quick-view') ? 'text-primary' : 'text-secondary group-hover:text-on-surface'
+                      }`}
                   >
                     Quick View
                   </span>
@@ -142,11 +151,10 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
                     onClick={() => setMobileOpen && setMobileOpen(false)}
                     className={({ isActive }) => {
                       const active = isActive && isQuickViewTab('not_processed');
-                      return `flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                        active
-                          ? 'bg-amber-50 text-amber-900 font-semibold border border-amber-200 shadow-xs'
-                          : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
-                      }`;
+                      return `flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${active
+                        ? 'bg-amber-50 text-amber-900 font-semibold border border-amber-200 shadow-xs'
+                        : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                        }`;
                     }}
                   >
                     <div className="flex items-center gap-2 truncate">
@@ -164,11 +172,10 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
                     onClick={() => setMobileOpen && setMobileOpen(false)}
                     className={({ isActive }) => {
                       const active = isActive && isQuickViewTab('deadlines');
-                      return `flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                        active
-                          ? 'bg-orange-50 text-orange-900 font-semibold border border-orange-200 shadow-xs'
-                          : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
-                      }`;
+                      return `flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${active
+                        ? 'bg-orange-50 text-orange-900 font-semibold border border-orange-200 shadow-xs'
+                        : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                        }`;
                     }}
                   >
                     <div className="flex items-center gap-2 truncate">
@@ -188,11 +195,10 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
                     onClick={() => setMobileOpen && setMobileOpen(false)}
                     className={({ isActive }) => {
                       const active = isActive && isQuickViewTab('tokens');
-                      return `flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                        active
-                          ? 'bg-red-50 text-red-900 font-semibold border border-red-200 shadow-xs'
-                          : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
-                      }`;
+                      return `flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${active
+                        ? 'bg-red-50 text-red-900 font-semibold border border-red-200 shadow-xs'
+                        : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                        }`;
                     }}
                   >
                     <div className="flex items-center gap-2 truncate">
@@ -243,10 +249,9 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
                   to="/services/bas"
                   onClick={() => setMobileOpen && setMobileOpen(false)}
                   className={({ isActive }) =>
-                    `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${
-                      isActive
-                        ? 'bg-primary text-on-primary font-semibold shadow-xs'
-                        : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                    `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${isActive
+                      ? 'bg-primary text-on-primary font-semibold shadow-xs'
+                      : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
                     }`
                   }
                 >
@@ -261,10 +266,9 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
                   to="/services/payslips"
                   onClick={() => setMobileOpen && setMobileOpen(false)}
                   className={({ isActive }) =>
-                    `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${
-                      isActive
-                        ? 'bg-primary text-on-primary font-semibold shadow-xs'
-                        : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                    `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${isActive
+                      ? 'bg-primary text-on-primary font-semibold shadow-xs'
+                      : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
                     }`
                   }
                 >
@@ -279,10 +283,9 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
                   to="/services/superannuation"
                   onClick={() => setMobileOpen && setMobileOpen(false)}
                   className={({ isActive }) =>
-                    `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${
-                      isActive
-                        ? 'bg-primary text-on-primary font-semibold shadow-xs'
-                        : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                    `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${isActive
+                      ? 'bg-primary text-on-primary font-semibold shadow-xs'
+                      : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
                     }`
                   }
                 >
@@ -301,10 +304,9 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
                       to={service.path}
                       onClick={() => setMobileOpen && setMobileOpen(false)}
                       className={({ isActive }) =>
-                        `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${
-                          isActive
-                            ? 'bg-primary text-on-primary font-semibold shadow-xs'
-                            : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                        `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${isActive
+                          ? 'bg-primary text-on-primary font-semibold shadow-xs'
+                          : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
                         }`
                       }
                     >
@@ -354,10 +356,9 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
                 to="/clients"
                 onClick={() => setMobileOpen && setMobileOpen(false)}
                 className={({ isActive }) =>
-                  `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${
-                    isActive
-                      ? 'bg-primary text-on-primary font-semibold shadow-xs'
-                      : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                  `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${isActive
+                    ? 'bg-primary text-on-primary font-semibold shadow-xs'
+                    : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
                   }`
                 }
               >
@@ -380,11 +381,10 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2 min-w-0">
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs shrink-0 shadow-xs ${
-                    currentUser.role === 'Admin'
-                      ? 'bg-primary text-on-primary'
-                      : 'bg-secondary text-on-secondary'
-                  }`}
+                  className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs shrink-0 shadow-xs ${currentUser.role === 'Admin'
+                    ? 'bg-primary text-on-primary'
+                    : 'bg-secondary text-on-secondary'
+                    }`}
                 >
                   {currentUser.avatar || 'US'}
                 </div>
@@ -400,11 +400,10 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
 
               {/* Role Badge: Admin vs User */}
               <span
-                className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider shrink-0 ${
-                  currentUser.role === 'Admin'
-                    ? 'bg-primary/10 text-primary border border-primary/30'
-                    : 'bg-surface-container text-secondary border border-outline-variant/30'
-                }`}
+                className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider shrink-0 ${currentUser.role === 'Admin'
+                  ? 'bg-primary/10 text-primary border border-primary/30'
+                  : 'bg-surface-container text-secondary border border-outline-variant/30'
+                  }`}
               >
                 {currentUser.role}
               </span>
@@ -417,11 +416,10 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
                 <button
                   type="button"
                   onClick={() => switchRole('Admin')}
-                  className={`px-2 py-0.5 rounded text-[10px] font-bold transition ${
-                    currentUser.role === 'Admin'
-                      ? 'bg-primary text-on-primary shadow-2xs'
-                      : 'text-secondary hover:text-on-surface'
-                  }`}
+                  className={`px-2 py-0.5 rounded text-[10px] font-bold transition ${currentUser.role === 'Admin'
+                    ? 'bg-primary text-on-primary shadow-2xs'
+                    : 'text-secondary hover:text-on-surface'
+                    }`}
                 >
                   Admin
                 </button>
@@ -429,11 +427,10 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
                 <button
                   type="button"
                   onClick={() => switchRole('User')}
-                  className={`px-2 py-0.5 rounded text-[10px] font-bold transition ${
-                    currentUser.role === 'User'
-                      ? 'bg-secondary text-on-secondary shadow-2xs'
-                      : 'text-secondary hover:text-on-surface'
-                  }`}
+                  className={`px-2 py-0.5 rounded text-[10px] font-bold transition ${currentUser.role === 'User'
+                    ? 'bg-secondary text-on-secondary shadow-2xs'
+                    : 'text-secondary hover:text-on-surface'
+                    }`}
                 >
                   User
                 </button>

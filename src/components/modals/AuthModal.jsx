@@ -9,7 +9,7 @@ export default function AuthModal() {
 
   // Form Fields
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('elena.vance@apexledger.com.au');
+  const [email, setEmail] = useState('manoj.khanal@apexledger.com.au');
   const [password, setPassword] = useState('••••••••');
   const [title, setTitle] = useState('');
   const [phone, setPhone] = useState('');
@@ -115,11 +115,11 @@ export default function AuthModal() {
             <div className="flex flex-col gap-1.5">
               <button
                 type="button"
-                onClick={() => handleQuickLogin('elena.vance@apexledger.com.au', 'Admin')}
+                onClick={() => handleQuickLogin('manoj.khanal@apexledger.com.au', 'Admin')}
                 className="w-full text-left p-2 rounded-lg bg-surface-container-lowest hover:bg-primary/10 border border-outline-variant/20 transition flex items-center justify-between text-xs"
               >
                 <div>
-                  <span className="font-bold text-on-surface block">Elena Vance, CA</span>
+                  <span className="font-bold text-on-surface block">Manoj Khanal, CA</span>
                   <span className="text-[11px] text-secondary">Managing Director &amp; Registered Tax Agent</span>
                 </div>
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-primary text-on-primary">
@@ -129,12 +129,12 @@ export default function AuthModal() {
 
               <button
                 type="button"
-                onClick={() => handleQuickLogin('liam.cooper@apexledger.com.au', 'User')}
+                onClick={() => handleQuickLogin('ashmita@apexledger.com.au', 'User')}
                 className="w-full text-left p-2 rounded-lg bg-surface-container-lowest hover:bg-secondary/10 border border-outline-variant/20 transition flex items-center justify-between text-xs"
               >
                 <div>
-                  <span className="font-bold text-on-surface block">Liam Cooper</span>
-                  <span className="text-[11px] text-secondary">Senior Staff Accountant &amp; Payroll Associate</span>
+                  <span className="font-bold text-on-surface block">Ashmita</span>
+                  <span className="text-[11px] text-secondary">Senior Staff Accountant &amp; Compliance Associate</span>
                 </div>
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-secondary text-on-secondary">
                   USER
@@ -245,7 +245,7 @@ export default function AuthModal() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g. Rachel Kim, CPA"
+                  placeholder="e.g. Sobina"
                   className="w-full h-9 px-3 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
@@ -259,7 +259,7 @@ export default function AuthModal() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="rachel.kim@apexledger.com.au"
+                  placeholder="sobina@apexledger.com.au"
                   className="w-full h-9 px-3 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>

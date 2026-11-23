@@ -22,7 +22,7 @@ export default function OverviewPage() {
             <span>Operational Readiness • Fiscal Q2 2024</span>
           </div>
           <h1 className="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-0.5">
-            Good morning, Elena. Tax deadline in <span className="text-primary font-bold">14 days</span>.
+            Good morning, Manoj. Tax deadline in <span className="text-primary font-bold">14 days</span>.
           </h1>
           <p className="font-body-md text-body-md text-secondary">
             All partner queues synchronized. Priority attention recommended on 7 unconfirmed Schedule K-1 schedules.

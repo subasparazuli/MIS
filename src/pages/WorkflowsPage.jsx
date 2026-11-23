@@ -162,10 +162,10 @@ export default function WorkflowsPage() {
               className="h-8 px-2 bg-surface-container-low rounded-lg font-body-sm text-body-sm text-on-surface border border-outline-variant/30 focus:outline-none"
             >
               <option value="all">All Reviewers</option>
-              <option value="Elena">Elena Vance, CPA</option>
-              <option value="Marcus">Marcus Reed</option>
-              <option value="David">David Miller</option>
-              <option value="Sarah">Sarah Jenkins</option>
+              <option value="Manoj">Manoj Khanal, CA</option>
+              <option value="Ashmita">Ashmita</option>
+              <option value="Sobina">Sobina</option>
+              <option value="Deepika">Deepika</option>
             </select>
           </div>
 

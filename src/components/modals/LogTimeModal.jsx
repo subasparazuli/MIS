@@ -6,7 +6,7 @@ export default function LogTimeModal() {
 
   const [clientName, setClientName] = useState(clients[0]?.name || "Vanguard Logistics Group, Inc.");
   const [engagement, setEngagement] = useState("FY23 Apportionment & Corporate Advisory");
-  const [staff, setStaff] = useState("Elena Vance, CPA");
+  const [staff, setStaff] = useState("Manoj Khanal, CA");
   const [hours, setHours] = useState(1.75);
   const [date, setDate] = useState("2024-04-24");
   const [notes, setNotes] = useState("");
@@ -111,10 +111,11 @@ export default function LogTimeModal() {
               onChange={(e) => setStaff(e.target.value)}
               className="w-full h-9 bg-surface-container-low rounded-lg px-2 font-body-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-1 focus:ring-primary"
             >
-              <option value="Elena Vance, CPA">Elena Vance, CPA (Billing Rate: $450/hr)</option>
-              <option value="Marcus Reed">Marcus Reed (Billing Rate: $425/hr)</option>
-              <option value="David Miller">David Miller (Billing Rate: $275/hr)</option>
-              <option value="Rachel Kim">Rachel Kim (Billing Rate: $195/hr)</option>
+              <option value="Manoj Khanal, CA">Manoj Khanal, CA (Billing Rate: $450/hr)</option>
+              <option value="Ashmita">Ashmita (Billing Rate: $325/hr)</option>
+              <option value="Sobina">Sobina (Billing Rate: $275/hr)</option>
+              <option value="Deepika">Deepika (Billing Rate: $250/hr)</option>
+              <option value="Rina">Rina (Billing Rate: $250/hr)</option>
             </select>
           </div>
 

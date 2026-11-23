@@ -4,6 +4,8 @@ import {
   sampleUsers,
   initialServices,
   initialClients,
+  initialPendingTasks,
+  initialTeamCommunications,
   initialNotProcessedItems,
   initialDeadlineApproachingTasks,
   initialIssueTokens,
@@ -11,14 +13,27 @@ import {
   initialPayRuns,
   initialPayslips,
   initialSuperBatches,
-  initialSuperAllocations
+  initialSuperAllocations,
+  initialPayslipTracking
 } from '../data/mockData';
 
 const AppContext = createContext();
 
 // Clean up old legacy keys if present
 try {
-  ['lp_clients', 'lp_workflows', 'lp_wip', 'lp_invoices'].forEach((k) => localStorage.removeItem(k));
+  ['lp_clients', 'lp_workflows', 'lp_wip', 'lp_invoices', 'mis_v2_payslip_tracking', 'mis_v2_bas_records'].forEach((k) => localStorage.removeItem(k));
+  const u = localStorage.getItem('mis_v2_current_user');
+  if (u && (u.includes('Elena') || u.includes('Liam'))) {
+    localStorage.removeItem('mis_v2_current_user');
+  }
+  const com = localStorage.getItem('mis_v3_team_communications');
+  if (com && (com.includes('Elena') || com.includes('Liam') || com.includes('Rachel'))) {
+    localStorage.removeItem('mis_v3_team_communications');
+  }
+  const tsk = localStorage.getItem('mis_v3_pending_tasks');
+  if (tsk && (tsk.includes('Elena') || tsk.includes('Liam') || tsk.includes('Rachel'))) {
+    localStorage.removeItem('mis_v3_pending_tasks');
+  }
 } catch {
   // ignore
 }
@@ -38,13 +53,19 @@ export function AppProvider({ children }) {
 
   // Clients State
   const [clients, setClients] = useState(() => {
-    const saved = localStorage.getItem('mis_v2_clients');
-    return saved ? JSON.parse(saved) : initialClients;
+    const saved = localStorage.getItem('mis_v3_clients');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length >= 50) return parsed;
+      } catch (e) {}
+    }
+    return initialClients;
   });
 
   const [selectedClientId, setSelectedClientId] = useState(() => {
     const saved = localStorage.getItem('mis_v2_selected_client_id');
-    return saved || 'CL-101';
+    return saved || 'CL-201';
   });
 
   // Flag Signs State: 1. Not Processed
@@ -65,11 +86,140 @@ export function AppProvider({ children }) {
     return saved ? JSON.parse(saved) : initialIssueTokens;
   });
 
-  // BAS Records State
-  const [basRecords, setBasRecords] = useState(() => {
-    const saved = localStorage.getItem('mis_v2_bas_records');
-    return saved ? JSON.parse(saved) : initialBasRecords;
+  // Quick View: 1. Pending Tasks / Works
+  const [pendingTasks, setPendingTasks] = useState(() => {
+    const saved = localStorage.getItem('mis_v3_pending_tasks');
+    return saved ? JSON.parse(saved) : initialPendingTasks;
   });
+
+  // Quick View: 2. Team Communications
+  const [teamCommunications, setTeamCommunications] = useState(() => {
+    const saved = localStorage.getItem('mis_v3_team_communications');
+    return saved ? JSON.parse(saved) : initialTeamCommunications;
+  });
+
+  // BAS Records State (247 client tracking sheet)
+  const [basRecords, setBasRecords] = useState(() => {
+    const saved = localStorage.getItem('mis_v3_bas_records');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].clientName !== undefined) {
+          return parsed;
+        }
+      } catch (e) {}
+    }
+    return initialBasRecords;
+  });
+
+  // BAS Report Selection: Year and Month
+  const [basReportYear, setBasReportYearState] = useState(() => {
+    const saved = localStorage.getItem('mis_bas_report_year');
+    return saved ? parseInt(saved, 10) : 2021;
+  });
+
+  const [basReportMonth, setBasReportMonthState] = useState(() => {
+    const saved = localStorage.getItem('mis_bas_report_month');
+    return saved ? parseInt(saved, 10) : 9; // 9 = September
+  });
+
+  const setBasReportYear = (yr) => {
+    const val = parseInt(yr, 10);
+    setBasReportYearState(val);
+    localStorage.setItem('mis_bas_report_year', val.toString());
+  };
+
+  const setBasReportMonth = (m) => {
+    const val = parseInt(m, 10);
+    setBasReportMonthState(val);
+    localStorage.setItem('mis_bas_report_month', val.toString());
+  };
+
+  // Monthly BAS Store: { [periodKey 'YYYY-MM']: { [recordId]: { periodStatus, basStatus, remarks, responsible, priority } } }
+  const [monthlyBasStore, setMonthlyBasStore] = useState(() => {
+    const saved = localStorage.getItem('mis_v3_bas_monthly_store');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') {
+          return parsed;
+        }
+      } catch (e) {}
+    }
+    const initialMap = {};
+    initialBasRecords.forEach((r) => {
+      initialMap[r.id] = {
+        periodStatus: r.basSep21 || '',
+        basStatus: r.basStatus || 'In progress',
+        remarks: r.remarks || '',
+        responsible: r.responsible || '',
+        priority: r.priority || 'Med'
+      };
+    });
+    return { '2021-09': initialMap };
+  });
+
+  // Recently Added Values for BAS Dropdowns
+  const [recentBasResponsibles, setRecentBasResponsibles] = useState(() => {
+    const saved = localStorage.getItem('mis_recent_bas_responsibles');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [recentBasPriorities, setRecentBasPriorities] = useState(() => {
+    const saved = localStorage.getItem('mis_recent_bas_priorities');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [recentBasStatuses, setRecentBasStatuses] = useState(() => {
+    const saved = localStorage.getItem('mis_recent_bas_statuses');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [recentBasSep21, setRecentBasSep21] = useState(() => {
+    const saved = localStorage.getItem('mis_recent_bas_sep21');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const addRecentBasResponsible = (val) => {
+    if (!val || !val.trim()) return;
+    const trimmed = val.trim();
+    setRecentBasResponsibles((prev) => {
+      if (prev.includes(trimmed)) return prev;
+      const updated = [trimmed, ...prev];
+      localStorage.setItem('mis_recent_bas_responsibles', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const addRecentBasPriority = (val) => {
+    if (!val || !val.trim()) return;
+    const trimmed = val.trim();
+    setRecentBasPriorities((prev) => {
+      if (prev.includes(trimmed)) return prev;
+      const updated = [trimmed, ...prev];
+      localStorage.setItem('mis_recent_bas_priorities', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const addRecentBasStatus = (val) => {
+    if (!val || !val.trim()) return;
+    const trimmed = val.trim();
+    setRecentBasStatuses((prev) => {
+      if (prev.includes(trimmed)) return prev;
+      const updated = [trimmed, ...prev];
+      localStorage.setItem('mis_recent_bas_statuses', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const addRecentBasSep21 = (val) => {
+    if (!val || !val.trim()) return;
+    const trimmed = val.trim();
+    setRecentBasSep21((prev) => {
+      if (prev.includes(trimmed)) return prev;
+      const updated = [trimmed, ...prev];
+      localStorage.setItem('mis_recent_bas_sep21', JSON.stringify(updated));
+      return updated;
+    });
+  };
 
   // Payslip & Pay Runs State
   const [payRuns, setPayRuns] = useState(() => {
@@ -93,13 +243,74 @@ export function AppProvider({ children }) {
     return saved ? JSON.parse(saved) : initialSuperAllocations;
   });
 
+  // Payslip Tracking State (exact spreadsheet tracking table with updates, emails, etc.)
+  const [payslipTracking, setPayslipTracking] = useState(() => {
+    const saved = localStorage.getItem('mis_v3_payslip_tracking');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].updates !== undefined) {
+          return parsed;
+        }
+      } catch (e) {}
+    }
+    return initialPayslipTracking;
+  });
+
+  // Recently Added Custom Dropdown Values
+  const [recentPayrunPeriods, setRecentPayrunPeriods] = useState(() => {
+    const saved = localStorage.getItem('mis_recent_payrun_periods');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [recentNotes, setRecentNotes] = useState(() => {
+    const saved = localStorage.getItem('mis_recent_notes');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const addRecentPayrunPeriod = (val) => {
+    if (!val || !val.trim()) return;
+    const trimmed = val.trim();
+    setRecentPayrunPeriods((prev) => {
+      if (prev.includes(trimmed)) return prev;
+      const updated = [trimmed, ...prev];
+      localStorage.setItem('mis_recent_payrun_periods', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const addRecentNote = (val) => {
+    if (!val || !val.trim()) return;
+    const trimmed = val.trim();
+    setRecentNotes((prev) => {
+      if (prev.includes(trimmed)) return prev;
+      const updated = [trimmed, ...prev];
+      localStorage.setItem('mis_recent_notes', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
   // Navigation & Interactive UI state
-  const [activeModal, setActiveModal] = useState(null); // 'addService' | 'auth' | 'addClient' | 'addIssueToken' | 'prepareBas' | 'viewPayslip' | 'createPayRun' | 'globalSearch' | null
+  const [activeModal, setActiveModal] = useState(null);
   const [selectedPayslip, setSelectedPayslip] = useState(null);
   const [selectedBas, setSelectedBas] = useState(null);
   const [period, setPeriod] = useState("Q3 FY24 (Jan - Mar)");
   const [globalSearch, setGlobalSearch] = useState("");
   const [toast, setToast] = useState(null);
+
+  // Sidebar Visibility State (Show/Hide)
+  const [sidebarVisible, setSidebarVisible] = useState(() => {
+    const saved = localStorage.getItem('mis_sidebar_visible');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
+
+  const toggleSidebar = () => {
+    setSidebarVisible((prev) => {
+      const next = !prev;
+      localStorage.setItem('mis_sidebar_visible', JSON.stringify(next));
+      return next;
+    });
+  };
 
   // Sync to LocalStorage
   useEffect(() => {
@@ -111,7 +322,7 @@ export function AppProvider({ children }) {
   }, [services]);
 
   useEffect(() => {
-    localStorage.setItem('mis_v2_clients', JSON.stringify(clients));
+    localStorage.setItem('mis_v3_clients', JSON.stringify(clients));
   }, [clients]);
 
   useEffect(() => {
@@ -131,7 +342,7 @@ export function AppProvider({ children }) {
   }, [issueTokens]);
 
   useEffect(() => {
-    localStorage.setItem('mis_v2_bas_records', JSON.stringify(basRecords));
+    localStorage.setItem('mis_v3_bas_records', JSON.stringify(basRecords));
   }, [basRecords]);
 
   useEffect(() => {
@@ -149,6 +360,10 @@ export function AppProvider({ children }) {
   useEffect(() => {
     localStorage.setItem('mis_v2_super_allocations', JSON.stringify(superAllocations));
   }, [superAllocations]);
+
+  useEffect(() => {
+    localStorage.setItem('mis_v3_payslip_tracking', JSON.stringify(payslipTracking));
+  }, [payslipTracking]);
 
   // Toast notification helper
   const showToast = (message, type = 'success') => {
@@ -249,7 +464,7 @@ export function AppProvider({ children }) {
   // Clients Handlers
   const addClient = (newClient) => {
     const fullClient = {
-      id: `CL-${Math.floor(100 + Math.random() * 900)}`,
+      id: `CL-${Math.floor(200 + Math.random() * 800)}`,
       status: "Active",
       flagsCount: 0,
       unresolvedTokensCount: 0,
@@ -258,11 +473,30 @@ export function AppProvider({ children }) {
       gstBasis: newClient.gstBasis || "Accruals",
       payrollFrequency: newClient.payrollFrequency || "Fortnightly",
       employeeCount: parseInt(newClient.employeeCount, 10) || 1,
-      leadPartner: currentUser.name || "Elena Vance, CA",
+      leadPartner: currentUser.name || "Manoj Khanal, CA",
+      software: newClient.software || "Quickbook",
       ...newClient
     };
     setClients((prev) => [fullClient, ...prev]);
-    showToast(`Client "${fullClient.name}" created successfully.`);
+
+    // Also add to tracking table
+    const newTrackingRow = {
+      id: `PT-${Date.now().toString().slice(-4)}`,
+      clientId: fullClient.id,
+      software: fullClient.software,
+      company: fullClient.name,
+      updates: '',
+      payrunPeriod: fullClient.payrollFrequency,
+      superStatus: '',
+      payslipStatus: '',
+      notes: 'Fixed until said',
+      processed: 'Next week',
+      email: fullClient.contactEmail || '',
+      cc: fullClient.contactCc || ''
+    };
+    setPayslipTracking((prev) => [newTrackingRow, ...prev]);
+
+    showToast(`Client "${fullClient.name}" created and added to tracking table.`);
     setActiveModal(null);
   };
 
@@ -285,7 +519,7 @@ export function AppProvider({ children }) {
       status: "Not Processed",
       daysRemaining: 7,
       priority: "Medium",
-      assignedTo: currentUser.name || "Elena Vance, CA",
+      assignedTo: currentUser.name || "Manoj Khanal, CA",
       ...item
     };
     setNotProcessedItems((prev) => [newItem, ...prev]);
@@ -304,7 +538,7 @@ export function AppProvider({ children }) {
     const newTask = {
       id: `DL-${Date.now().toString().slice(-4)}`,
       priority: "Urgent",
-      assignedTo: currentUser.name || "Elena Vance, CA",
+      assignedTo: currentUser.name || "Manoj Khanal, CA",
       completed: false,
       ...task
     };
@@ -316,6 +550,10 @@ export function AppProvider({ children }) {
   const resolveIssueToken = (tokenId, notes = "Verified and resolved in portal") => {
     setIssueTokens((prev) =>
       prev.map((t) => (t.id === tokenId ? { ...t, status: 'Resolved', resolutionNotes: notes, resolvedAt: new Date().toLocaleDateString() } : t))
+    );
+    // Also resolve in teamCommunications if matched
+    setTeamCommunications((prev) =>
+      prev.map((c) => (c.id === tokenId || (c.content && c.content.includes(tokenId)) ? { ...c, status: 'Resolved' } : c))
     );
     showToast(`Issue token ${tokenId} resolved.`);
   };
@@ -329,34 +567,309 @@ export function AppProvider({ children }) {
       ...token
     };
     setIssueTokens((prev) => [newToken, ...prev]);
-    showToast(`Issue token ${newToken.id} created.`);
+
+    // Also mirror to Team Communications as an Issue
+    const newCom = {
+      id: `COM-${Date.now().toString().slice(-4)}`,
+      author: {
+        name: currentUser.name,
+        role: currentUser.role,
+        avatar: currentUser.avatar
+      },
+      type: "Issue",
+      content: `${token.title || 'Compliance Discrepancy'}: ${token.description || token.category || ''}`,
+      createdAt: 'Just now',
+      clientTag: token.clientId ? { id: token.clientId, name: token.clientName || '' } : null,
+      taskTag: null,
+      mentions: [],
+      isStatusRelated: true,
+      status: 'Open',
+      severity: token.severity || 'Warning',
+      category: token.category || 'General',
+      responses: []
+    };
+    setTeamCommunications((prev) => [newCom, ...prev]);
+    showToast(`Issue token ${newToken.id} logged to Quick View.`);
     setActiveModal(null);
   };
 
-  // BAS Actions
-  const lodgeBasWithAto = (basId) => {
-    if (currentUser.role !== 'Admin') {
-      showToast("Permission Denied: Only Registered Tax Agent (Admin) can authorize ATO BAS lodgements.", "error");
-      return;
+  // Quick View: Pending Tasks Actions
+  const updatePendingTaskField = (taskId, field, value) => {
+    setPendingTasks((prev) => {
+      const updated = prev.map((t) => (t.id === taskId ? { ...t, [field]: value } : t));
+      localStorage.setItem('mis_v3_pending_tasks', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const completePendingTask = (taskId) => {
+    setPendingTasks((prev) => {
+      const updated = prev.map((t) => (t.id === taskId ? { ...t, status: t.status === 'Completed' ? 'Pending' : 'Completed' } : t));
+      localStorage.setItem('mis_v3_pending_tasks', JSON.stringify(updated));
+      return updated;
+    });
+    showToast(`Task status toggled.`);
+  };
+
+  const addPendingTask = (taskData) => {
+    const newTask = {
+      id: `TSK-${Math.floor(100 + Math.random() * 900)}`,
+      task: taskData.task || 'New Task',
+      clientId: taskData.clientId || '',
+      clientName: taskData.clientName || 'General Practice',
+      service: taskData.service || 'General',
+      assignedTo: taskData.assignedTo || currentUser.name,
+      dueDate: taskData.dueDate || new Date().toISOString().split('T')[0],
+      priority: taskData.priority || 'Medium',
+      status: taskData.status || 'Pending',
+      notes: taskData.notes || ''
+    };
+    setPendingTasks((prev) => {
+      const updated = [newTask, ...prev];
+      localStorage.setItem('mis_v3_pending_tasks', JSON.stringify(updated));
+      return updated;
+    });
+    showToast(`Task "${newTask.task}" added.`);
+  };
+
+  const deletePendingTask = (taskId) => {
+    setPendingTasks((prev) => {
+      const updated = prev.filter((t) => t.id !== taskId);
+      localStorage.setItem('mis_v3_pending_tasks', JSON.stringify(updated));
+      return updated;
+    });
+    showToast('Task removed.');
+  };
+
+  // Quick View: Team Communications Actions
+  const addTeamCommunication = (comData) => {
+    const newCom = {
+      id: `COM-${Date.now().toString().slice(-4)}`,
+      author: {
+        name: currentUser.name,
+        role: currentUser.role,
+        avatar: currentUser.avatar
+      },
+      type: comData.type || 'Comment',
+      content: (comData.content || '').trim(),
+      createdAt: 'Just now',
+      clientTag: comData.clientTag || null,
+      taskTag: comData.taskTag || null,
+      mentions: comData.mentions || [],
+      isStatusRelated: comData.isStatusRelated !== undefined ? comData.isStatusRelated : (comData.type !== 'Comment'),
+      status: comData.status || (comData.type === 'Comment' ? 'Resolved' : 'Open'),
+      severity: comData.severity || 'Normal',
+      category: comData.category || 'General',
+      responses: []
+    };
+    setTeamCommunications((prev) => {
+      const updated = [newCom, ...prev];
+      localStorage.setItem('mis_v3_team_communications', JSON.stringify(updated));
+      return updated;
+    });
+    showToast(`Posted ${newCom.type.toLowerCase()} to Team Communications.`);
+  };
+
+  const addCommunicationReply = (communicationId, { content, statusChange }) => {
+    setTeamCommunications((prev) => {
+      const updated = prev.map((com) => {
+        if (com.id === communicationId) {
+          const newReply = {
+            id: `RESP-${Date.now().toString().slice(-4)}`,
+            author: {
+              name: currentUser.name,
+              role: currentUser.role,
+              avatar: currentUser.avatar
+            },
+            content: content.trim(),
+            createdAt: 'Just now',
+            statusChange: statusChange || null
+          };
+          return {
+            ...com,
+            status: statusChange || com.status,
+            responses: [...(com.responses || []), newReply]
+          };
+        }
+        return com;
+      });
+      localStorage.setItem('mis_v3_team_communications', JSON.stringify(updated));
+      return updated;
+    });
+    showToast('Response posted to thread.');
+  };
+
+  const updateCommunicationStatus = (communicationId, newStatus) => {
+    setTeamCommunications((prev) => {
+      const updated = prev.map((com) => {
+        if (com.id === communicationId) {
+          return { ...com, status: newStatus };
+        }
+        return com;
+      });
+      localStorage.setItem('mis_v3_team_communications', JSON.stringify(updated));
+      return updated;
+    });
+    showToast(`Communication status updated to ${newStatus}.`);
+  };
+
+  const deleteTeamCommunication = (communicationId) => {
+    setTeamCommunications((prev) => {
+      const updated = prev.filter((c) => c.id !== communicationId);
+      localStorage.setItem('mis_v3_team_communications', JSON.stringify(updated));
+      return updated;
+    });
+    showToast('Communication deleted.');
+  };
+
+  // BAS Monthly Actions & Data Retrieval
+  const currentBasPeriodKey = `${basReportYear}-${String(basReportMonth).padStart(2, '0')}`;
+
+  const getBasRecordsForPeriod = (periodKey = currentBasPeriodKey) => {
+    const periodData = monthlyBasStore[periodKey];
+    return basRecords.map((base) => {
+      if (periodData && periodData[base.id]) {
+        const p = periodData[base.id];
+        return {
+          ...base,
+          responsible: p.responsible !== undefined ? p.responsible : base.responsible,
+          priority: p.priority !== undefined ? p.priority : base.priority,
+          basSep21: p.periodStatus !== undefined ? p.periodStatus : (periodKey === '2021-09' ? base.basSep21 : ''),
+          basStatus: p.basStatus !== undefined ? p.basStatus : (periodKey === '2021-09' ? base.basStatus : 'In progress'),
+          remarks: p.remarks !== undefined ? p.remarks : (periodKey === '2021-09' ? base.remarks : '')
+        };
+      }
+      if (periodKey === '2021-09') {
+        return { ...base };
+      }
+      return {
+        ...base,
+        basSep21: '',
+        basStatus: 'In progress',
+        remarks: ''
+      };
+    });
+  };
+
+  const updateBasPeriodField = (periodKey, recordId, field, value) => {
+    // 1. Update monthly store
+    setMonthlyBasStore((prev) => {
+      const periodObj = { ...(prev[periodKey] || {}) };
+      const currentRec = periodObj[recordId] || {};
+      periodObj[recordId] = {
+        ...currentRec,
+        [field === 'basSep21' ? 'periodStatus' : field]: value
+      };
+      const updatedStore = { ...prev, [periodKey]: periodObj };
+      localStorage.setItem('mis_v3_bas_monthly_store', JSON.stringify(updatedStore));
+      return updatedStore;
+    });
+
+    // 2. If clientName, responsible, or priority changed, update baseline
+    if (['clientName', 'responsible', 'priority'].includes(field)) {
+      setBasRecords((prev) => {
+        const updated = prev.map((b) => (b.id === recordId ? { ...b, [field]: value } : b));
+        localStorage.setItem('mis_v3_bas_records', JSON.stringify(updated));
+        return updated;
+      });
     }
-    const receipt = `ATO-BAS-2024-${Math.floor(1000000 + Math.random() * 9000000)}`;
+
+    // 3. For 2021-09, keep basRecords in sync
+    if (periodKey === '2021-09') {
+      setBasRecords((prev) => {
+        const updated = prev.map((b) => (b.id === recordId ? { ...b, [field]: value } : b));
+        localStorage.setItem('mis_v3_bas_records', JSON.stringify(updated));
+        return updated;
+      });
+    }
+  };
+
+  const updateBasRecordField = (recordId, field, value) => {
+    updateBasPeriodField(currentBasPeriodKey, recordId, field, value);
+  };
+
+  const deleteBasRecordFromPeriod = (periodKey, recordId) => {
+    setBasRecords((prev) => {
+      const updated = prev.filter((b) => b.id !== recordId);
+      localStorage.setItem('mis_v3_bas_records', JSON.stringify(updated));
+      return updated;
+    });
+    setMonthlyBasStore((prev) => {
+      const periodObj = { ...(prev[periodKey] || {}) };
+      delete periodObj[recordId];
+      const updatedStore = { ...prev, [periodKey]: periodObj };
+      localStorage.setItem('mis_v3_bas_monthly_store', JSON.stringify(updatedStore));
+      return updatedStore;
+    });
+    showToast('BAS tracking entry removed.');
+  };
+
+  const deleteBasRecord = (recordId) => {
+    deleteBasRecordFromPeriod(currentBasPeriodKey, recordId);
+  };
+
+  const lodgeBasWithAto = (basId) => {
     const today = new Date().toISOString().split('T')[0];
-    setBasRecords((prev) =>
-      prev.map((b) => (b.id === basId ? { ...b, status: 'Lodged', atoReceiptId: receipt, lodgedDate: today, reviewedBy: currentUser.name } : b))
-    );
-    showToast(`BAS successfully lodged to ATO! SBR Receipt: ${receipt}`);
+    updateBasPeriodField(currentBasPeriodKey, basId, 'basStatus', 'Lodged');
+    updateBasPeriodField(currentBasPeriodKey, basId, 'remarks', `Lodged with ATO on ${today}`);
+    showToast(`BAS for record ${basId} marked as Lodged.`);
+  };
+
+  const addBasRecordToPeriod = (periodKey, basData) => {
+    const newId = `BAS-${Date.now().toString().slice(-4)}`;
+    const newBas = {
+      id: newId,
+      clientName: basData.clientName || 'New Client',
+      responsible: basData.responsible || '',
+      priority: basData.priority || 'Med',
+      basSep21: basData.basSep21 || '',
+      basStatus: basData.basStatus || 'In progress',
+      remarks: basData.remarks || ''
+    };
+    setBasRecords((prev) => {
+      const updated = [newBas, ...prev];
+      localStorage.setItem('mis_v3_bas_records', JSON.stringify(updated));
+      return updated;
+    });
+    setMonthlyBasStore((prev) => {
+      const periodObj = { ...(prev[periodKey] || {}) };
+      periodObj[newId] = {
+        periodStatus: basData.basSep21 || '',
+        basStatus: basData.basStatus || 'In progress',
+        remarks: basData.remarks || '',
+        responsible: basData.responsible || '',
+        priority: basData.priority || 'Med'
+      };
+      const updatedStore = { ...prev, [periodKey]: periodObj };
+      localStorage.setItem('mis_v3_bas_monthly_store', JSON.stringify(updatedStore));
+      return updatedStore;
+    });
+    showToast(`BAS entry for ${newBas.clientName} added.`);
+    setActiveModal(null);
   };
 
   const addBasRecord = (basData) => {
-    const newBas = {
-      id: `BAS-24-${Date.now().toString().slice(-4)}`,
-      status: "Ready for Review",
-      preparedBy: currentUser.name || "Elena Vance, CA",
-      ...basData
-    };
-    setBasRecords((prev) => [newBas, ...prev]);
-    showToast(`BAS for ${newBas.clientName} created.`);
-    setActiveModal(null);
+    addBasRecordToPeriod(currentBasPeriodKey, basData);
+  };
+
+  const rollOverBasMonth = (targetPeriodKey, sourcePeriodKey, copyStatuses = false) => {
+    const sourceData = getBasRecordsForPeriod(sourcePeriodKey);
+    setMonthlyBasStore((prev) => {
+      const targetObj = {};
+      sourceData.forEach((rec) => {
+        targetObj[rec.id] = {
+          responsible: rec.responsible || '',
+          priority: rec.priority || 'Med',
+          periodStatus: copyStatuses ? rec.basSep21 : '',
+          basStatus: copyStatuses ? rec.basStatus : 'In progress',
+          remarks: copyStatuses ? rec.remarks : ''
+        };
+      });
+      const updatedStore = { ...prev, [targetPeriodKey]: targetObj };
+      localStorage.setItem('mis_v3_bas_monthly_store', JSON.stringify(updatedStore));
+      return updatedStore;
+    });
+    showToast(`Rolled over ${sourceData.length} client entities to ${targetPeriodKey}.`);
   };
 
   // Payslip Actions
@@ -380,6 +893,44 @@ export function AppProvider({ children }) {
     setPayRuns((prev) => [newPR, ...prev]);
     showToast(`Pay run ${newPR.id} created.`);
     setActiveModal(null);
+  };
+
+  // Payslip Tracking Actions
+  const updatePayslipTrackingRow = (rowId, updates) => {
+    setPayslipTracking((prev) =>
+      prev.map((row) => (row.id === rowId ? { ...row, ...updates } : row))
+    );
+  };
+
+  const updatePayslipTrackingField = (rowId, field, value) => {
+    setPayslipTracking((prev) =>
+      prev.map((row) => (row.id === rowId ? { ...row, [field]: value } : row))
+    );
+  };
+
+  const addPayslipTrackingRow = (newRow) => {
+    const row = {
+      id: `PT-${Date.now().toString().slice(-4)}`,
+      clientId: `CL-${Math.floor(200 + Math.random() * 800)}`,
+      software: 'Quickbook',
+      company: 'New Client Company',
+      updates: '',
+      payrunPeriod: 'Fortnightly',
+      superStatus: '',
+      payslipStatus: '',
+      notes: 'Fixed until said',
+      processed: 'Next week',
+      email: '',
+      cc: '',
+      ...newRow
+    };
+    setPayslipTracking((prev) => [row, ...prev]);
+    showToast(`Added new payslip tracking entry for "${row.company}".`);
+  };
+
+  const deletePayslipTrackingRow = (rowId) => {
+    setPayslipTracking((prev) => prev.filter((r) => r.id !== rowId));
+    showToast("Payslip tracking entry deleted.");
   };
 
   // Superannuation Actions
@@ -406,25 +957,49 @@ export function AppProvider({ children }) {
     setCurrentUser(initialCurrentUser);
     setServices(initialServices);
     setClients(initialClients);
-    setSelectedClientId('CL-101');
+    setSelectedClientId('CL-201');
     setNotProcessedItems(initialNotProcessedItems);
     setDeadlineApproachingTasks(initialDeadlineApproachingTasks);
     setIssueTokens(initialIssueTokens);
     setBasRecords(initialBasRecords);
+    setBasReportYearState(2021);
+    setBasReportMonthState(9);
+    const initialMap = {};
+    initialBasRecords.forEach((r) => {
+      initialMap[r.id] = {
+        periodStatus: r.basSep21 || '',
+        basStatus: r.basStatus || 'In progress',
+        remarks: r.remarks || '',
+        responsible: r.responsible || '',
+        priority: r.priority || 'Med'
+      };
+    });
+    setMonthlyBasStore({ '2021-09': initialMap });
     setPayRuns(initialPayRuns);
     setPayslips(initialPayslips);
     setSuperBatches(initialSuperBatches);
     setSuperAllocations(initialSuperAllocations);
-    showToast("MIS data reset to clean initial state.");
+    setPayslipTracking(initialPayslipTracking);
+    setPendingTasks(initialPendingTasks);
+    setTeamCommunications(initialTeamCommunications);
+    localStorage.setItem('mis_v3_payslip_tracking', JSON.stringify(initialPayslipTracking));
+    localStorage.setItem('mis_v3_clients', JSON.stringify(initialClients));
+    localStorage.setItem('mis_v3_bas_records', JSON.stringify(initialBasRecords));
+    localStorage.setItem('mis_bas_report_year', '2021');
+    localStorage.setItem('mis_bas_report_month', '9');
+    localStorage.setItem('mis_v3_bas_monthly_store', JSON.stringify({ '2021-09': initialMap }));
+    localStorage.setItem('mis_v3_pending_tasks', JSON.stringify(initialPendingTasks));
+    localStorage.setItem('mis_v3_team_communications', JSON.stringify(initialTeamCommunications));
+    showToast("MIS data reset to clean initial tracking sheet state.");
   };
 
   // Calculated Flag counts
   const flagCounts = {
-    notProcessed: notProcessedItems.filter((i) => i.status !== 'Processed').length,
-    deadlineApproaching: deadlineApproachingTasks.filter((t) => !t.completed).length,
-    unresolvedTokens: issueTokens.filter((t) => t.status !== 'Resolved').length
+    notProcessed: pendingTasks.filter((t) => t.status !== 'Completed').length,
+    deadlineApproaching: pendingTasks.filter((t) => (t.priority === 'Critical' || t.priority === 'High') && t.status !== 'Completed').length,
+    unresolvedTokens: teamCommunications.filter((c) => c.isStatusRelated && c.status !== 'Resolved').length
   };
-  const totalFlagCount = flagCounts.notProcessed + flagCounts.deadlineApproaching + flagCounts.unresolvedTokens;
+  const totalFlagCount = flagCounts.notProcessed + flagCounts.unresolvedTokens;
 
   const selectedClient = clients.find((c) => c.id === selectedClientId) || clients[0];
 
@@ -439,7 +1014,7 @@ export function AppProvider({ children }) {
         logout,
         sampleUsers,
 
-        // Flag Signs
+        // Flag Signs & Operational Controls
         notProcessedItems,
         markItemProcessed,
         addNotProcessedItem,
@@ -451,6 +1026,22 @@ export function AppProvider({ children }) {
         addIssueToken,
         flagCounts,
         totalFlagCount,
+
+        // Quick View: 1. Pending Tasks / Works
+        pendingTasks,
+        setPendingTasks,
+        updatePendingTaskField,
+        completePendingTask,
+        addPendingTask,
+        deletePendingTask,
+
+        // Quick View: 2. Team Communications
+        teamCommunications,
+        setTeamCommunications,
+        addTeamCommunication,
+        addCommunicationReply,
+        updateCommunicationStatus,
+        deleteTeamCommunication,
 
         // Services
         services,
@@ -467,10 +1058,32 @@ export function AppProvider({ children }) {
 
         // BAS
         basRecords,
+        setBasRecords,
         selectedBas,
         setSelectedBas,
         addBasRecord,
+        updateBasRecordField,
+        deleteBasRecord,
         lodgeBasWithAto,
+        recentBasResponsibles,
+        addRecentBasResponsible,
+        recentBasPriorities,
+        addRecentBasPriority,
+        recentBasStatuses,
+        addRecentBasStatus,
+        recentBasSep21,
+        addRecentBasSep21,
+        basReportYear,
+        setBasReportYear,
+        basReportMonth,
+        setBasReportMonth,
+        monthlyBasStore,
+        getBasRecordsForPeriod,
+        updateBasPeriodField,
+        addBasRecordToPeriod,
+        deleteBasRecordFromPeriod,
+        rollOverBasMonth,
+        currentBasPeriodKey,
 
         // Payslips & Wages
         payRuns,
@@ -479,6 +1092,18 @@ export function AppProvider({ children }) {
         setSelectedPayslip,
         createPayRun,
         approvePayRun,
+
+        // Payslip Tracking Table
+        payslipTracking,
+        setPayslipTracking,
+        updatePayslipTrackingRow,
+        updatePayslipTrackingField,
+        addPayslipTrackingRow,
+        deletePayslipTrackingRow,
+        recentPayrunPeriods,
+        addRecentPayrunPeriod,
+        recentNotes,
+        addRecentNote,
 
         // Superannuation
         superBatches,
@@ -493,6 +1118,9 @@ export function AppProvider({ children }) {
         setPeriod,
         globalSearch,
         setGlobalSearch,
+        sidebarVisible,
+        setSidebarVisible,
+        toggleSidebar,
         toast,
         showToast,
         resetAllData

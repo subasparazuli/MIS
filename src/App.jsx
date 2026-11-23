@@ -25,7 +25,7 @@ import CustomServicePage from './pages/CustomServicePage';
 
 export default function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { toast } = useApp();
+  const { toast, sidebarVisible } = useApp();
 
   return (
     <div className="min-h-screen bg-surface font-body-md text-on-surface antialiased flex flex-col">
@@ -33,7 +33,7 @@ export default function App() {
       <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
 
       {/* Main Layout Area */}
-      <div className="lg:pl-64 flex flex-col min-h-screen">
+      <div className={`${sidebarVisible ? 'lg:pl-64' : 'lg:pl-0'} transition-all duration-300 flex flex-col min-h-screen`}>
         {/* Sticky Global Top Header */}
         <Header setMobileOpen={setMobileOpen} />
 

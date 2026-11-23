@@ -395,7 +395,7 @@ export default function BillingWIPPage() {
           <div className="bg-surface-container-lowest rounded-xl shadow-sm p-space-lg border border-outline-variant/30">
             <div className="flex items-center justify-between mb-space-xs">
               <span className="font-caption text-caption text-secondary uppercase font-bold">
-                Logged Today (Elena Vance)
+                Logged Today (Manoj Khanal)
               </span>
               <span className="font-mono text-sm font-bold text-primary">6.8 / 8.0 Target</span>
             </div>

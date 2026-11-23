@@ -7,22 +7,23 @@ export default function ClientsPage() {
   const { clients, setSelectedClientId, setActiveModal, showToast } = useApp();
 
   const [search, setSearch] = useState('');
+  const [softwareFilter, setSoftwareFilter] = useState('all');
   const [entityFilter, setEntityFilter] = useState('all');
-  const [serviceFilter, setServiceFilter] = useState('all');
 
   const filteredClients = clients.filter((c) => {
     if (search.trim()) {
       const q = search.toLowerCase();
       const match =
         c.name.toLowerCase().includes(q) ||
-        c.abn.replace(/\s/g, '').includes(q.replace(/\s/g, '')) ||
-        c.director.toLowerCase().includes(q) ||
-        c.industry.toLowerCase().includes(q) ||
-        c.id.toLowerCase().includes(q);
+        (c.abn || '').replace(/\s/g, '').includes(q.replace(/\s/g, '')) ||
+        (c.software || '').toLowerCase().includes(q) ||
+        (c.contactEmail || '').toLowerCase().includes(q) ||
+        (c.director || '').toLowerCase().includes(q) ||
+        (c.id || '').toLowerCase().includes(q);
       if (!match) return false;
     }
-    if (entityFilter !== 'all' && !c.entityType.includes(entityFilter)) return false;
-    if (serviceFilter !== 'all' && !c.activeServices.includes(serviceFilter)) return false;
+    if (softwareFilter !== 'all' && (c.software || '').toLowerCase() !== softwareFilter.toLowerCase()) return false;
+    if (entityFilter !== 'all' && !(c.entityType || '').includes(entityFilter)) return false;
     return true;
   });
 
@@ -38,7 +39,7 @@ export default function ClientsPage() {
         <div>
           <div className="flex items-center gap-2 text-secondary text-xs uppercase tracking-wider font-semibold">
             <span className="material-symbols-outlined text-[16px] text-primary">corporate_fare</span>
-            <span>Australian Business Entities &amp; Fiduciary Registry</span>
+            <span>Australian Business Entities &amp; Practice Registry</span>
           </div>
           <h1 className="font-headline-lg text-2xl lg:text-3xl font-bold text-on-surface tracking-tight mt-1 flex items-center gap-2">
             Clients Directory
@@ -47,7 +48,7 @@ export default function ClientsPage() {
             </span>
           </h1>
           <p className="font-body-md text-sm text-secondary mt-0.5">
-            Click any client to open their full client profile, active lodgements, and compliance flags.
+            Click any client to open their full client profile, accounting software configuration, and compliance flags.
           </p>
         </div>
 
@@ -80,12 +81,24 @@ export default function ClientsPage() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by client name, ABN, director, or industry..."
+            placeholder="Search by client name, software, email, or ABN..."
             className="w-full text-xs bg-transparent focus:outline-none placeholder:text-outline text-on-surface"
           />
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          {/* Software Filter */}
+          <select
+            value={softwareFilter}
+            onChange={(e) => setSoftwareFilter(e.target.value)}
+            className="h-8 px-2.5 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none"
+          >
+            <option value="all">All Software</option>
+            <option value="Quickbook">Quickbook</option>
+            <option value="Xero">Xero</option>
+            <option value="MYOB">MYOB</option>
+          </select>
+
           <select
             value={entityFilter}
             onChange={(e) => setEntityFilter(e.target.value)}
@@ -96,21 +109,10 @@ export default function ClientsPage() {
             <option value="Trust">Discretionary Trust</option>
             <option value="Partnership">Partnership</option>
           </select>
-
-          <select
-            value={serviceFilter}
-            onChange={(e) => setServiceFilter(e.target.value)}
-            className="h-8 px-2.5 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none"
-          >
-            <option value="all">All Services</option>
-            <option value="bas">Business Activity Statement (BAS)</option>
-            <option value="payslip">Payslip / Wages</option>
-            <option value="superannuation">Superannuation</option>
-          </select>
         </div>
       </div>
 
-      {/* Clients Cards Grid / Table */}
+      {/* Clients Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md">
         {filteredClients.map((client) => {
           return (
@@ -126,7 +128,18 @@ export default function ClientsPage() {
                     <span className="material-symbols-outlined text-[22px]">corporate_fare</span>
                   </div>
 
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1.5">
+                    {/* Software Tag */}
+                    <span
+                      className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                        client.software === 'Xero'
+                          ? 'bg-sky-50 text-sky-800 border-sky-200'
+                          : 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                      }`}
+                    >
+                      {client.software || 'Quickbook'}
+                    </span>
+
                     {client.flagsCount > 0 ? (
                       <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1">
                         <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
@@ -134,7 +147,7 @@ export default function ClientsPage() {
                       </span>
                     ) : (
                       <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
-                        Healthy
+                        Active
                       </span>
                     )}
                   </div>
@@ -145,11 +158,16 @@ export default function ClientsPage() {
                 </h3>
 
                 <div className="flex flex-col gap-1 text-xs text-secondary mb-3">
-                  <span className="font-mono text-[11px] text-on-surface">ABN: {client.abn}</span>
-                  <span className="text-[11px]">{client.entityType}</span>
+                  {client.contactEmail && (
+                    <span className="text-[11px] font-mono text-on-surface flex items-center gap-1">
+                      <span className="material-symbols-outlined text-[13px] text-secondary">mail</span>
+                      {client.contactEmail}
+                    </span>
+                  )}
+                  <span className="font-mono text-[11px] text-secondary">Payrun: {client.payrollFrequency || 'Fortnightly'}</span>
                   <span className="text-[11px] flex items-center gap-1">
                     <span className="material-symbols-outlined text-[13px]">location_on</span>
-                    {client.city}, {client.state}
+                    {client.city || 'Adelaide'}, {client.state || 'SA'}
                   </span>
                 </div>
 
@@ -159,7 +177,7 @@ export default function ClientsPage() {
                     Active Services:
                   </span>
                   <div className="flex flex-wrap gap-1">
-                    {client.activeServices.map((svc) => (
+                    {(client.activeServices || ['bas', 'payslip', 'superannuation']).map((svc) => (
                       <span
                         key={svc}
                         className="px-2 py-0.5 rounded text-[10px] font-semibold bg-surface-container text-on-surface capitalize"
@@ -177,7 +195,7 @@ export default function ClientsPage() {
 
               {/* Bottom Card Footer */}
               <div className="pt-2 border-t border-outline-variant/20 flex items-center justify-between text-xs">
-                <span className="text-secondary text-[11px]">Director: {client.director}</span>
+                <span className="text-secondary text-[11px]">Software: <strong className="text-on-surface">{client.software || 'Quickbook'}</strong></span>
                 <span className="text-primary font-bold text-xs flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                   View Profile &rarr;
                 </span>
