@@ -12,7 +12,6 @@ export default function ClientProfilePage() {
     basRecords,
     payslipTracking,
     updatePayslipTrackingField,
-    superAllocations,
     notProcessedItems,
     deadlineApproachingTasks,
     issueTokens,
@@ -22,7 +21,7 @@ export default function ClientProfilePage() {
     showToast
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'bas' | 'payroll' | 'super' | 'tokens'
+  const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'bas' | 'payroll' | 'tokens'
 
   // Resolve target client
   const activeId = clientId || selectedClientId;
@@ -33,7 +32,6 @@ export default function ClientProfilePage() {
   const clientTrackingRows = payslipTracking.filter(
     (pt) => pt.clientId === client.id || (pt.company && client.name && pt.company.toLowerCase() === client.name.toLowerCase())
   );
-  const clientSuper = superAllocations.filter((sa) => sa.clientId === client.id);
   const clientNotProcessed = notProcessedItems.filter((np) => np.clientId === client.id && np.status !== 'Processed');
   const clientDeadlines = deadlineApproachingTasks.filter((dl) => dl.clientId === client.id && !dl.completed);
   const clientTokens = issueTokens.filter((tk) => tk.clientId === client.id);
@@ -178,19 +176,17 @@ export default function ClientProfilePage() {
         <div className="pt-3 mt-3 border-t border-outline-variant/20 flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-1.5 text-xs">
             <span className="text-secondary font-semibold mr-1">Active Practice Services:</span>
-            {(client.activeServices || ['bas', 'payslip', 'superannuation']).map((svc) => (
+            {(client.activeServices || ['bas', 'payslip']).map((svc) => (
               <span
                 key={svc}
                 className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary border border-primary/20 flex items-center gap-1"
               >
                 <span className="material-symbols-outlined text-[14px]">
-                  {svc === 'bas' ? 'receipt_long' : svc === 'payslip' ? 'payments' : 'savings'}
+                  {svc === 'bas' ? 'receipt_long' : 'payments'}
                 </span>
                 {svc === 'bas'
                   ? 'Business Activity Statement (BAS)'
-                  : svc === 'payslip'
-                  ? 'Payslip & Wage Management'
-                  : 'Superannuation'}
+                  : 'Payslip & Wage Management'}
               </span>
             ))}
           </div>
@@ -278,19 +274,6 @@ export default function ClientProfilePage() {
         >
           <span className="material-symbols-outlined text-[16px]">receipt_long</span>
           <span>BAS Lodgements ({clientBas.length})</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab('super')}
-          className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
-            activeTab === 'super'
-              ? 'bg-primary text-on-primary shadow-xs'
-              : 'bg-surface-container text-secondary hover:text-on-surface'
-          }`}
-        >
-          <span className="material-symbols-outlined text-[16px]">savings</span>
-          <span>Superannuation ({clientSuper.length})</span>
         </button>
 
         <button
@@ -534,57 +517,7 @@ export default function ClientProfilePage() {
         </div>
       )}
 
-      {/* 4. SUPERANNUATION TAB */}
-      {activeTab === 'super' && (
-        <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-xs overflow-hidden">
-          <div className="p-3 border-b border-outline-variant/20 flex items-center justify-between">
-            <h3 className="font-bold text-xs uppercase tracking-wider text-secondary">
-              Superannuation Allocations for {client.name}
-            </h3>
-          </div>
-
-          {clientSuper.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs">
-                <thead>
-                  <tr className="bg-surface-container-low border-b border-outline-variant/20 text-secondary uppercase font-semibold">
-                    <th className="py-2.5 px-3">Employee</th>
-                    <th className="py-2.5 px-3">Super Fund</th>
-                    <th className="py-2.5 px-3">USI</th>
-                    <th className="py-2.5 px-3">Member No</th>
-                    <th className="py-2.5 px-3 text-right">Q3 Contribution</th>
-                    <th className="py-2.5 px-3">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-outline-variant/15">
-                  {clientSuper.map((sa) => (
-                    <tr key={sa.id} className="hover:bg-surface-container-low/50">
-                      <td className="py-3 px-3 font-semibold text-on-surface">{sa.employeeName}</td>
-                      <td className="py-3 px-3 font-medium text-on-surface">{sa.superFundName}</td>
-                      <td className="py-3 px-3 font-mono text-secondary">{sa.usi}</td>
-                      <td className="py-3 px-3 font-mono text-secondary">{sa.memberNo}</td>
-                      <td className="py-3 px-3 text-right font-bold text-emerald-700">${sa.q3Contribution.toFixed(2)}</td>
-                      <td className="py-3 px-3">
-                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                          sa.complianceStatus === 'Compliant' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'
-                        }`}>
-                          {sa.complianceStatus}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <div className="p-8 text-center text-xs text-secondary">
-              No super allocations logged for this client yet.
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* 5. ISSUE TOKENS TAB */}
+      {/* 4. ISSUE TOKENS TAB */}
       {activeTab === 'tokens' && (
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">

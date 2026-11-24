@@ -278,23 +278,6 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
                   </div>
                 </NavLink>
 
-                {/* 3. Superannuation */}
-                <NavLink
-                  to="/services/superannuation"
-                  onClick={() => setMobileOpen && setMobileOpen(false)}
-                  className={({ isActive }) =>
-                    `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${isActive
-                      ? 'bg-primary text-on-primary font-semibold shadow-xs'
-                      : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
-                    }`
-                  }
-                >
-                  <div className="flex items-center gap-space-sm truncate">
-                    <span className="material-symbols-outlined text-[18px]">savings</span>
-                    <span className="truncate">Superannuation</span>
-                  </div>
-                </NavLink>
-
                 {/* Dynamic custom service types added with plus icon */}
                 {services
                   .filter((s) => !s.isDefault)

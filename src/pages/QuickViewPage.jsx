@@ -16,10 +16,12 @@ export const TEAM_MEMBERS = [
 export const SERVICES_LIST = [
   'BAS',
   'Payslip/Wage',
-  'Superannuation',
   'Bookkeeping',
   'General'
 ];
+
+// Set to true to re-link Pending Tasks module into QuickView
+const SHOW_PENDING_TASKS = false;
 
 export default function QuickViewPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -42,12 +44,17 @@ export default function QuickViewPage() {
     showToast
   } = useApp();
 
-  // Active view: 'tasks', 'communications', or 'split'
-  const tabParam = searchParams.get('tab') || 'tasks';
-  const initialView = tabParam === 'tokens' || tabParam === 'communications' ? 'communications' : 'tasks';
+  // Active view: 'communications' (or 'tasks' / 'split' if SHOW_PENDING_TASKS is enabled)
+  const tabParam = searchParams.get('tab') || 'communications';
+  const initialView = SHOW_PENDING_TASKS && tabParam === 'tasks' ? 'tasks' : 'communications';
   const [activeView, setActiveView] = useState(initialView);
 
   useEffect(() => {
+    if (!SHOW_PENDING_TASKS) {
+      setActiveView('communications');
+      if (tabParam === 'tokens') setComStatusFilter('open');
+      return;
+    }
     if (tabParam === 'tokens' || tabParam === 'communications') {
       setActiveView('communications');
       if (tabParam === 'tokens') setComStatusFilter('open');
@@ -149,8 +156,7 @@ export default function QuickViewPage() {
       ...prev,
       content: `Discussion on task "${task.task}": @${task.assignedTo} `,
       clientTagId: task.clientId || '',
-      taskTagId: task.id,
-      type: 'Instruction'
+      taskTagId: task.id
     }));
     showToast(`Pre-filled team communication for task "${task.task}".`);
   };
@@ -158,14 +164,12 @@ export default function QuickViewPage() {
   // =========================================================================
   // VIEW 2: TEAM COMMUNICATIONS STATE & COMPOSER
   // =========================================================================
-  const [comTypeFilter, setComTypeFilter] = useState('all');
   const [comStatusFilter, setComStatusFilter] = useState('all');
   const [comSearch, setComSearch] = useState('');
   const [expandedThreads, setExpandedThreads] = useState({});
 
   // Communication composer state
   const [comForm, setComForm] = useState({
-    type: 'Comment', // Comment, Instruction, Issue, Complaint
     content: '',
     clientTagId: '',
     taskTagId: '',
@@ -212,19 +216,16 @@ export default function QuickViewPage() {
     });
 
     addTeamCommunication({
-      type: comForm.type,
       content: comForm.content,
       clientTag,
       taskTag,
       mentions: detectedMentions,
-      isStatusRelated: comForm.type !== 'Comment',
-      status: comForm.type === 'Comment' ? 'Resolved' : comForm.status || 'Open',
-      severity: comForm.type === 'Complaint' || comForm.type === 'Issue' ? 'High' : 'Normal',
-      category: comForm.type
+      isStatusRelated: true,
+      status: comForm.status || 'Open',
+      severity: 'Normal'
     });
 
     setComForm({
-      type: 'Comment',
       content: '',
       clientTagId: '',
       taskTagId: '',
@@ -259,10 +260,7 @@ export default function QuickViewPage() {
   };
 
   const filteredCommunications = teamCommunications.filter((com) => {
-    if (comTypeFilter !== 'all' && (com.type || '').toLowerCase() !== comTypeFilter.toLowerCase()) {
-      return false;
-    }
-    if (comStatusFilter === 'open' && (com.status === 'Resolved' || !com.isStatusRelated)) {
+    if (comStatusFilter === 'open' && com.status === 'Resolved') {
       return false;
     }
     if (comStatusFilter === 'resolved' && com.status !== 'Resolved') {
@@ -280,7 +278,7 @@ export default function QuickViewPage() {
     return true;
   });
 
-  const openIssuesCount = teamCommunications.filter((c) => c.isStatusRelated && c.status !== 'Resolved').length;
+  const openIssuesCount = teamCommunications.filter((c) => c.status !== 'Resolved').length;
 
   const handleInspectClient = (clientId) => {
     if (clientId) {
@@ -315,37 +313,45 @@ export default function QuickViewPage() {
             <span>Practice Management Center • Quick View</span>
           </div>
           <h1 className="font-headline-lg text-2xl lg:text-3xl font-bold text-on-surface tracking-tight mt-0.5 flex flex-wrap items-center gap-2.5">
-            <span>Quick View &amp; Team Operations</span>
-            {pendingCount > 0 ? (
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200">
-                {pendingCount} Tasks Pending
+            <span>Quick View • Team Communications</span>
+            {SHOW_PENDING_TASKS && (
+              pendingCount > 0 ? (
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200">
+                  {pendingCount} Tasks Pending
+                </span>
+              ) : (
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                  Tasks Cleared
+                </span>
+              )
+            )}
+            {openIssuesCount > 0 ? (
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-error-container text-error border border-error/20">
+                {openIssuesCount} Open Communications
               </span>
             ) : (
               <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
-                Tasks Cleared
-              </span>
-            )}
-            {openIssuesCount > 0 && (
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-error-container text-error border border-error/20">
-                {openIssuesCount} Open Communications
+                All Communications Clear
               </span>
             )}
           </h1>
           <p className="font-body-md text-sm text-secondary mt-0.5">
-            Summarized operational view of pending tasks and centralized team communications for comments, instructions, complaints, and issues.
+            Centralized team communications hub for comments, instructions, complaints, issues, client updates, and real-time status tracking.
           </p>
         </div>
 
         {/* Top Actions */}
         <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setShowAddTaskModal(true)}
-            className="h-9 px-3.5 bg-primary hover:bg-primary-container text-on-primary rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xs transition"
-          >
-            <span className="material-symbols-outlined text-[18px]">add_task</span>
-            <span>+ Add Task</span>
-          </button>
+          {SHOW_PENDING_TASKS && (
+            <button
+              type="button"
+              onClick={() => setShowAddTaskModal(true)}
+              className="h-9 px-3.5 bg-primary hover:bg-primary-container text-on-primary rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xs transition"
+            >
+              <span className="material-symbols-outlined text-[18px]">add_task</span>
+              <span>+ Add Task</span>
+            </button>
+          )}
 
           <button
             type="button"
@@ -355,72 +361,74 @@ export default function QuickViewPage() {
               const el = document.getElementById('com-composer');
               if (el) el.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="h-9 px-3.5 bg-surface-container hover:bg-surface-container-high text-on-surface rounded-lg text-xs font-semibold flex items-center gap-1.5 border border-outline-variant/30 shadow-xs transition"
+            className="h-9 px-3.5 bg-primary hover:bg-primary-container text-on-primary rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xs transition"
           >
-            <span className="material-symbols-outlined text-[18px] text-primary">chat</span>
+            <span className="material-symbols-outlined text-[18px]">chat</span>
             <span>+ Post to Team</span>
           </button>
         </div>
       </div>
 
-      {/* Modern 2-View Segmented Switcher */}
-      <div className="flex items-center justify-between border-b border-outline-variant/30 pb-3 mb-4">
-        <div className="flex items-center gap-2 p-1 bg-surface-container-low rounded-xl border border-outline-variant/20">
-          <button
-            type="button"
-            onClick={() => switchView('tasks')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 ${activeView === 'tasks'
-                ? 'bg-surface-container-lowest text-primary shadow-xs'
-                : 'text-secondary hover:text-on-surface'
-              }`}
-          >
-            <span className="material-symbols-outlined text-[18px]">checklist</span>
-            <span>1. Pending Tasks / Works</span>
-            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-primary/10 text-primary">
-              {pendingTasks.length}
-            </span>
-          </button>
+      {/* Modern 2-View Segmented Switcher (Preserved - unlinked when SHOW_PENDING_TASKS is false) */}
+      {SHOW_PENDING_TASKS && (
+        <div className="flex items-center justify-between border-b border-outline-variant/30 pb-3 mb-4">
+          <div className="flex items-center gap-2 p-1 bg-surface-container-low rounded-xl border border-outline-variant/20">
+            <button
+              type="button"
+              onClick={() => switchView('tasks')}
+              className={`px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 ${activeView === 'tasks'
+                  ? 'bg-surface-container-lowest text-primary shadow-xs'
+                  : 'text-secondary hover:text-on-surface'
+                }`}
+            >
+              <span className="material-symbols-outlined text-[18px]">checklist</span>
+              <span>1. Pending Tasks / Works</span>
+              <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-primary/10 text-primary">
+                {pendingTasks.length}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => switchView('communications')}
+              className={`px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 ${activeView === 'communications'
+                  ? 'bg-surface-container-lowest text-primary shadow-xs'
+                  : 'text-secondary hover:text-on-surface'
+                }`}
+            >
+              <span className="material-symbols-outlined text-[18px]">forum</span>
+              <span>2. Team Communications</span>
+              <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${openIssuesCount > 0 ? 'bg-error-container text-error' : 'bg-surface-container text-secondary'
+                }`}>
+                {teamCommunications.length}
+              </span>
+            </button>
+          </div>
 
           <button
             type="button"
-            onClick={() => switchView('communications')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 ${activeView === 'communications'
-                ? 'bg-surface-container-lowest text-primary shadow-xs'
-                : 'text-secondary hover:text-on-surface'
+            onClick={() => switchView(activeView === 'split' ? 'tasks' : 'split')}
+            className={`hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition ${activeView === 'split'
+                ? 'bg-primary text-on-primary border-primary'
+                : 'bg-surface-container-lowest hover:bg-surface-container text-secondary border-outline-variant/30'
               }`}
+            title="Toggle Side-by-Side View"
           >
-            <span className="material-symbols-outlined text-[18px]">forum</span>
-            <span>2. Team Communications</span>
-            <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${openIssuesCount > 0 ? 'bg-error-container text-error' : 'bg-surface-container text-secondary'
-              }`}>
-              {teamCommunications.length}
-            </span>
+            <span className="material-symbols-outlined text-[16px]">view_column</span>
+            <span>{activeView === 'split' ? 'Single View' : 'Split View'}</span>
           </button>
         </div>
-
-        <button
-          type="button"
-          onClick={() => switchView(activeView === 'split' ? 'tasks' : 'split')}
-          className={`hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition ${activeView === 'split'
-              ? 'bg-primary text-on-primary border-primary'
-              : 'bg-surface-container-lowest hover:bg-surface-container text-secondary border-outline-variant/30'
-            }`}
-          title="Toggle Side-by-Side View"
-        >
-          <span className="material-symbols-outlined text-[16px]">view_column</span>
-          <span>{activeView === 'split' ? 'Single View' : 'Split View'}</span>
-        </button>
-      </div>
+      )}
 
       {/* ========================================================================= */}
       {/* 2-SECTION LAYOUT (SINGLE VIEW OR SPLIT VIEW) */}
       {/* ========================================================================= */}
-      <div className={`grid gap-5 ${activeView === 'split' ? 'grid-cols-1 xl:grid-cols-2' : 'grid-cols-1'}`}>
+      <div className={`grid gap-5 ${SHOW_PENDING_TASKS && activeView === 'split' ? 'grid-cols-1 xl:grid-cols-2' : 'grid-cols-1'}`}>
 
         {/* ===================================================================== */}
-        {/* VIEW 1: PENDING TASKS / WORKS (TABLE FORMAT) */}
+        {/* VIEW 1: PENDING TASKS / WORKS (TABLE FORMAT) - UNLINKED MODULE */}
         {/* ===================================================================== */}
-        {(activeView === 'tasks' || activeView === 'split') && (
+        {SHOW_PENDING_TASKS && (activeView === 'tasks' || activeView === 'split') && (
           <div className="flex flex-col w-full">
             <div className="flex items-center justify-between mb-2.5">
               <div className="flex items-center gap-2">
@@ -712,7 +720,7 @@ export default function QuickViewPage() {
         {/* ===================================================================== */}
         {/* VIEW 2: TEAM COMMUNICATIONS (CHAT-LIKE INTERFACE) */}
         {/* ===================================================================== */}
-        {(activeView === 'communications' || activeView === 'split') && (
+        {(!SHOW_PENDING_TASKS || activeView === 'communications' || activeView === 'split') && (
           <div className="flex flex-col w-full">
             <div className="flex items-center justify-between mb-2.5">
               <div className="flex items-center gap-2">
@@ -731,95 +739,62 @@ export default function QuickViewPage() {
             {/* Sub-bar Filters */}
             <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/30 p-2.5 mb-3 shadow-2xs">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                {/* Category Pills */}
+                {/* Status Filter Chips */}
                 <div className="flex flex-wrap items-center gap-1.5">
                   <button
                     type="button"
-                    onClick={() => setComTypeFilter('all')}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition ${comTypeFilter === 'all'
+                    onClick={() => setComStatusFilter('all')}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition ${comStatusFilter === 'all'
                         ? 'bg-primary text-on-primary'
                         : 'bg-surface-container hover:bg-surface-container-high text-secondary'
                       }`}
                   >
-                    All ({teamCommunications.length})
+                    All Messages ({teamCommunications.length})
                   </button>
 
                   <button
                     type="button"
-                    onClick={() => setComTypeFilter('instruction')}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 ${comTypeFilter === 'instruction'
-                        ? 'bg-indigo-700 text-white'
-                        : 'bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200'
-                      }`}
-                  >
-                    <span>⚡ Instructions</span>
-                    <span className="text-[10px]">
-                      ({teamCommunications.filter((c) => c.type === 'Instruction').length})
-                    </span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setComTypeFilter('issue')}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 ${comTypeFilter === 'issue'
+                    onClick={() => setComStatusFilter('open')}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 ${comStatusFilter === 'open'
                         ? 'bg-error text-on-error'
                         : 'bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-200'
                       }`}
                   >
-                    <span>⚠️ Issues</span>
+                    <span>⚠️ Open / Actionable</span>
                     <span className="text-[10px]">
-                      ({teamCommunications.filter((c) => c.type === 'Issue').length})
+                      ({teamCommunications.filter((c) => c.status !== 'Resolved').length})
                     </span>
                   </button>
 
                   <button
                     type="button"
-                    onClick={() => setComTypeFilter('complaint')}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 ${comTypeFilter === 'complaint'
-                        ? 'bg-orange-600 text-white'
-                        : 'bg-orange-50 hover:bg-orange-100 text-orange-900 border border-orange-200'
+                    onClick={() => setComStatusFilter('resolved')}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 ${comStatusFilter === 'resolved'
+                        ? 'bg-emerald-700 text-white'
+                        : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200'
                       }`}
                   >
-                    <span>🚨 Complaints</span>
+                    <span>✓ Resolved</span>
                     <span className="text-[10px]">
-                      ({teamCommunications.filter((c) => c.type === 'Complaint').length})
-                    </span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setComTypeFilter('comment')}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 ${comTypeFilter === 'comment'
-                        ? 'bg-slate-700 text-white'
-                        : 'bg-surface-container hover:bg-surface-container-high text-secondary'
-                      }`}
-                  >
-                    <span>💬 Comments</span>
-                    <span className="text-[10px]">
-                      ({teamCommunications.filter((c) => c.type === 'Comment').length})
+                      ({teamCommunications.filter((c) => c.status === 'Resolved').length})
                     </span>
                   </button>
                 </div>
 
-                {/* Status Toggle & Search */}
+                {/* Search */}
                 <div className="flex items-center gap-2">
-                  <select
-                    value={comStatusFilter}
-                    onChange={(e) => setComStatusFilter(e.target.value)}
-                    className="h-7 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none cursor-pointer"
-                  >
-                    <option value="all">Status: All</option>
-                    <option value="open">Open / Unresolved Only</option>
-                    <option value="resolved">Resolved Only</option>
-                  </select>
-
-                  <input
-                    type="text"
-                    value={comSearch}
-                    onChange={(e) => setComSearch(e.target.value)}
-                    placeholder="Filter chat..."
-                    className="h-7 px-2.5 rounded-lg bg-surface-container-low text-xs text-on-surface border border-outline-variant/20 focus:border-primary focus:outline-none w-28 sm:w-36"
-                  />
+                  <div className="relative">
+                    <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-secondary text-[15px]">
+                      search
+                    </span>
+                    <input
+                      type="text"
+                      value={comSearch}
+                      onChange={(e) => setComSearch(e.target.value)}
+                      placeholder="Search messages..."
+                      className="h-7 pl-7 pr-2.5 rounded-lg bg-surface-container-low text-xs text-on-surface border border-outline-variant/20 focus:border-primary focus:outline-none w-36 sm:w-48"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -828,47 +803,24 @@ export default function QuickViewPage() {
             <div id="com-composer" className="bg-surface-container-lowest rounded-xl border border-outline-variant/30 p-3 mb-4 shadow-xs">
               <form onSubmit={handlePostCommunication} className="flex flex-col gap-2.5">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  {/* Type Selector */}
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-[11px] font-bold text-secondary uppercase tracking-wider">Post Type:</span>
-                    <div className="flex items-center gap-1">
-                      {[
-                        { type: 'Comment', label: '💬 Comment', color: 'hover:bg-slate-100' },
-                        { type: 'Instruction', label: '⚡ Instruction', color: 'hover:bg-indigo-100 text-indigo-900' },
-                        { type: 'Issue', label: '⚠️ Issue', color: 'hover:bg-rose-100 text-rose-900' },
-                        { type: 'Complaint', label: '🚨 Complaint', color: 'hover:bg-orange-100 text-orange-900' }
-                      ].map((item) => (
-                        <button
-                          key={item.type}
-                          type="button"
-                          onClick={() => setComForm({ ...comForm, type: item.type })}
-                          className={`px-2.5 py-1 rounded-lg text-xs font-bold transition ${comForm.type === item.type
-                              ? 'bg-primary text-on-primary shadow-xs'
-                              : `bg-surface-container text-on-surface ${item.color}`
-                            }`}
-                        >
-                          {item.label}
-                        </button>
-                      ))}
-                    </div>
+                  <div className="flex items-center gap-1.5 text-xs">
+                    <span className="material-symbols-outlined text-[16px] text-primary">edit_note</span>
+                    <span className="text-[11px] font-bold text-secondary uppercase tracking-wider">New Message</span>
                   </div>
 
-                  {/* Status if status-related */}
-                  {comForm.type !== 'Comment' && (
-                    <div className="flex items-center gap-1 text-xs">
-                      <span className="text-secondary text-[11px]">Initial Status:</span>
-                      <select
-                        value={comForm.status}
-                        onChange={(e) => setComForm({ ...comForm, status: e.target.value })}
-                        className="h-6 px-1.5 text-xs font-bold rounded bg-surface-container text-on-surface border border-outline-variant/30"
-                      >
-                        <option value="Open">Open</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Waiting on Client">Waiting on Client</option>
-                        <option value="Resolved">Resolved</option>
-                      </select>
-                    </div>
-                  )}
+                  <div className="flex items-center gap-1.5 text-xs">
+                    <span className="text-secondary text-[11px] font-medium">Initial Status:</span>
+                    <select
+                      value={comForm.status}
+                      onChange={(e) => setComForm({ ...comForm, status: e.target.value })}
+                      className="h-6 px-1.5 text-xs font-bold rounded bg-surface-container text-on-surface border border-outline-variant/30 focus:outline-none"
+                    >
+                      <option value="Open">Open</option>
+                      <option value="In Progress">In Progress</option>
+                      <option value="Waiting on Client">Waiting on Client</option>
+                      <option value="Resolved">Resolved</option>
+                    </select>
+                  </div>
                 </div>
 
                 {/* Message input */}
@@ -876,7 +828,7 @@ export default function QuickViewPage() {
                   rows={2}
                   value={comForm.content}
                   onChange={(e) => setComForm({ ...comForm, content: e.target.value })}
-                  placeholder={`Add a ${comForm.type.toLowerCase()} for the team... Mention with @Name or click helper tags below`}
+                  placeholder="Post an instruction, comment, issue, or update for the team... Mention with @Name or click helper tags below"
                   className="w-full text-xs px-3 py-2 rounded-lg bg-surface-container-low border border-outline-variant/30 focus:border-primary focus:outline-none text-on-surface resize-none"
                 />
 
@@ -954,16 +906,14 @@ export default function QuickViewPage() {
                     key={com.id}
                     className={`p-3.5 rounded-xl border transition shadow-2xs ${com.status === 'Resolved'
                         ? 'bg-surface-container-lowest/70 border-outline-variant/20'
-                        : com.type === 'Issue'
-                          ? 'bg-rose-50/30 border-rose-200'
-                          : com.type === 'Complaint'
-                            ? 'bg-orange-50/30 border-orange-200'
-                            : com.type === 'Instruction'
-                              ? 'bg-indigo-50/30 border-indigo-200'
-                              : 'bg-surface-container-lowest border-outline-variant/30'
+                        : com.status === 'In Progress'
+                          ? 'bg-amber-50/20 border-amber-200'
+                          : com.status === 'Waiting on Client'
+                            ? 'bg-purple-50/20 border-purple-200'
+                            : 'bg-surface-container-lowest border-outline-variant/30'
                       }`}
                   >
-                    {/* Header: Author, Avatar, Type, Status */}
+                    {/* Header: Author, Avatar, Status */}
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <div className="flex items-center gap-2">
                         {/* Avatar */}
@@ -985,42 +935,25 @@ export default function QuickViewPage() {
                         </div>
                       </div>
 
-                      {/* Badges: Type and Status */}
+                      {/* Status badge dropdown */}
                       <div className="flex items-center gap-1.5 flex-wrap justify-end">
-                        {/* Category badge */}
-                        <span
-                          className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${com.type === 'Instruction'
-                              ? 'bg-indigo-100 text-indigo-900 border border-indigo-200'
-                              : com.type === 'Issue'
-                                ? 'bg-rose-100 text-rose-900 border border-rose-200'
-                                : com.type === 'Complaint'
-                                  ? 'bg-orange-100 text-orange-900 border border-orange-200'
-                                  : 'bg-slate-100 text-slate-800'
+                        <select
+                          value={com.status || 'Open'}
+                          onChange={(e) => updateCommunicationStatus(com.id, e.target.value)}
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded border transition focus:outline-none cursor-pointer ${com.status === 'Resolved'
+                              ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                              : com.status === 'In Progress'
+                                ? 'bg-amber-50 text-amber-900 border-amber-300'
+                                : com.status === 'Waiting on Client'
+                                  ? 'bg-purple-50 text-purple-900 border-purple-300'
+                                  : 'bg-red-50 text-red-900 border-red-300'
                             }`}
                         >
-                          {com.type}
-                        </span>
-
-                        {/* Status badge */}
-                        {com.isStatusRelated && (
-                          <select
-                            value={com.status || 'Open'}
-                            onChange={(e) => updateCommunicationStatus(com.id, e.target.value)}
-                            className={`text-[10px] font-bold px-2 py-0.5 rounded border transition focus:outline-none cursor-pointer ${com.status === 'Resolved'
-                                ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
-                                : com.status === 'In Progress'
-                                  ? 'bg-amber-50 text-amber-900 border-amber-300'
-                                  : com.status === 'Waiting on Client'
-                                    ? 'bg-purple-50 text-purple-900 border-purple-300'
-                                    : 'bg-red-50 text-red-900 border-red-300'
-                              }`}
-                          >
-                            <option value="Open">Open</option>
-                            <option value="In Progress">In Progress</option>
-                            <option value="Waiting on Client">Waiting on Client</option>
-                            <option value="Resolved">Resolved</option>
-                          </select>
-                        )}
+                          <option value="Open">Open</option>
+                          <option value="In Progress">In Progress</option>
+                          <option value="Waiting on Client">Waiting on Client</option>
+                          <option value="Resolved">Resolved</option>
+                        </select>
                       </div>
                     </div>
 
@@ -1171,8 +1104,8 @@ export default function QuickViewPage() {
         )}
       </div>
 
-      {/* Add Task Modal */}
-      {showAddTaskModal && (
+      {/* Add Task Modal (Preserved - unlinked when SHOW_PENDING_TASKS is false) */}
+      {SHOW_PENDING_TASKS && showAddTaskModal && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-surface-container-lowest rounded-xl max-w-md w-full p-5 border border-outline-variant/30 shadow-xl animate-scale-in">
             <div className="flex items-center justify-between pb-3 border-b border-outline-variant/20 mb-3">

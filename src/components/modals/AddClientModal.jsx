@@ -21,7 +21,7 @@ export default function AddClientModal() {
   const [lodgementCycle, setLodgementCycle] = useState('Quarterly');
   const [payrollFrequency, setPayrollFrequency] = useState('Fortnightly');
   const [employeeCount, setEmployeeCount] = useState(5);
-  const [activeServices, setActiveServices] = useState(['bas', 'payslip', 'superannuation']);
+  const [activeServices, setActiveServices] = useState(['bas', 'payslip']);
 
   if (activeModal !== 'addClient') return null;
 
@@ -234,16 +234,6 @@ export default function AddClientModal() {
                   className="rounded text-primary focus:ring-0"
                 />
                 <span>Payslip &amp; Wage Management</span>
-              </label>
-
-              <label className="flex items-center gap-1.5 cursor-pointer font-medium">
-                <input
-                  type="checkbox"
-                  checked={activeServices.includes('superannuation')}
-                  onChange={() => handleToggleService('superannuation')}
-                  className="rounded text-primary focus:ring-0"
-                />
-                <span>Superannuation Guarantee (SG)</span>
               </label>
             </div>
           </div>

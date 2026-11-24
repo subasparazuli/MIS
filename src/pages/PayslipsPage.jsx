@@ -509,7 +509,7 @@ export default function PayslipsPage() {
             </span>
           </h1>
           <p className="font-body-md text-sm text-secondary mt-0.5">
-            Interactive tracking table for client payruns, updates, superannuation, payslip dispatch, and schedule status.
+            Interactive tracking table for client payruns, updates, super status, payslip dispatch, and schedule status.
           </p>
         </div>
 

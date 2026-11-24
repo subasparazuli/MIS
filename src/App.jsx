@@ -18,7 +18,6 @@ import GlobalSearchModal from './components/modals/GlobalSearchModal';
 import QuickViewPage from './pages/QuickViewPage';
 import BasPage from './pages/BasPage';
 import PayslipsPage from './pages/PayslipsPage';
-import SuperannuationPage from './pages/SuperannuationPage';
 import ClientsPage from './pages/ClientsPage';
 import ClientProfilePage from './pages/ClientProfilePage';
 import CustomServicePage from './pages/CustomServicePage';
@@ -44,7 +43,6 @@ export default function App() {
             <Route path="/quick-view" element={<QuickViewPage />} />
             <Route path="/services/bas" element={<BasPage />} />
             <Route path="/services/payslips" element={<PayslipsPage />} />
-            <Route path="/services/superannuation" element={<SuperannuationPage />} />
             <Route path="/services/:serviceId" element={<CustomServicePage />} />
             <Route path="/clients" element={<ClientsPage />} />
             <Route path="/clients/:clientId" element={<ClientProfilePage />} />

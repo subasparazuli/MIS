@@ -177,16 +177,14 @@ export default function ClientsPage() {
                     Active Services:
                   </span>
                   <div className="flex flex-wrap gap-1">
-                    {(client.activeServices || ['bas', 'payslip', 'superannuation']).map((svc) => (
+                    {(client.activeServices || ['bas', 'payslip']).map((svc) => (
                       <span
                         key={svc}
                         className="px-2 py-0.5 rounded text-[10px] font-semibold bg-surface-container text-on-surface capitalize"
                       >
                         {svc === 'bas'
                           ? 'BAS / GST'
-                          : svc === 'payslip'
-                          ? 'Wage / Payroll'
-                          : 'Superannuation'}
+                          : 'Wage / Payroll'}
                       </span>
                     ))}
                   </div>

@@ -12,8 +12,6 @@ import {
   initialBasRecords,
   initialPayRuns,
   initialPayslips,
-  initialSuperBatches,
-  initialSuperAllocations,
   initialPayslipTracking
 } from '../data/mockData';
 
@@ -21,17 +19,17 @@ const AppContext = createContext();
 
 // Clean up old legacy keys if present
 try {
-  ['lp_clients', 'lp_workflows', 'lp_wip', 'lp_invoices', 'mis_v2_payslip_tracking', 'mis_v2_bas_records'].forEach((k) => localStorage.removeItem(k));
+  ['lp_clients', 'lp_workflows', 'lp_wip', 'lp_invoices', 'mis_v2_payslip_tracking', 'mis_v2_bas_records', 'mis_v2_super_batches', 'mis_v2_super_allocations'].forEach((k) => localStorage.removeItem(k));
   const u = localStorage.getItem('mis_v2_current_user');
   if (u && (u.includes('Elena') || u.includes('Liam'))) {
     localStorage.removeItem('mis_v2_current_user');
   }
   const com = localStorage.getItem('mis_v3_team_communications');
-  if (com && (com.includes('Elena') || com.includes('Liam') || com.includes('Rachel'))) {
+  if (com && (com.includes('Elena') || com.includes('Liam') || com.includes('Rachel') || com.includes('Superannuation') || com.includes('AustralianSuper'))) {
     localStorage.removeItem('mis_v3_team_communications');
   }
   const tsk = localStorage.getItem('mis_v3_pending_tasks');
-  if (tsk && (tsk.includes('Elena') || tsk.includes('Liam') || tsk.includes('Rachel'))) {
+  if (tsk && (tsk.includes('Elena') || tsk.includes('Liam') || tsk.includes('Rachel') || tsk.includes('Superannuation'))) {
     localStorage.removeItem('mis_v3_pending_tasks');
   }
 } catch {
@@ -45,10 +43,18 @@ export function AppProvider({ children }) {
     return saved ? JSON.parse(saved) : initialCurrentUser;
   });
 
-  // Services State (Default 3 services + dynamically added service types)
+  // Services State (Default services without superannuation + dynamically added service types)
   const [services, setServices] = useState(() => {
     const saved = localStorage.getItem('mis_v2_services');
-    return saved ? JSON.parse(saved) : initialServices;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          return parsed.filter((s) => s.id !== 'superannuation');
+        }
+      } catch (e) {}
+    }
+    return initialServices;
   });
 
   // Clients State
@@ -232,17 +238,6 @@ export function AppProvider({ children }) {
     return saved ? JSON.parse(saved) : initialPayslips;
   });
 
-  // Superannuation State
-  const [superBatches, setSuperBatches] = useState(() => {
-    const saved = localStorage.getItem('mis_v2_super_batches');
-    return saved ? JSON.parse(saved) : initialSuperBatches;
-  });
-
-  const [superAllocations, setSuperAllocations] = useState(() => {
-    const saved = localStorage.getItem('mis_v2_super_allocations');
-    return saved ? JSON.parse(saved) : initialSuperAllocations;
-  });
-
   // Payslip Tracking State (exact spreadsheet tracking table with updates, emails, etc.)
   const [payslipTracking, setPayslipTracking] = useState(() => {
     const saved = localStorage.getItem('mis_v3_payslip_tracking');
@@ -354,14 +349,6 @@ export function AppProvider({ children }) {
   }, [payslips]);
 
   useEffect(() => {
-    localStorage.setItem('mis_v2_super_batches', JSON.stringify(superBatches));
-  }, [superBatches]);
-
-  useEffect(() => {
-    localStorage.setItem('mis_v2_super_allocations', JSON.stringify(superAllocations));
-  }, [superAllocations]);
-
-  useEffect(() => {
     localStorage.setItem('mis_v3_payslip_tracking', JSON.stringify(payslipTracking));
   }, [payslipTracking]);
 
@@ -468,7 +455,7 @@ export function AppProvider({ children }) {
       status: "Active",
       flagsCount: 0,
       unresolvedTokensCount: 0,
-      activeServices: newClient.activeServices || ["bas", "payslip", "superannuation"],
+      activeServices: newClient.activeServices || ["bas", "payslip"],
       lodgementCycle: newClient.lodgementCycle || "Quarterly",
       gstBasis: newClient.gstBasis || "Accruals",
       payrollFrequency: newClient.payrollFrequency || "Fortnightly",
@@ -657,7 +644,7 @@ export function AppProvider({ children }) {
       taskTag: comData.taskTag || null,
       mentions: comData.mentions || [],
       isStatusRelated: comData.isStatusRelated !== undefined ? comData.isStatusRelated : (comData.type !== 'Comment'),
-      status: comData.status || (comData.type === 'Comment' ? 'Resolved' : 'Open'),
+      status: comData.status || 'Open',
       severity: comData.severity || 'Normal',
       category: comData.category || 'General',
       responses: []
@@ -667,7 +654,7 @@ export function AppProvider({ children }) {
       localStorage.setItem('mis_v3_team_communications', JSON.stringify(updated));
       return updated;
     });
-    showToast(`Posted ${newCom.type.toLowerCase()} to Team Communications.`);
+    showToast('Posted message to Team Communications.');
   };
 
   const addCommunicationReply = (communicationId, { content, statusChange }) => {
@@ -933,25 +920,6 @@ export function AppProvider({ children }) {
     showToast("Payslip tracking entry deleted.");
   };
 
-  // Superannuation Actions
-  const authorizeSuperBatch = (batchId) => {
-    if (currentUser.role !== 'Admin') {
-      showToast("Admin authorization required to disburse superannuation clearing batches.", "error");
-      return;
-    }
-    setSuperBatches((prev) =>
-      prev.map((b) => (b.id === batchId ? { ...b, status: 'Processing', authorizedBy: currentUser.name } : b))
-    );
-    showToast(`Super batch ${batchId} authorized. Dispatched to clearing house gateway.`);
-  };
-
-  const submitSuperBatch = (batchId) => {
-    setSuperBatches((prev) =>
-      prev.map((b) => (b.id === batchId ? { ...b, status: 'Reconciled' } : b))
-    );
-    showToast(`Super batch ${batchId} reconciled.`);
-  };
-
   // Reset to initial clean data
   const resetAllData = () => {
     setCurrentUser(initialCurrentUser);
@@ -977,8 +945,6 @@ export function AppProvider({ children }) {
     setMonthlyBasStore({ '2021-09': initialMap });
     setPayRuns(initialPayRuns);
     setPayslips(initialPayslips);
-    setSuperBatches(initialSuperBatches);
-    setSuperAllocations(initialSuperAllocations);
     setPayslipTracking(initialPayslipTracking);
     setPendingTasks(initialPendingTasks);
     setTeamCommunications(initialTeamCommunications);
@@ -1104,12 +1070,6 @@ export function AppProvider({ children }) {
         addRecentPayrunPeriod,
         recentNotes,
         addRecentNote,
-
-        // Superannuation
-        superBatches,
-        superAllocations,
-        authorizeSuperBatch,
-        submitSuperBatch,
 
         // Global UI
         activeModal,
