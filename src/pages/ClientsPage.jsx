@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import DataLinkIcon from '../components/common/DataLinkIcon';
 
 export default function ClientsPage() {
   const navigate = useNavigate();
@@ -34,23 +35,11 @@ export default function ClientsPage() {
 
   return (
     <div className="flex flex-col w-full pb-16">
-      {/* Top Header */}
-      <div className="py-space-md flex flex-col lg:flex-row lg:items-center justify-between gap-space-md border-b border-outline-variant/20 mb-space-md">
-        <div>
-          <div className="flex items-center gap-2 text-secondary text-xs uppercase tracking-wider font-semibold">
-            <span className="material-symbols-outlined text-[16px] text-primary">corporate_fare</span>
-            <span>Australian Business Entities &amp; Practice Registry</span>
-          </div>
-          <h1 className="font-headline-lg text-2xl lg:text-3xl font-bold text-on-surface tracking-tight mt-1 flex items-center gap-2">
-            Clients Directory
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-surface-container-high text-primary">
-              {clients.length} Entities
-            </span>
-          </h1>
-          <p className="font-body-md text-sm text-secondary mt-0.5">
-            Click any client to open their full client profile, accounting software configuration, and compliance flags.
-          </p>
-        </div>
+      {/* Page Title */}
+      <div className="py-space-md flex flex-col sm:flex-row sm:items-center justify-between gap-space-md border-b border-outline-variant/20 mb-space-md">
+        <h1 className="font-headline-lg text-2xl lg:text-3xl font-bold text-on-surface tracking-tight">
+          Clients Directory
+        </h1>
 
         <div className="flex flex-wrap items-center gap-2">
           <button
@@ -153,8 +142,9 @@ export default function ClientsPage() {
                   </div>
                 </div>
 
-                <h3 className="font-bold text-sm text-on-surface group-hover:text-primary transition-colors leading-tight mb-1">
-                  {client.name}
+                <h3 className="font-bold text-sm text-on-surface group-hover:text-primary transition-colors leading-tight mb-1 inline-flex items-center flex-wrap">
+                  <span>{client.name}</span>
+                  {client.dataLinkType === 'With Data Link' && <DataLinkIcon />}
                 </h3>
 
                 <div className="flex flex-col gap-1 text-xs text-secondary mb-3">

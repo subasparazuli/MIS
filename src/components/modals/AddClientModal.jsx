@@ -21,6 +21,7 @@ export default function AddClientModal() {
   const [lodgementCycle, setLodgementCycle] = useState('Quarterly');
   const [payrollFrequency, setPayrollFrequency] = useState('Fortnightly');
   const [employeeCount, setEmployeeCount] = useState(5);
+  const [dataLinkType, setDataLinkType] = useState('Without Data Link');
   const [activeServices, setActiveServices] = useState(['bas', 'payslip']);
 
   if (activeModal !== 'addClient') return null;
@@ -54,6 +55,7 @@ export default function AddClientModal() {
       lodgementCycle,
       payrollFrequency,
       employeeCount: parseInt(employeeCount, 10) || 1,
+      dataLinkType,
       activeServices,
       leadPartner: currentUser.name || "Manoj Khanal, CA"
     });
@@ -209,6 +211,30 @@ export default function AddClientModal() {
                 onChange={(e) => setPostcode(e.target.value)}
                 className="w-full h-8 px-2 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs text-on-surface focus:outline-none"
               />
+            </div>
+          </div>
+
+          {/* Data Link Type */}
+          <div>
+            <label className="font-bold text-on-surface block mb-1">Client Data Link Type</label>
+            <div className="grid grid-cols-2 gap-2">
+              {['With Data Link', 'Without Data Link'].map((opt) => (
+                <button
+                  key={opt}
+                  type="button"
+                  onClick={() => setDataLinkType(opt)}
+                  className={`h-8 px-3 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 transition ${
+                    dataLinkType === opt
+                      ? 'bg-primary text-on-primary border-primary shadow-2xs'
+                      : 'bg-surface-container-low text-on-surface border-outline-variant/30 hover:bg-surface-container'
+                  }`}
+                >
+                  {opt === 'With Data Link' && (
+                    <span className="material-symbols-outlined text-[15px]">link</span>
+                  )}
+                  <span>{opt}</span>
+                </button>
+              ))}
             </div>
           </div>
 

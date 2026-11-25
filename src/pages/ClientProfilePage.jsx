@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import DataLinkIcon from '../components/common/DataLinkIcon';
 
 export default function ClientProfilePage() {
   const { clientId } = useParams();
   const navigate = useNavigate();
   const {
     clients,
+    updateClient,
     selectedClientId,
     setSelectedClientId,
     basRecords,
@@ -22,13 +24,66 @@ export default function ClientProfilePage() {
   } = useApp();
 
   const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'bas' | 'payroll' | 'tokens'
+  const [showEditModal, setShowEditModal] = useState(false);
 
   // Resolve target client
   const activeId = clientId || selectedClientId;
   const client = clients.find((c) => c.id === activeId) || clients[0];
 
+  const [editForm, setEditForm] = useState({});
+
+  const handleOpenEditModal = () => {
+    setEditForm({
+      name: client.name || '',
+      abn: client.abn || '',
+      entityType: client.entityType || 'Pty Ltd',
+      software: client.software || 'Quickbook',
+      contactEmail: client.contactEmail || '',
+      contactCc: client.contactCc || '',
+      city: client.city || 'Adelaide',
+      state: client.state || 'SA',
+      gstBasis: client.gstBasis || 'Accruals',
+      lodgementCycle: client.lodgementCycle || 'Quarterly',
+      payrollFrequency: client.payrollFrequency || 'Fortnightly',
+      status: client.status || 'Active',
+      dataLinkType: client.dataLinkType || 'Without Data Link',
+      activeServices: client.activeServices || ['bas', 'payslip']
+    });
+    setShowEditModal(true);
+  };
+
+  const handleToggleEditService = (svc) => {
+    setEditForm((prev) => {
+      const current = prev.activeServices || [];
+      return {
+        ...prev,
+        activeServices: current.includes(svc)
+          ? current.filter((s) => s !== svc)
+          : [...current, svc]
+      };
+    });
+  };
+
+  const handleSaveEdit = (e) => {
+    e.preventDefault();
+    if (!editForm.name || !editForm.name.trim()) {
+      showToast('Client name is required.', 'error');
+      return;
+    }
+    updateClient({
+      ...client,
+      ...editForm,
+      name: editForm.name.trim()
+    });
+    setShowEditModal(false);
+  };
+
   // Specific data slices for this client
-  const clientBas = basRecords.filter((b) => b.clientId === client.id);
+  const clientBas = basRecords.filter(
+    (b) =>
+      b.clientId === client.id ||
+      (b.clientName && client.name && b.clientName.trim().toLowerCase() === client.name.trim().toLowerCase())
+  );
   const clientTrackingRows = payslipTracking.filter(
     (pt) => pt.clientId === client.id || (pt.company && client.name && pt.company.toLowerCase() === client.name.toLowerCase())
   );
@@ -89,8 +144,9 @@ export default function ClientProfilePage() {
 
             <div className="flex flex-col min-w-0">
               <div className="flex flex-wrap items-center gap-2 mb-1">
-                <h1 className="font-headline-lg text-xl sm:text-2xl font-bold text-on-surface tracking-tight">
-                  {client.name}
+                <h1 className="font-headline-lg text-xl sm:text-2xl font-bold text-on-surface tracking-tight inline-flex items-center">
+                  <span>{client.name}</span>
+                  {client.dataLinkType === 'With Data Link' && <DataLinkIcon />}
                 </h1>
                 <span
                   className={`px-2 py-0.5 rounded text-[11px] font-bold border ${
@@ -140,6 +196,15 @@ export default function ClientProfilePage() {
 
           {/* Quick Action Cluster */}
           <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={handleOpenEditModal}
+              className="h-8 px-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-bold flex items-center gap-1 border border-outline-variant/40 transition shadow-2xs"
+            >
+              <span className="material-symbols-outlined text-[16px] text-primary">edit</span>
+              <span>Edit Client</span>
+            </button>
+
             <button
               type="button"
               onClick={() => {
@@ -573,6 +638,249 @@ export default function ClientProfilePage() {
               Zero open issue tokens for this client!
             </div>
           )}
+        </div>
+      )}
+
+      {/* Edit Client Profile Modal */}
+      {showEditModal && (
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-surface-container-lowest rounded-xl max-w-lg w-full p-5 border border-outline-variant/30 shadow-xl animate-scale-in max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-outline-variant/20 mb-4">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary text-[20px]">edit_square</span>
+                <h3 className="font-headline-sm text-base font-bold text-on-surface">
+                  Edit Client Profile
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowEditModal(false)}
+                className="text-secondary hover:text-on-surface p-1 rounded-lg hover:bg-surface-container"
+              >
+                <span className="material-symbols-outlined text-[18px]">close</span>
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveEdit} className="space-y-3.5 text-xs">
+              <div>
+                <label className="block font-semibold text-on-surface mb-1">
+                  Client / Entity Name <span className="text-error">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editForm.name || ''}
+                  onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg bg-surface-container border border-outline-variant/30 focus:border-primary focus:outline-none text-on-surface font-medium"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-on-surface mb-1">ABN / ACN</label>
+                  <input
+                    type="text"
+                    value={editForm.abn || ''}
+                    onChange={(e) => setEditForm({ ...editForm, abn: e.target.value })}
+                    placeholder="e.g. 51 824 753 556"
+                    className="w-full px-3 py-2 rounded-lg bg-surface-container border border-outline-variant/30 focus:border-primary focus:outline-none text-on-surface font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-on-surface mb-1">Entity Type</label>
+                  <select
+                    value={editForm.entityType || 'Pty Ltd'}
+                    onChange={(e) => setEditForm({ ...editForm, entityType: e.target.value })}
+                    className="w-full px-2.5 py-2 rounded-lg bg-surface-container border border-outline-variant/30 focus:border-primary focus:outline-none text-on-surface"
+                  >
+                    <option value="Pty Ltd">Pty Ltd</option>
+                    <option value="Sole Trader">Sole Trader</option>
+                    <option value="Partnership">Partnership</option>
+                    <option value="Trust">Trust</option>
+                    <option value="Individual">Individual</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-on-surface mb-1">Accounting Software</label>
+                  <select
+                    value={editForm.software || 'Quickbook'}
+                    onChange={(e) => setEditForm({ ...editForm, software: e.target.value })}
+                    className="w-full px-2.5 py-2 rounded-lg bg-surface-container border border-outline-variant/30 focus:border-primary focus:outline-none text-on-surface"
+                  >
+                    <option value="Quickbook">Quickbook</option>
+                    <option value="Xero">Xero</option>
+                    <option value="MYOB">MYOB</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-on-surface mb-1">Status</label>
+                  <select
+                    value={editForm.status || 'Active'}
+                    onChange={(e) => setEditForm({ ...editForm, status: e.target.value })}
+                    className="w-full px-2.5 py-2 rounded-lg bg-surface-container border border-outline-variant/30 focus:border-primary focus:outline-none text-on-surface"
+                  >
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                    <option value="Archived">Archived</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-on-surface mb-1">Contact Email</label>
+                  <input
+                    type="email"
+                    value={editForm.contactEmail || ''}
+                    onChange={(e) => setEditForm({ ...editForm, contactEmail: e.target.value })}
+                    placeholder="accounts@client.com.au"
+                    className="w-full px-3 py-2 rounded-lg bg-surface-container border border-outline-variant/30 focus:border-primary focus:outline-none text-on-surface font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-on-surface mb-1">CC Email</label>
+                  <input
+                    type="email"
+                    value={editForm.contactCc || ''}
+                    onChange={(e) => setEditForm({ ...editForm, contactCc: e.target.value })}
+                    placeholder="cc@client.com.au"
+                    className="w-full px-3 py-2 rounded-lg bg-surface-container border border-outline-variant/30 focus:border-primary focus:outline-none text-on-surface font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <label className="block font-semibold text-on-surface mb-1">GST Basis</label>
+                  <select
+                    value={editForm.gstBasis || 'Accruals'}
+                    onChange={(e) => setEditForm({ ...editForm, gstBasis: e.target.value })}
+                    className="w-full px-2.5 py-2 rounded-lg bg-surface-container border border-outline-variant/30 focus:border-primary focus:outline-none text-on-surface"
+                  >
+                    <option value="Accruals">Accruals</option>
+                    <option value="Cash">Cash</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-on-surface mb-1">BAS Cycle</label>
+                  <select
+                    value={editForm.lodgementCycle || 'Quarterly'}
+                    onChange={(e) => setEditForm({ ...editForm, lodgementCycle: e.target.value })}
+                    className="w-full px-2.5 py-2 rounded-lg bg-surface-container border border-outline-variant/30 focus:border-primary focus:outline-none text-on-surface"
+                  >
+                    <option value="Monthly">Monthly</option>
+                    <option value="Quarterly">Quarterly</option>
+                    <option value="Annual">Annual</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-on-surface mb-1">Payrun Freq</label>
+                  <select
+                    value={editForm.payrollFrequency || 'Fortnightly'}
+                    onChange={(e) => setEditForm({ ...editForm, payrollFrequency: e.target.value })}
+                    className="w-full px-2.5 py-2 rounded-lg bg-surface-container border border-outline-variant/30 focus:border-primary focus:outline-none text-on-surface"
+                  >
+                    <option value="Weekly">Weekly</option>
+                    <option value="Fortnightly">Fortnightly</option>
+                    <option value="Monthly">Monthly</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-on-surface mb-1">City</label>
+                  <input
+                    type="text"
+                    value={editForm.city || ''}
+                    onChange={(e) => setEditForm({ ...editForm, city: e.target.value })}
+                    className="w-full px-3 py-2 rounded-lg bg-surface-container border border-outline-variant/30 focus:border-primary focus:outline-none text-on-surface"
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold text-on-surface mb-1">State</label>
+                  <input
+                    type="text"
+                    value={editForm.state || ''}
+                    onChange={(e) => setEditForm({ ...editForm, state: e.target.value })}
+                    className="w-full px-3 py-2 rounded-lg bg-surface-container border border-outline-variant/30 focus:border-primary focus:outline-none text-on-surface"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-semibold text-on-surface mb-1">Data Link Type</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {['With Data Link', 'Without Data Link'].map((opt) => (
+                    <button
+                      key={opt}
+                      type="button"
+                      onClick={() => setEditForm({ ...editForm, dataLinkType: opt })}
+                      className={`h-8 px-3 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 transition ${
+                        (editForm.dataLinkType || 'Without Data Link') === opt
+                          ? 'bg-primary text-on-primary border-primary shadow-2xs'
+                          : 'bg-surface-container text-on-surface border-outline-variant/30 hover:bg-surface-container-high'
+                      }`}
+                    >
+                      {opt === 'With Data Link' && (
+                        <span className="material-symbols-outlined text-[15px]">link</span>
+                      )}
+                      <span>{opt}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-semibold text-on-surface mb-1.5">Active Practice Services</label>
+                <div className="flex flex-wrap gap-4">
+                  <label className="flex items-center gap-1.5 cursor-pointer font-medium">
+                    <input
+                      type="checkbox"
+                      checked={(editForm.activeServices || []).includes('bas')}
+                      onChange={() => handleToggleEditService('bas')}
+                      className="rounded text-primary focus:ring-0"
+                    />
+                    <span>Business Activity Statement (BAS)</span>
+                  </label>
+
+                  <label className="flex items-center gap-1.5 cursor-pointer font-medium">
+                    <input
+                      type="checkbox"
+                      checked={(editForm.activeServices || []).includes('payslip')}
+                      onChange={() => handleToggleEditService('payslip')}
+                      className="rounded text-primary focus:ring-0"
+                    />
+                    <span>Payslip &amp; Wage Management</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-outline-variant/20">
+                <button
+                  type="button"
+                  onClick={() => setShowEditModal(false)}
+                  className="px-3.5 py-1.5 rounded-lg border border-outline-variant/40 text-xs font-semibold text-secondary hover:text-on-surface hover:bg-surface-container transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-1.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-xs font-bold uppercase tracking-wider transition shadow-xs"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import DataLinkIcon from '../components/common/DataLinkIcon';
+import ColumnVisibilityMenu from '../components/common/ColumnVisibilityMenu';
+import ServiceNotificationBell from '../components/common/ServiceNotificationBell';
 
 // Standard options
 export const standardPayrunPeriods = [
@@ -269,17 +272,63 @@ function NotesCell({ row, onUpdate, recentNotes, onAddRecentNote }) {
 export default function PayslipsPage() {
   const navigate = useNavigate();
   const {
+    clients,
     payslipTracking,
     updatePayslipTrackingField,
     addPayslipTrackingRow,
     deletePayslipTrackingRow,
+    archivePayslipTrackingRow,
+    restorePayslipTrackingRow,
     recentPayrunPeriods,
     addRecentPayrunPeriod,
     recentNotes,
     addRecentNote,
+    ensureClientForName,
+    isClientDataLinked,
+    getServiceNotifications,
+    updateCommunicationStatus,
     setSelectedClientId,
     showToast
   } = useApp();
+
+  const [clientTab, setClientTab] = useState('active'); // 'active' | 'archived'
+  const [hiddenColumns, setHiddenColumns] = useState(() => {
+    try {
+      const saved = localStorage.getItem('mis_payslips_hidden_columns');
+      const parsed = saved ? JSON.parse(saved) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
+  });
+
+  const toggleColumnVisibility = (key) => {
+    setHiddenColumns((prev) => {
+      const updated = prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key];
+      localStorage.setItem('mis_payslips_hidden_columns', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const showAllColumns = () => {
+    setHiddenColumns([]);
+    localStorage.setItem('mis_payslips_hidden_columns', JSON.stringify([]));
+  };
+
+  const isColVisible = (key) => !hiddenColumns.includes(key);
+
+  const allTableColumns = [
+    { key: 'software', label: 'Software' },
+    { key: 'company', label: 'Company' },
+    { key: 'updates', label: 'Updates' },
+    { key: 'payrunPeriod', label: 'Payrun Period' },
+    { key: 'superStatus', label: 'Super status' },
+    { key: 'payslipStatus', label: 'Payslip status' },
+    { key: 'notes', label: 'Notes' },
+    { key: 'processed', label: 'Processed' },
+    { key: 'email', label: 'email' },
+    { key: 'cc', label: 'CC' }
+  ];
 
   const [search, setSearch] = useState('');
   const [softwareFilter, setSoftwareFilter] = useState('all');
@@ -309,10 +358,8 @@ export default function PayslipsPage() {
   const superStatusOptions = [
     { label: '-- Select Super Status --', value: '' },
     { label: 'Submitted', value: 'Submitted' },
-    { label: 'Not activate heroclear', value: 'Not activate heroclear' },
-    { label: 'Hold payslip', value: 'Hold payslip' },
-    { label: 'Paid', value: 'Paid' },
-    { label: 'Pending', value: 'Pending' }
+    { label: 'Heroclear not activated', value: 'Heroclear not activated' },
+    { label: 'Remainder sent', value: 'Remainder sent' }
   ];
 
   const payslipStatusOptions = [
@@ -329,15 +376,46 @@ export default function PayslipsPage() {
     { label: 'This Week', value: 'This Week' },
     { label: 'This Week/Individual', value: 'This Week/Individual' },
     { label: 'Monthly', value: 'Monthly' },
-    { label: 'Every Week', value: 'Every Week' },
-    { label: 'Every week /Individual', value: 'Every week /Individual' },
-    { label: 'Every Monday/Individual', value: 'Every Monday/Individual' },
-    { label: 'Every Week(Wednesday)', value: 'Every Week(Wednesday)' },
-    { label: 'Every Week(Friday)', value: 'Every Week(Friday)' }
+    // { label: 'Every Week', value: 'Every Week' },
+    // { label: 'Every week /Individual', value: 'Every week /Individual' },
+    // { label: 'Every Monday/Individual', value: 'Every Monday/Individual' },
+    // { label: 'Every Week(Wednesday)', value: 'Every Week(Wednesday)' },
+    // { label: 'Every Week(Friday)', value: 'Every Week(Friday)' }
   ];
 
+  // Resolve Payrun Period from Client Profile (read-only in Payslips table)
+  const getClientPayrunPeriod = (row) => {
+    const matchedClient =
+      clients.find((c) => c.id === row.clientId) ||
+      clients.find(
+        (c) =>
+          c.name &&
+          row.company &&
+          c.name.trim().toLowerCase() === row.company.trim().toLowerCase()
+      );
+    return matchedClient?.payrollFrequency || row.payrunPeriod || 'Fortnightly';
+  };
+
+  // Month-end deadline check (within 5 days before month-end) for Monthly payrun clients
+  const today = new Date();
+  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+  const daysUntilMonthEnd = lastDayOfMonth - today.getDate();
+
+  const isMonthlyDeadlineApproaching = (row) => {
+    if (daysUntilMonthEnd < 0 || daysUntilMonthEnd > 5) return false;
+    const period = getClientPayrunPeriod(row).toLowerCase();
+    if (!period.includes('monthly')) return false;
+    const status = (row.payslipStatus || '').trim().toLowerCase();
+    return status !== 'payslip sent';
+  };
+
+  // Active vs Archived split
+  const activeClientRows = payslipTracking.filter((r) => !r.archived);
+  const archivedClientRows = payslipTracking.filter((r) => !!r.archived);
+  const tabRows = clientTab === 'archived' ? archivedClientRows : activeClientRows;
+
   // Filter rows
-  const filteredRows = payslipTracking.filter((row) => {
+  const filteredRows = tabRows.filter((row) => {
     if (search.trim()) {
       const q = search.toLowerCase();
       const match =
@@ -346,12 +424,13 @@ export default function PayslipsPage() {
         (row.cc || '').toLowerCase().includes(q) ||
         (row.updates || '').toLowerCase().includes(q) ||
         (row.notes || '').toLowerCase().includes(q) ||
-        (row.software || '').toLowerCase().includes(q);
+        (row.software || '').toLowerCase().includes(q) ||
+        getClientPayrunPeriod(row).toLowerCase().includes(q);
       if (!match) return false;
     }
     if (softwareFilter !== 'all' && (row.software || '').toLowerCase() !== softwareFilter.toLowerCase()) return false;
     if (payrunFilter !== 'all') {
-      const pr = (row.payrunPeriod || '').toLowerCase();
+      const pr = getClientPayrunPeriod(row).toLowerCase();
       if (payrunFilter === 'fortnightly' && !pr.includes('fortnightly')) return false;
       if (payrunFilter === 'weekly' && !pr.includes('weekly')) return false;
       if (payrunFilter === 'monthly' && !pr.includes('monthly')) return false;
@@ -373,17 +452,20 @@ export default function PayslipsPage() {
     return true;
   });
 
-  // Summary Metrics
-  const totalRecords = payslipTracking.length;
-  const payslipsSentCount = payslipTracking.filter((r) => r.payslipStatus === 'Payslip sent').length;
-  const superSubmittedCount = payslipTracking.filter((r) => r.superStatus === 'Submitted').length;
-  const holdOrActionCount = payslipTracking.filter(
+  // Summary Metrics (Active Clients only)
+  const totalRecords = activeClientRows.length;
+  const payslipsSentCount = activeClientRows.filter((r) => r.payslipStatus === 'Payslip sent').length;
+  const superSubmittedCount = activeClientRows.filter((r) => r.superStatus === 'Submitted').length;
+  const holdOrActionCount = activeClientRows.filter(
     (r) => r.superStatus === 'Not activate heroclear' || r.payslipStatus === 'Hold payslip'
   ).length;
 
-  const handleInspectClient = (clientId) => {
-    setSelectedClientId(clientId);
-    navigate(`/clients/${clientId}`);
+  const handleInspectClient = (clientId, companyName) => {
+    const client = ensureClientForName(companyName, clientId);
+    if (client) {
+      setSelectedClientId(client.id);
+      navigate(`/clients/${client.id}`);
+    }
   };
 
   const handleExportCsv = () => {
@@ -414,7 +496,7 @@ export default function PayslipsPage() {
         escapeCsv(r.software),
         escapeCsv(r.company),
         escapeCsv(r.updates),
-        escapeCsv(r.payrunPeriod),
+        escapeCsv(getClientPayrunPeriod(r)),
         escapeCsv(r.superStatus),
         escapeCsv(r.payslipStatus),
         escapeCsv(r.notes),
@@ -495,34 +577,13 @@ export default function PayslipsPage() {
 
   return (
     <div className="flex flex-col w-full pb-16">
-      {/* Top Header */}
-      <div className="py-space-md flex flex-col lg:flex-row lg:items-center justify-between gap-space-md border-b border-outline-variant/20 mb-space-md">
-        <div>
-          <div className="flex items-center gap-2 text-secondary text-xs uppercase tracking-wider font-semibold">
-            <span className="material-symbols-outlined text-[16px] text-primary">table_chart</span>
-            <span>Client Payslip &amp; Wage Management Master Sheet</span>
-          </div>
-          <h1 className="font-headline-lg text-2xl lg:text-3xl font-bold text-on-surface tracking-tight mt-1 flex items-center gap-2">
-            Payslip / Wage Management
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary border border-primary/20">
-              {totalRecords} Active Records
-            </span>
-          </h1>
-          <p className="font-body-md text-sm text-secondary mt-0.5">
-            Interactive tracking table for client payruns, updates, super status, payslip dispatch, and schedule status.
-          </p>
-        </div>
+      {/* Page Title & Export */}
+      <div className="py-space-md flex flex-col sm:flex-row sm:items-center justify-between gap-space-md border-b border-outline-variant/20 mb-space-md">
+        <h1 className="font-headline-lg text-2xl lg:text-3xl font-bold text-on-surface tracking-tight">
+          Payslip / Wage Management
+        </h1>
 
         <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setShowAddModal(true)}
-            className="h-9 px-3.5 bg-primary hover:bg-primary-container text-on-primary rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xs transition"
-          >
-            <span className="material-symbols-outlined text-[18px]">add</span>
-            <span>Add Record</span>
-          </button>
-
           <button
             type="button"
             onClick={handleExportCsv}
@@ -684,6 +745,53 @@ export default function PayslipsPage() {
         </div>
       </div>
 
+      {/* Active / Archived Clients Tabs (Top-left of table) */}
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+        <div className="flex items-center gap-1 p-1 bg-surface-container-low rounded-xl border border-outline-variant/25">
+          <button
+            type="button"
+            onClick={() => setClientTab('active')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${clientTab === 'active'
+              ? 'bg-surface-container-lowest text-primary shadow-xs'
+              : 'text-secondary hover:text-on-surface'
+              }`}
+          >
+            <span className="material-symbols-outlined text-[16px]">domain</span>
+            <span>Active Clients</span>
+            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-primary/10 text-primary">
+              {activeClientRows.length}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setClientTab('archived')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${clientTab === 'archived'
+              ? 'bg-surface-container-lowest text-amber-800 shadow-xs'
+              : 'text-secondary hover:text-on-surface'
+              }`}
+          >
+            <span className="material-symbols-outlined text-[16px]">inventory_2</span>
+            <span>Archived Clients</span>
+            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-surface-container text-secondary">
+              {archivedClientRows.length}
+            </span>
+          </button>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <span className="text-[11px] text-secondary font-medium">
+            Showing {filteredRows.length} of {tabRows.length} {clientTab} clients
+          </span>
+          <ColumnVisibilityMenu
+            columns={allTableColumns}
+            hiddenColumns={hiddenColumns}
+            onToggleColumn={toggleColumnVisibility}
+            onShowAll={showAllColumns}
+          />
+        </div>
+      </div>
+
       {/* Main Payslip Tracking Table */}
       <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
@@ -691,35 +799,168 @@ export default function PayslipsPage() {
             <thead>
               <tr className="bg-surface-container-low border-b border-outline-variant/20 text-secondary uppercase font-semibold text-[11px] tracking-wide">
                 <th className="py-2.5 px-2 w-9 text-center">#</th>
-                <th className="py-2.5 px-2 min-w-[105px]">Software</th>
-                <th className="py-2.5 px-2 min-w-[170px]">Company</th>
-                <th className="py-2.5 px-2 min-w-[210px]">Updates</th>
-                <th className="py-2.5 px-2 min-w-[180px]">
-                  <div className="flex items-center gap-1">
-                    <span>Payrun Period</span>
-
-                  </div>
-                </th>
-                <th className="py-2.5 px-2 min-w-[145px]">Super status</th>
-                <th className="py-2.5 px-2 min-w-[130px]">Payslip status</th>
-                <th className="py-2.5 px-2 min-w-[190px]">
-                  <div className="flex items-center gap-1">
-                    <span>Notes</span>
-
-                  </div>
-                </th>
-                <th className="py-2.5 px-2 min-w-[150px]">Processed</th>
-                <th className="py-2.5 px-2 min-w-[160px]">email</th>
-                <th className="py-2.5 px-2 min-w-[150px]">CC</th>
+                {isColVisible('software') && (
+                  <th className="py-2.5 px-2 min-w-[105px] group/colhdr">
+                    <div className="flex items-center justify-between gap-1">
+                      <span>Software</span>
+                      <button
+                        type="button"
+                        onClick={() => toggleColumnVisibility('software')}
+                        className="opacity-0 group-hover/colhdr:opacity-100 p-0.5 text-outline hover:text-primary rounded transition"
+                        title="Hide Software column"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">visibility_off</span>
+                      </button>
+                    </div>
+                  </th>
+                )}
+                {isColVisible('company') && (
+                  <th className="py-2.5 px-2 min-w-[170px] group/colhdr">
+                    <div className="flex items-center justify-between gap-1">
+                      <span>Company</span>
+                      <button
+                        type="button"
+                        onClick={() => toggleColumnVisibility('company')}
+                        className="opacity-0 group-hover/colhdr:opacity-100 p-0.5 text-outline hover:text-primary rounded transition"
+                        title="Hide Company column"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">visibility_off</span>
+                      </button>
+                    </div>
+                  </th>
+                )}
+                {isColVisible('updates') && (
+                  <th className="py-2.5 px-2 min-w-[210px] group/colhdr">
+                    <div className="flex items-center justify-between gap-1">
+                      <span>Updates</span>
+                      <button
+                        type="button"
+                        onClick={() => toggleColumnVisibility('updates')}
+                        className="opacity-0 group-hover/colhdr:opacity-100 p-0.5 text-outline hover:text-primary rounded transition"
+                        title="Hide Updates column"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">visibility_off</span>
+                      </button>
+                    </div>
+                  </th>
+                )}
+                {isColVisible('payrunPeriod') && (
+                  <th className="py-2.5 px-2 min-w-[180px] group/colhdr">
+                    <div className="flex items-center justify-between gap-1">
+                      <span>Payrun Period</span>
+                      <button
+                        type="button"
+                        onClick={() => toggleColumnVisibility('payrunPeriod')}
+                        className="opacity-0 group-hover/colhdr:opacity-100 p-0.5 text-outline hover:text-primary rounded transition"
+                        title="Hide Payrun Period column"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">visibility_off</span>
+                      </button>
+                    </div>
+                  </th>
+                )}
+                {isColVisible('superStatus') && (
+                  <th className="py-2.5 px-2 min-w-[145px] group/colhdr">
+                    <div className="flex items-center justify-between gap-1">
+                      <span>Super status</span>
+                      <button
+                        type="button"
+                        onClick={() => toggleColumnVisibility('superStatus')}
+                        className="opacity-0 group-hover/colhdr:opacity-100 p-0.5 text-outline hover:text-primary rounded transition"
+                        title="Hide Super status column"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">visibility_off</span>
+                      </button>
+                    </div>
+                  </th>
+                )}
+                {isColVisible('payslipStatus') && (
+                  <th className="py-2.5 px-2 min-w-[130px] group/colhdr">
+                    <div className="flex items-center justify-between gap-1">
+                      <span>Payslip status</span>
+                      <button
+                        type="button"
+                        onClick={() => toggleColumnVisibility('payslipStatus')}
+                        className="opacity-0 group-hover/colhdr:opacity-100 p-0.5 text-outline hover:text-primary rounded transition"
+                        title="Hide Payslip status column"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">visibility_off</span>
+                      </button>
+                    </div>
+                  </th>
+                )}
+                {isColVisible('notes') && (
+                  <th className="py-2.5 px-2 min-w-[190px] group/colhdr">
+                    <div className="flex items-center justify-between gap-1">
+                      <span>Notes</span>
+                      <button
+                        type="button"
+                        onClick={() => toggleColumnVisibility('notes')}
+                        className="opacity-0 group-hover/colhdr:opacity-100 p-0.5 text-outline hover:text-primary rounded transition"
+                        title="Hide Notes column"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">visibility_off</span>
+                      </button>
+                    </div>
+                  </th>
+                )}
+                {isColVisible('processed') && (
+                  <th className="py-2.5 px-2 min-w-[150px] group/colhdr">
+                    <div className="flex items-center justify-between gap-1">
+                      <span>Processed</span>
+                      <button
+                        type="button"
+                        onClick={() => toggleColumnVisibility('processed')}
+                        className="opacity-0 group-hover/colhdr:opacity-100 p-0.5 text-outline hover:text-primary rounded transition"
+                        title="Hide Processed column"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">visibility_off</span>
+                      </button>
+                    </div>
+                  </th>
+                )}
+                {isColVisible('email') && (
+                  <th className="py-2.5 px-2 min-w-[160px] group/colhdr">
+                    <div className="flex items-center justify-between gap-1">
+                      <span>email</span>
+                      <button
+                        type="button"
+                        onClick={() => toggleColumnVisibility('email')}
+                        className="opacity-0 group-hover/colhdr:opacity-100 p-0.5 text-outline hover:text-primary rounded transition"
+                        title="Hide email column"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">visibility_off</span>
+                      </button>
+                    </div>
+                  </th>
+                )}
+                {isColVisible('cc') && (
+                  <th className="py-2.5 px-2 min-w-[150px] group/colhdr">
+                    <div className="flex items-center justify-between gap-1">
+                      <span>CC</span>
+                      <button
+                        type="button"
+                        onClick={() => toggleColumnVisibility('cc')}
+                        className="opacity-0 group-hover/colhdr:opacity-100 p-0.5 text-outline hover:text-primary rounded transition"
+                        title="Hide CC column"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">visibility_off</span>
+                      </button>
+                    </div>
+                  </th>
+                )}
                 <th className="py-2.5 px-1.5 w-8 text-center"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-outline-variant/15 font-normal">
               {filteredRows.map((row, idx) => {
+                const rowNotifications = getServiceNotifications('payslip', row.clientId, row.company);
                 return (
                   <tr
                     key={row.id}
-                    className="hover:bg-surface-container-low/60 transition group"
+                    className={`hover:bg-surface-container-low/60 transition group ${
+                      rowNotifications.length > 0 ? 'bg-emerald-50/25' : ''
+                    }`}
                   >
                     {/* # Index */}
                     <td className="py-2 px-2 text-center text-secondary font-mono text-[11px]">
@@ -727,165 +968,239 @@ export default function PayslipsPage() {
                     </td>
 
                     {/* 1. Software Dropdown */}
-                    <td className="py-2 px-2">
-                      <select
-                        value={row.software}
-                        onChange={(e) => updatePayslipTrackingField(row.id, 'software', e.target.value)}
-                        className={`h-7 px-2 rounded-lg text-xs font-bold border transition focus:outline-none cursor-pointer ${row.software === 'Xero'
+                    {isColVisible('software') && (
+                      <td className="py-2 px-2">
+                        <select
+                          value={row.software}
+                          onChange={(e) => updatePayslipTrackingField(row.id, 'software', e.target.value)}
+                          className={`h-7 px-2 rounded-lg text-xs font-bold border transition focus:outline-none cursor-pointer ${row.software === 'Xero'
                             ? 'bg-sky-50 text-sky-800 border-sky-300'
                             : row.software === 'MYOB'
                               ? 'bg-purple-50 text-purple-800 border-purple-300'
                               : 'bg-emerald-50 text-emerald-800 border-emerald-300'
-                          }`}
-                      >
-                        <option value="Quickbook">Quickbook</option>
-                        <option value="Xero">Xero</option>
-                        <option value="MYOB">MYOB</option>
-                      </select>
-                    </td>
+                            }`}
+                        >
+                          <option value="Quickbook">Quickbook</option>
+                          <option value="Xero">Xero</option>
+                          <option value="MYOB">MYOB</option>
+                        </select>
+                      </td>
+                    )}
 
                     {/* 2. Company */}
-                    <td className="py-2 px-2">
-                      <div className="flex flex-col">
-                        <button
-                          type="button"
-                          onClick={() => handleInspectClient(row.clientId)}
-                          className="font-bold text-on-surface hover:text-primary transition text-left text-xs leading-snug line-clamp-2"
-                          title={`View profile for ${row.company}`}
-                        >
-                          {row.company}
-                        </button>
-                        <span className="text-[10px] text-secondary font-mono">{row.id}</span>
-                      </div>
-                    </td>
+                    {isColVisible('company') && (
+                      <td className="py-2 px-2">
+                        <div className="flex flex-col">
+                          <div className="inline-flex items-center flex-wrap">
+                            <button
+                              type="button"
+                              onClick={() => handleInspectClient(row.clientId, row.company)}
+                              className="font-bold text-on-surface hover:text-primary transition text-left text-xs leading-snug inline-flex items-center flex-wrap"
+                              title={`View profile for ${row.company}`}
+                            >
+                              <span>{row.company}</span>
+                              {isClientDataLinked(row.clientId, row.company) && <DataLinkIcon />}
+                            </button>
+                            <ServiceNotificationBell
+                              notifications={rowNotifications}
+                              onResolve={updateCommunicationStatus}
+                            />
+                          </div>
+                          <span className="text-[10px] text-secondary font-mono">{row.id}</span>
+                        </div>
+                      </td>
+                    )}
 
                     {/* 3. Updates (Text Input) */}
-                    <td className="py-2 px-2">
-                      <input
-                        type="text"
-                        value={row.updates || ''}
-                        onChange={(e) => updatePayslipTrackingField(row.id, 'updates', e.target.value)}
-                        placeholder="Add updates / instructions..."
-                        className="w-full text-xs px-2 py-1 rounded bg-transparent hover:bg-surface-container-lowest focus:bg-surface-container-lowest border border-transparent hover:border-outline-variant/40 focus:border-primary focus:outline-none transition text-on-surface placeholder:text-outline/40"
-                      />
-                    </td>
+                    {isColVisible('updates') && (
+                      <td className="py-2 px-2">
+                        <input
+                          type="text"
+                          value={row.updates || ''}
+                          onChange={(e) => updatePayslipTrackingField(row.id, 'updates', e.target.value)}
+                          placeholder="Add updates / instructions..."
+                          className="w-full text-xs px-2 py-1 rounded bg-transparent hover:bg-surface-container-lowest focus:bg-surface-container-lowest border border-transparent hover:border-outline-variant/40 focus:border-primary focus:outline-none transition text-on-surface placeholder:text-outline/40"
+                        />
+                      </td>
+                    )}
 
-                    {/* 4. Payrun Period (Interactive Cell with manual text input & 'Recently Added' section) */}
-                    <td className="py-2 px-2">
-                      <PayrunPeriodCell
-                        row={row}
-                        onUpdate={updatePayslipTrackingField}
-                        recentPeriods={recentPayrunPeriods}
-                        onAddRecentPeriod={addRecentPayrunPeriod}
-                      />
-                    </td>
+                    {/* 4. Payrun Period (Read-only, synced from Client Profile) */}
+                    {isColVisible('payrunPeriod') && (
+                      <td className="py-2 px-2">
+                        {(() => {
+                          const periodLabel = getClientPayrunPeriod(row);
+                          const pLower = periodLabel.toLowerCase();
+                          const badgeClass =
+                            pLower.includes('weekly') && !pLower.includes('fortnightly')
+                              ? 'bg-sky-50 text-sky-800 border-sky-200'
+                              : pLower.includes('monthly')
+                                ? 'bg-purple-50 text-purple-800 border-purple-200'
+                                : 'bg-surface-container text-on-surface border-outline-variant/30';
+                          return (
+                            <span
+                              className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold border select-none ${badgeClass}`}
+                            >
+                              {periodLabel}
+                            </span>
+                          );
+                        })()}
+                      </td>
+                    )}
 
                     {/* 5. Super status (Dropdown) */}
-                    <td className="py-2 px-2">
-                      <select
-                        value={row.superStatus || ''}
-                        onChange={(e) => updatePayslipTrackingField(row.id, 'superStatus', e.target.value)}
-                        className={`w-full h-7 px-2 rounded-lg text-xs border transition focus:outline-none cursor-pointer ${getSuperBadgeStyle(
-                          row.superStatus
-                        )}`}
-                      >
-                        {superStatusOptions.map((opt) => (
-                          <option key={opt.value} value={opt.value}>
-                            {opt.label}
-                          </option>
-                        ))}
-                        {row.superStatus && !superStatusOptions.some((o) => o.value === row.superStatus) && (
-                          <option value={row.superStatus}>{row.superStatus}</option>
-                        )}
-                      </select>
-                    </td>
+                    {isColVisible('superStatus') && (
+                      <td className="py-2 px-2">
+                        <select
+                          value={row.superStatus || ''}
+                          onChange={(e) => updatePayslipTrackingField(row.id, 'superStatus', e.target.value)}
+                          className={`w-full h-7 px-2 rounded-lg text-xs border transition focus:outline-none cursor-pointer ${getSuperBadgeStyle(
+                            row.superStatus
+                          )}`}
+                        >
+                          {superStatusOptions.map((opt) => (
+                            <option key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </option>
+                          ))}
+                          {row.superStatus && !superStatusOptions.some((o) => o.value === row.superStatus) && (
+                            <option value={row.superStatus}>{row.superStatus}</option>
+                          )}
+                        </select>
+                      </td>
+                    )}
 
                     {/* 6. Payslip status (Dropdown) */}
-                    <td className="py-2 px-2">
-                      <select
-                        value={row.payslipStatus || ''}
-                        onChange={(e) => updatePayslipTrackingField(row.id, 'payslipStatus', e.target.value)}
-                        className={`w-full h-7 px-2 rounded-lg text-xs border transition focus:outline-none cursor-pointer ${getPayslipBadgeStyle(
-                          row.payslipStatus
-                        )}`}
-                      >
-                        {payslipStatusOptions.map((opt) => (
-                          <option key={opt.value} value={opt.value}>
-                            {opt.label}
-                          </option>
-                        ))}
-                        {row.payslipStatus && !payslipStatusOptions.some((o) => o.value === row.payslipStatus) && (
-                          <option value={row.payslipStatus}>{row.payslipStatus}</option>
-                        )}
-                      </select>
-                    </td>
+                    {isColVisible('payslipStatus') && (
+                      <td className="py-2 px-2">
+                        <div className="flex items-center gap-1.5">
+                          <select
+                            value={row.payslipStatus || ''}
+                            onChange={(e) => updatePayslipTrackingField(row.id, 'payslipStatus', e.target.value)}
+                            className={`w-full h-7 px-2 rounded-lg text-xs border transition focus:outline-none cursor-pointer ${getPayslipBadgeStyle(
+                              row.payslipStatus
+                            )}`}
+                          >
+                            {payslipStatusOptions.map((opt) => (
+                              <option key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </option>
+                            ))}
+                            {row.payslipStatus && !payslipStatusOptions.some((o) => o.value === row.payslipStatus) && (
+                              <option value={row.payslipStatus}>{row.payslipStatus}</option>
+                            )}
+                          </select>
+                          {isMonthlyDeadlineApproaching(row) && (
+                            <span
+                              className="material-symbols-outlined text-[18px] text-amber-500 shrink-0 cursor-help"
+                              style={{ fontVariationSettings: "'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 20" }}
+                              title={
+                                daysUntilMonthEnd === 0
+                                  ? 'Month-end deadline is today! Payslip not yet sent.'
+                                  : `Month-end deadline approaching (${daysUntilMonthEnd} day${daysUntilMonthEnd === 1 ? '' : 's'} left). Payslip not yet sent.`
+                              }
+                            >
+                              warning
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                    )}
 
                     {/* 7. Notes (Interactive Cell with manual text input & 'Recently Added' section) */}
-                    <td className="py-2 px-2">
-                      <NotesCell
-                        row={row}
-                        onUpdate={updatePayslipTrackingField}
-                        recentNotes={recentNotes}
-                        onAddRecentNote={addRecentNote}
-                      />
-                    </td>
+                    {isColVisible('notes') && (
+                      <td className="py-2 px-2">
+                        <NotesCell
+                          row={row}
+                          onUpdate={updatePayslipTrackingField}
+                          recentNotes={recentNotes}
+                          onAddRecentNote={addRecentNote}
+                        />
+                      </td>
+                    )}
 
                     {/* 8. Processed (Dropdown) */}
-                    <td className="py-2 px-2">
-                      <select
-                        value={row.processed || ''}
-                        onChange={(e) => updatePayslipTrackingField(row.id, 'processed', e.target.value)}
-                        className={`w-full h-7 px-2 rounded-lg text-xs border transition focus:outline-none cursor-pointer ${getProcessedBadgeStyle(
-                          row.processed
-                        )}`}
-                      >
-                        {processedOptions.map((opt) => (
-                          <option key={opt.value} value={opt.value}>
-                            {opt.label}
-                          </option>
-                        ))}
-                        {row.processed && !processedOptions.some((o) => o.value === row.processed) && (
-                          <option value={row.processed}>{row.processed}</option>
-                        )}
-                      </select>
-                    </td>
+                    {isColVisible('processed') && (
+                      <td className="py-2 px-2">
+                        <select
+                          value={row.processed || ''}
+                          onChange={(e) => updatePayslipTrackingField(row.id, 'processed', e.target.value)}
+                          className={`w-full h-7 px-2 rounded-lg text-xs border transition focus:outline-none cursor-pointer ${getProcessedBadgeStyle(
+                            row.processed
+                          )}`}
+                        >
+                          {processedOptions.map((opt) => (
+                            <option key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </option>
+                          ))}
+                          {row.processed && !processedOptions.some((o) => o.value === row.processed) && (
+                            <option value={row.processed}>{row.processed}</option>
+                          )}
+                        </select>
+                      </td>
+                    )}
 
                     {/* 9. email (Email input) */}
-                    <td className="py-2 px-2">
-                      <input
-                        type="email"
-                        value={row.email || ''}
-                        onChange={(e) => updatePayslipTrackingField(row.id, 'email', e.target.value)}
-                        placeholder="client@email.com"
-                        className="w-full text-xs px-2 py-1 rounded bg-transparent hover:bg-surface-container-lowest focus:bg-surface-container-lowest border border-transparent hover:border-outline-variant/40 focus:border-primary focus:outline-none transition text-on-surface placeholder:text-outline/40 font-mono text-[11px]"
-                      />
-                    </td>
+                    {isColVisible('email') && (
+                      <td className="py-2 px-2">
+                        <input
+                          type="email"
+                          value={row.email || ''}
+                          onChange={(e) => updatePayslipTrackingField(row.id, 'email', e.target.value)}
+                          placeholder="client@email.com"
+                          className="w-full text-xs px-2 py-1 rounded bg-transparent hover:bg-surface-container-lowest focus:bg-surface-container-lowest border border-transparent hover:border-outline-variant/40 focus:border-primary focus:outline-none transition text-on-surface placeholder:text-outline/40 font-mono text-[11px]"
+                        />
+                      </td>
+                    )}
 
                     {/* 10. CC (Email input) */}
-                    <td className="py-2 px-2">
-                      <input
-                        type="email"
-                        value={row.cc || ''}
-                        onChange={(e) => updatePayslipTrackingField(row.id, 'cc', e.target.value)}
-                        placeholder="cc@email.com"
-                        className="w-full text-xs px-2 py-1 rounded bg-transparent hover:bg-surface-container-lowest focus:bg-surface-container-lowest border border-transparent hover:border-outline-variant/40 focus:border-primary focus:outline-none transition text-on-surface placeholder:text-outline/40 font-mono text-[11px]"
-                      />
-                    </td>
+                    {isColVisible('cc') && (
+                      <td className="py-2 px-2">
+                        <input
+                          type="email"
+                          value={row.cc || ''}
+                          onChange={(e) => updatePayslipTrackingField(row.id, 'cc', e.target.value)}
+                          placeholder="cc@email.com"
+                          className="w-full text-xs px-2 py-1 rounded bg-transparent hover:bg-surface-container-lowest focus:bg-surface-container-lowest border border-transparent hover:border-outline-variant/40 focus:border-primary focus:outline-none transition text-on-surface placeholder:text-outline/40 font-mono text-[11px]"
+                        />
+                      </td>
+                    )}
 
-                    {/* Row delete action */}
+                    {/* Archive (Active tab) OR Activate / Delete (Archived tab) */}
                     <td className="py-2 px-1 text-center">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (window.confirm(`Delete tracking entry for ${row.company}?`)) {
-                            deletePayslipTrackingRow(row.id);
-                          }
-                        }}
-                        className="opacity-0 group-hover:opacity-100 p-1 text-outline hover:text-error rounded hover:bg-surface-container transition"
-                        title="Delete entry"
-                      >
-                        <span className="material-symbols-outlined text-[16px]">delete</span>
-                      </button>
+                      {clientTab === 'active' ? (
+                        <button
+                          type="button"
+                          onClick={() => archivePayslipTrackingRow(row.id)}
+                          className="opacity-0 group-hover:opacity-100 p-1 text-outline hover:text-amber-700 rounded hover:bg-amber-50 transition"
+                          title="Archive client (hide from active list)"
+                        >
+                          <span className="material-symbols-outlined text-[16px]">archive</span>
+                        </button>
+                      ) : (
+                        <div className="flex items-center justify-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => restorePayslipTrackingRow(row.id)}
+                            className="p-1 text-emerald-700 hover:text-emerald-900 rounded hover:bg-emerald-50 transition"
+                            title="Activate client (restore to Active Clients)"
+                          >
+                            <span className="material-symbols-outlined text-[16px]">unarchive</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (window.confirm(`Permanently delete tracking entry for ${row.company}?`)) {
+                                deletePayslipTrackingRow(row.id);
+                              }
+                            }}
+                            className="p-1 text-outline hover:text-error rounded hover:bg-rose-50 transition"
+                            title="Delete permanently"
+                          >
+                            <span className="material-symbols-outlined text-[16px]">delete</span>
+                          </button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 );

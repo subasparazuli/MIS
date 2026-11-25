@@ -9,8 +9,6 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
     currentUser,
     switchRole,
     setActiveModal,
-    flagCounts,
-    totalFlagCount,
     services,
     clients,
     sidebarVisible,
@@ -18,20 +16,16 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
   } = useApp();
 
   const [servicesExpanded, setServicesExpanded] = useState(true);
-  const [quickViewExpanded, setQuickViewExpanded] = useState(false);
 
   const isCurrent = (path) => {
-    if (path === '/quick-view') {
-      return location.pathname === '/' || location.pathname === '/quick-view';
+    if (path === '/quick-view' || path === '/team-communications') {
+      return (
+        location.pathname === '/' ||
+        location.pathname === '/quick-view' ||
+        location.pathname === '/team-communications'
+      );
     }
     return location.pathname === path || location.pathname.startsWith(`${path}/`);
-  };
-
-  const isQuickViewTab = (tab) => {
-    return (
-      (location.pathname === '/' || location.pathname === '/quick-view') &&
-      location.search.includes(`tab=${tab}`)
-    );
   };
 
   const handleNavClick = (path) => {
@@ -97,122 +91,29 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
 
           <div className="px-space-xs py-space-xs flex flex-col gap-space-xs">
             {/* ============================================================ */}
-            {/* 1. QUICK VIEW (FLAG SIGNS) */}
+            {/* 1. TEAM COMMUNICATIONS */}
             {/* ============================================================ */}
-            <div className="pt-2">
-              <div className="flex items-center justify-between px-space-md py-1">
-                <button
-                  type="button"
-                  onClick={() => handleNavClick('/quick-view')}
-                  className="flex items-center gap-2 text-left group flex-1"
+            <div className="pt-2 px-space-sm">
+              <button
+                type="button"
+                onClick={() => handleNavClick('/team-communications')}
+                className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-left transition-all ${
+                  isCurrent('/team-communications')
+                    ? 'bg-primary/10 text-primary font-bold shadow-xs'
+                    : 'text-secondary hover:bg-surface-container-low hover:text-on-surface font-semibold'
+                }`}
+              >
+                <span
+                  className={`material-symbols-outlined text-[18px] ${
+                    isCurrent('/team-communications') ? 'text-primary' : 'text-secondary'
+                  }`}
                 >
-                  <span
-                    className={`material-symbols-outlined text-[18px] transition-colors ${isCurrent('/quick-view') ? 'text-primary font-bold' : 'text-secondary group-hover:text-primary'
-                      }`}
-                  >
-                    speed
-                  </span>
-                  <span
-                    className={`text-xs font-bold uppercase tracking-wider transition-colors ${isCurrent('/quick-view') ? 'text-primary' : 'text-secondary group-hover:text-on-surface'
-                      }`}
-                  >
-                    Quick View
-                  </span>
-                </button>
-
-                <div className="flex items-center gap-1">
-                  {totalFlagCount > 0 && (
-                    <span
-                      title={`${totalFlagCount} active flag signs require attention`}
-                      className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-error-container text-error leading-none"
-                    >
-                      {totalFlagCount} Flags
-                    </span>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => setQuickViewExpanded(!quickViewExpanded)}
-                    className="p-1 text-outline hover:text-on-surface rounded"
-                    aria-label="Toggle Quick View sub-items"
-                  >
-                    <span className="material-symbols-outlined text-[16px]">
-                      {quickViewExpanded ? 'expand_less' : 'expand_more'}
-                    </span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Flag Signs Sub-Items */}
-              {quickViewExpanded && (
-                <div className="flex flex-col gap-1 mt-1 pl-space-sm pr-space-xs">
-                  {/* Flag Sign 1: Not Processed */}
-                  <NavLink
-                    to="/quick-view?tab=not_processed"
-                    onClick={() => setMobileOpen && setMobileOpen(false)}
-                    className={({ isActive }) => {
-                      const active = isActive && isQuickViewTab('not_processed');
-                      return `flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${active
-                        ? 'bg-amber-50 text-amber-900 font-semibold border border-amber-200 shadow-xs'
-                        : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
-                        }`;
-                    }}
-                  >
-                    <div className="flex items-center gap-2 truncate">
-                      <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse shrink-0" />
-                      <span className="truncate">Not Processed</span>
-                    </div>
-                    <span className="ml-1.5 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300">
-                      {flagCounts.notProcessed}
-                    </span>
-                  </NavLink>
-
-                  {/* Flag Sign 2: Deadline Approaching Tasks */}
-                  <NavLink
-                    to="/quick-view?tab=deadlines"
-                    onClick={() => setMobileOpen && setMobileOpen(false)}
-                    className={({ isActive }) => {
-                      const active = isActive && isQuickViewTab('deadlines');
-                      return `flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${active
-                        ? 'bg-orange-50 text-orange-900 font-semibold border border-orange-200 shadow-xs'
-                        : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
-                        }`;
-                    }}
-                  >
-                    <div className="flex items-center gap-2 truncate">
-                      <span className="material-symbols-outlined text-[15px] text-orange-500 shrink-0">
-                        schedule
-                      </span>
-                      <span className="truncate">Deadline Approaching</span>
-                    </div>
-                    <span className="ml-1.5 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-orange-100 text-orange-800 border border-orange-300">
-                      {flagCounts.deadlineApproaching}
-                    </span>
-                  </NavLink>
-
-                  {/* Flag Sign 3: Issue Tokens Not Resolved */}
-                  <NavLink
-                    to="/quick-view?tab=tokens"
-                    onClick={() => setMobileOpen && setMobileOpen(false)}
-                    className={({ isActive }) => {
-                      const active = isActive && isQuickViewTab('tokens');
-                      return `flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${active
-                        ? 'bg-red-50 text-red-900 font-semibold border border-red-200 shadow-xs'
-                        : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
-                        }`;
-                    }}
-                  >
-                    <div className="flex items-center gap-2 truncate">
-                      <span className="material-symbols-outlined text-[15px] text-error shrink-0">
-                        report_problem
-                      </span>
-                      <span className="truncate">Issue Tokens</span>
-                    </div>
-                    <span className="ml-1.5 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-error-container text-error border border-error/20">
-                      {flagCounts.unresolvedTokens} open
-                    </span>
-                  </NavLink>
-                </div>
-              )}
+                  forum
+                </span>
+                <span className="text-xs font-bold uppercase tracking-wider truncate">
+                  Team Communications
+                </span>
+              </button>
             </div>
 
             <div className="px-space-md py-1">

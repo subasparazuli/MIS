@@ -23,23 +23,11 @@ export default function CustomServicePage() {
 
   return (
     <div className="flex flex-col w-full pb-16">
-      {/* Top Header */}
+      {/* Page Title */}
       <div className="py-space-md flex flex-col lg:flex-row lg:items-center justify-between gap-space-md border-b border-outline-variant/20 mb-space-md">
-        <div>
-          <div className="flex items-center gap-2 text-secondary text-xs uppercase tracking-wider font-semibold">
-            <span className="material-symbols-outlined text-[16px] text-primary">{service.icon || 'star'}</span>
-            <span>Firm Services Catalog • {service.category || 'Specialized Service'}</span>
-          </div>
-          <h1 className="font-headline-lg text-2xl lg:text-3xl font-bold text-on-surface tracking-tight mt-1 flex items-center gap-2">
-            {service.name}
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary border border-primary/20">
-              Active Service Type
-            </span>
-          </h1>
-          <p className="font-body-md text-sm text-secondary mt-0.5">
-            {service.description}
-          </p>
-        </div>
+        <h1 className="font-headline-lg text-2xl lg:text-3xl font-bold text-on-surface tracking-tight">
+          {service.name}
+        </h1>
 
         <div className="flex flex-wrap items-center gap-2">
           <button

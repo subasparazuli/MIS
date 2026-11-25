@@ -165,6 +165,44 @@ export function AppProvider({ children }) {
     return { '2021-09': initialMap };
   });
 
+  // Yearly Company Tax Return Store: { [yearStr 'YYYY']: { [recordId]: 'Submitted' | 'Not Submitted' } }
+  const [yearlyCompanyTaxReturnStore, setYearlyCompanyTaxReturnStore] = useState(() => {
+    const saved = localStorage.getItem('mis_v3_company_tax_return_yearly');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') {
+          return parsed;
+        }
+      } catch (e) {}
+    }
+    return {};
+  });
+
+  // Custom Columns for BAS Table
+  const [basCustomColumns, setBasCustomColumns] = useState(() => {
+    const saved = localStorage.getItem('mis_v3_bas_custom_columns');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) return parsed;
+      } catch (e) {}
+    }
+    return [];
+  });
+
+  // Yearly Custom Column Values Store: { [yearStr]: { [recordId]: { [colId]: value } } }
+  const [yearlyBasCustomStore, setYearlyBasCustomStore] = useState(() => {
+    const saved = localStorage.getItem('mis_v3_bas_yearly_custom_store');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') return parsed;
+      } catch (e) {}
+    }
+    return {};
+  });
+
   // Recently Added Values for BAS Dropdowns
   const [recentBasResponsibles, setRecentBasResponsibles] = useState(() => {
     const saved = localStorage.getItem('mis_recent_bas_responsibles');
@@ -460,6 +498,7 @@ export function AppProvider({ children }) {
       gstBasis: newClient.gstBasis || "Accruals",
       payrollFrequency: newClient.payrollFrequency || "Fortnightly",
       employeeCount: parseInt(newClient.employeeCount, 10) || 1,
+      dataLinkType: newClient.dataLinkType || "Without Data Link",
       leadPartner: currentUser.name || "Manoj Khanal, CA",
       software: newClient.software || "Quickbook",
       ...newClient
@@ -489,7 +528,69 @@ export function AppProvider({ children }) {
 
   const updateClient = (updated) => {
     setClients((prev) => prev.map((c) => (c.id === updated.id ? { ...c, ...updated } : c)));
+    if (updated.payrollFrequency) {
+      const cleanName = (updated.name || '').trim().toLowerCase();
+      setPayslipTracking((prev) =>
+        prev.map((row) =>
+          row.clientId === updated.id ||
+          (cleanName && row.company && row.company.trim().toLowerCase() === cleanName)
+            ? { ...row, payrunPeriod: updated.payrollFrequency }
+            : row
+        )
+      );
+    }
     showToast(`Client "${updated.name}" updated.`);
+  };
+
+  const ensureClientForName = (name, preferredId = null) => {
+    if (preferredId) {
+      const byId = clients.find((c) => c.id === preferredId);
+      if (byId) return byId;
+    }
+    const cleanName = (name || '').trim().toLowerCase();
+    if (cleanName) {
+      const exact = clients.find((c) => (c.name || '').trim().toLowerCase() === cleanName);
+      if (exact) return exact;
+      const partial = clients.find(
+        (c) =>
+          (c.name || '').trim().toLowerCase().includes(cleanName) ||
+          cleanName.includes((c.name || '').trim().toLowerCase())
+      );
+      if (partial) return partial;
+    }
+    const newClient = {
+      id: preferredId || `CL-${Date.now().toString().slice(-5)}`,
+      name: (name || 'New Client').trim(),
+      abn: '',
+      entityType: 'Pty Ltd',
+      software: 'Quickbook',
+      status: 'Active',
+      flagsCount: 0,
+      unresolvedTokensCount: 0,
+      activeServices: ['bas', 'payslip'],
+      lodgementCycle: 'Quarterly',
+      gstBasis: 'Accruals',
+      payrollFrequency: 'Fortnightly',
+      employeeCount: 1,
+      dataLinkType: 'Without Data Link',
+      leadPartner: currentUser.name || 'Manoj Khanal, CA',
+      contactEmail: '',
+      contactCc: ''
+    };
+    setClients((prev) => [newClient, ...prev]);
+    return newClient;
+  };
+
+  const isClientDataLinked = (clientId, clientName) => {
+    let found = null;
+    if (clientId) {
+      found = clients.find((c) => c.id === clientId);
+    }
+    if (!found && clientName) {
+      const clean = clientName.trim().toLowerCase();
+      found = clients.find((c) => (c.name || '').trim().toLowerCase() === clean);
+    }
+    return found?.dataLinkType === 'With Data Link';
   };
 
   // Flag Signs Actions: Not Processed
@@ -642,6 +743,7 @@ export function AppProvider({ children }) {
       createdAt: 'Just now',
       clientTag: comData.clientTag || null,
       taskTag: comData.taskTag || null,
+      serviceTag: comData.serviceTag || null,
       mentions: comData.mentions || [],
       isStatusRelated: comData.isStatusRelated !== undefined ? comData.isStatusRelated : (comData.type !== 'Comment'),
       status: comData.status || 'Open',
@@ -700,6 +802,34 @@ export function AppProvider({ children }) {
     showToast(`Communication status updated to ${newStatus}.`);
   };
 
+  const getServiceNotifications = (serviceKey, clientId, clientName) => {
+    const cleanName = (clientName || '').trim().toLowerCase();
+    const svcKey = (serviceKey || '').trim().toLowerCase();
+
+    return teamCommunications.filter((com) => {
+      if (com.status === 'Resolved') return false;
+      if (!com.mentions || com.mentions.length === 0) return false;
+      if (!com.clientTag || !com.serviceTag) return false;
+
+      // Check service match
+      const tagSvcId = (com.serviceTag.id || '').toLowerCase();
+      const tagSvcName = (com.serviceTag.name || '').toLowerCase();
+      const serviceMatches =
+        tagSvcId === svcKey ||
+        (svcKey === 'bas' && (tagSvcId === 'bas' || tagSvcName.includes('bas'))) ||
+        (svcKey === 'payslip' && (tagSvcId === 'payslip' || tagSvcName.includes('payslip') || tagSvcName.includes('wage')));
+      if (!serviceMatches) return false;
+
+      // Check client match
+      const tagClientId = com.clientTag.id;
+      const tagClientName = (com.clientTag.name || '').trim().toLowerCase();
+      return (
+        (clientId && tagClientId && tagClientId === clientId) ||
+        (cleanName && tagClientName && tagClientName === cleanName)
+      );
+    });
+  };
+
   const deleteTeamCommunication = (communicationId) => {
     setTeamCommunications((prev) => {
       const updated = prev.filter((c) => c.id !== communicationId);
@@ -714,7 +844,16 @@ export function AppProvider({ children }) {
 
   const getBasRecordsForPeriod = (periodKey = currentBasPeriodKey) => {
     const periodData = monthlyBasStore[periodKey];
+    const yearKey = String(periodKey).split('-')[0];
+    const yearTaxReturns = yearlyCompanyTaxReturnStore[yearKey] || {};
+    const yearCustom = yearlyBasCustomStore[yearKey] || {};
+
     return basRecords.map((base) => {
+      const companyTaxReturn = yearTaxReturns[base.id] || 'Not Submitted';
+      const customValues = {
+        ...(yearCustom[base.id] || {}),
+        ...(periodData?.[base.id]?.customFields || {})
+      };
       if (periodData && periodData[base.id]) {
         const p = periodData[base.id];
         return {
@@ -723,18 +862,83 @@ export function AppProvider({ children }) {
           priority: p.priority !== undefined ? p.priority : base.priority,
           basSep21: p.periodStatus !== undefined ? p.periodStatus : (periodKey === '2021-09' ? base.basSep21 : ''),
           basStatus: p.basStatus !== undefined ? p.basStatus : (periodKey === '2021-09' ? base.basStatus : 'In progress'),
-          remarks: p.remarks !== undefined ? p.remarks : (periodKey === '2021-09' ? base.remarks : '')
+          remarks: p.remarks !== undefined ? p.remarks : (periodKey === '2021-09' ? base.remarks : ''),
+          companyTaxReturn,
+          customValues
         };
       }
       if (periodKey === '2021-09') {
-        return { ...base };
+        return { ...base, companyTaxReturn, customValues };
       }
       return {
         ...base,
         basSep21: '',
         basStatus: 'In progress',
-        remarks: ''
+        remarks: '',
+        companyTaxReturn,
+        customValues
       };
+    });
+  };
+
+  const addBasCustomColumn = (colDef) => {
+    const newCol = {
+      id: `col_${Date.now().toString(36)}`,
+      title: (colDef.title || 'New Column').trim(),
+      type: colDef.type || 'text',
+      scope: colDef.scope || 'monthly',
+      options: Array.isArray(colDef.options) ? colDef.options : []
+    };
+    setBasCustomColumns((prev) => {
+      const updated = [...prev, newCol];
+      localStorage.setItem('mis_v3_bas_custom_columns', JSON.stringify(updated));
+      return updated;
+    });
+    showToast(`Added column "${newCol.title}" to BAS report.`);
+    return newCol;
+  };
+
+  const deleteBasCustomColumn = (colId) => {
+    setBasCustomColumns((prev) => {
+      const updated = prev.filter((c) => c.id !== colId);
+      localStorage.setItem('mis_v3_bas_custom_columns', JSON.stringify(updated));
+      return updated;
+    });
+    showToast('Custom column removed.');
+  };
+
+  const updateBasCustomCell = (scope, periodKey, recordId, colId, value) => {
+    if (scope === 'yearly') {
+      const yearKey = String(periodKey).split('-')[0];
+      setYearlyBasCustomStore((prev) => {
+        const yearObj = { ...(prev[yearKey] || {}) };
+        const recObj = { ...(yearObj[recordId] || {}), [colId]: value };
+        yearObj[recordId] = recObj;
+        const updated = { ...prev, [yearKey]: yearObj };
+        localStorage.setItem('mis_v3_bas_yearly_custom_store', JSON.stringify(updated));
+        return updated;
+      });
+    } else {
+      setMonthlyBasStore((prev) => {
+        const periodObj = { ...(prev[periodKey] || {}) };
+        const currentRec = periodObj[recordId] || {};
+        const customFields = { ...(currentRec.customFields || {}), [colId]: value };
+        periodObj[recordId] = { ...currentRec, customFields };
+        const updatedStore = { ...prev, [periodKey]: periodObj };
+        localStorage.setItem('mis_v3_bas_monthly_store', JSON.stringify(updatedStore));
+        return updatedStore;
+      });
+    }
+  };
+
+  const updateCompanyTaxReturn = (year, recordId, status) => {
+    const yearKey = String(year);
+    setYearlyCompanyTaxReturnStore((prev) => {
+      const yearObj = { ...(prev[yearKey] || {}) };
+      yearObj[recordId] = status;
+      const updated = { ...prev, [yearKey]: yearObj };
+      localStorage.setItem('mis_v3_company_tax_return_yearly', JSON.stringify(updated));
+      return updated;
     });
   };
 
@@ -795,6 +999,24 @@ export function AppProvider({ children }) {
     deleteBasRecordFromPeriod(currentBasPeriodKey, recordId);
   };
 
+  const archiveBasRecord = (recordId) => {
+    setBasRecords((prev) => {
+      const updated = prev.map((b) => (b.id === recordId ? { ...b, archived: true } : b));
+      localStorage.setItem('mis_v3_bas_records', JSON.stringify(updated));
+      return updated;
+    });
+    showToast('Client moved to Archived Clients.');
+  };
+
+  const restoreBasRecord = (recordId) => {
+    setBasRecords((prev) => {
+      const updated = prev.map((b) => (b.id === recordId ? { ...b, archived: false } : b));
+      localStorage.setItem('mis_v3_bas_records', JSON.stringify(updated));
+      return updated;
+    });
+    showToast('Client activated and restored to Active Clients.');
+  };
+
   const lodgeBasWithAto = (basId) => {
     const today = new Date().toISOString().split('T')[0];
     updateBasPeriodField(currentBasPeriodKey, basId, 'basStatus', 'Lodged');
@@ -831,6 +1053,10 @@ export function AppProvider({ children }) {
       localStorage.setItem('mis_v3_bas_monthly_store', JSON.stringify(updatedStore));
       return updatedStore;
     });
+    if (basData.companyTaxReturn) {
+      const yearKey = String(periodKey).split('-')[0];
+      updateCompanyTaxReturn(yearKey, newId, basData.companyTaxReturn);
+    }
     showToast(`BAS entry for ${newBas.clientName} added.`);
     setActiveModal(null);
   };
@@ -917,7 +1143,21 @@ export function AppProvider({ children }) {
 
   const deletePayslipTrackingRow = (rowId) => {
     setPayslipTracking((prev) => prev.filter((r) => r.id !== rowId));
-    showToast("Payslip tracking entry deleted.");
+    showToast("Payslip tracking entry permanently deleted.");
+  };
+
+  const archivePayslipTrackingRow = (rowId) => {
+    setPayslipTracking((prev) =>
+      prev.map((r) => (r.id === rowId ? { ...r, archived: true } : r))
+    );
+    showToast("Client moved to Archived Clients.");
+  };
+
+  const restorePayslipTrackingRow = (rowId) => {
+    setPayslipTracking((prev) =>
+      prev.map((r) => (r.id === rowId ? { ...r, archived: false } : r))
+    );
+    showToast("Client activated and restored to Active Clients.");
   };
 
   // Reset to initial clean data
@@ -943,6 +1183,8 @@ export function AppProvider({ children }) {
       };
     });
     setMonthlyBasStore({ '2021-09': initialMap });
+    setYearlyCompanyTaxReturnStore({});
+    localStorage.removeItem('mis_v3_company_tax_return_yearly');
     setPayRuns(initialPayRuns);
     setPayslips(initialPayslips);
     setPayslipTracking(initialPayslipTracking);
@@ -1007,6 +1249,7 @@ export function AppProvider({ children }) {
         addTeamCommunication,
         addCommunicationReply,
         updateCommunicationStatus,
+        getServiceNotifications,
         deleteTeamCommunication,
 
         // Services
@@ -1021,6 +1264,8 @@ export function AppProvider({ children }) {
         selectedClient,
         addClient,
         updateClient,
+        ensureClientForName,
+        isClientDataLinked,
 
         // BAS
         basRecords,
@@ -1044,10 +1289,18 @@ export function AppProvider({ children }) {
         basReportMonth,
         setBasReportMonth,
         monthlyBasStore,
+        yearlyCompanyTaxReturnStore,
+        basCustomColumns,
+        addBasCustomColumn,
+        deleteBasCustomColumn,
+        updateBasCustomCell,
         getBasRecordsForPeriod,
         updateBasPeriodField,
+        updateCompanyTaxReturn,
         addBasRecordToPeriod,
         deleteBasRecordFromPeriod,
+        archiveBasRecord,
+        restoreBasRecord,
         rollOverBasMonth,
         currentBasPeriodKey,
 
@@ -1066,6 +1319,8 @@ export function AppProvider({ children }) {
         updatePayslipTrackingField,
         addPayslipTrackingRow,
         deletePayslipTrackingRow,
+        archivePayslipTrackingRow,
+        restorePayslipTrackingRow,
         recentPayrunPeriods,
         addRecentPayrunPeriod,
         recentNotes,
