@@ -455,10 +455,10 @@ export default function PayslipsPage() {
   // Summary Metrics (Active Clients only)
   const totalRecords = activeClientRows.length;
   const payslipsSentCount = activeClientRows.filter((r) => r.payslipStatus === 'Payslip sent').length;
-  const superSubmittedCount = activeClientRows.filter((r) => r.superStatus === 'Submitted').length;
-  const holdOrActionCount = activeClientRows.filter(
-    (r) => r.superStatus === 'Not activate heroclear' || r.payslipStatus === 'Hold payslip'
-  ).length;
+  const holdPayslipCount = activeClientRows.filter((r) => r.payslipStatus === 'Hold payslip').length;
+  const draftPayslipCount = activeClientRows.filter((r) => r.payslipStatus === 'Draft').length;
+  const pendingPayslipCount = activeClientRows.filter((r) => r.payslipStatus === 'Pending').length;
+  const emptyPayslipCount = activeClientRows.filter((r) => !r.payslipStatus).length;
 
   const handleInspectClient = (clientId, companyName) => {
     const client = ensureClientForName(companyName, clientId);
@@ -595,43 +595,103 @@ export default function PayslipsPage() {
         </div>
       </div>
 
-      {/* Aggregate Metrics Strip */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-space-sm mb-space-md">
-        <div className="p-3 bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-xs">
+      {/* Aggregate Metrics Strip (All Payslip Statuses) */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-space-sm mb-space-md">
+        <button
+          type="button"
+          onClick={() => setPayslipFilter('all')}
+          className={`p-3 bg-surface-container-lowest rounded-xl border text-left transition shadow-xs ${
+            payslipFilter === 'all'
+              ? 'border-primary ring-1 ring-primary'
+              : 'border-outline-variant/30 hover:border-outline-variant'
+          }`}
+        >
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold text-secondary uppercase block">Total Clients</span>
             <span className="material-symbols-outlined text-[18px] text-secondary">receipt_long</span>
           </div>
           <span className="text-xl font-bold text-on-surface font-headline-lg">{totalRecords}</span>
-          <span className="text-[10px] text-secondary block">Full practice ledger</span>
-        </div>
+        </button>
 
-        <div className="p-3 bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-xs">
+        <button
+          type="button"
+          onClick={() => setPayslipFilter(payslipFilter === 'Payslip sent' ? 'all' : 'Payslip sent')}
+          className={`p-3 bg-surface-container-lowest rounded-xl border text-left transition shadow-xs ${
+            payslipFilter === 'Payslip sent'
+              ? 'border-emerald-500 ring-1 ring-emerald-500'
+              : 'border-outline-variant/30 hover:border-emerald-300'
+          }`}
+        >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-secondary uppercase block">Payslips Sent</span>
+            <span className="text-[11px] font-bold text-secondary uppercase block">Payslip Sent</span>
             <span className="material-symbols-outlined text-[18px] text-emerald-600">mark_email_read</span>
           </div>
           <span className="text-xl font-bold text-emerald-700 font-headline-lg">{payslipsSentCount}</span>
-          <span className="text-[10px] text-emerald-600 block">Dispatched to employees</span>
-        </div>
+        </button>
 
-        <div className="p-3 bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-xs">
+        <button
+          type="button"
+          onClick={() => setPayslipFilter(payslipFilter === 'Hold payslip' ? 'all' : 'Hold payslip')}
+          className={`p-3 bg-surface-container-lowest rounded-xl border text-left transition shadow-xs ${
+            payslipFilter === 'Hold payslip'
+              ? 'border-rose-500 ring-1 ring-rose-500'
+              : 'border-outline-variant/30 hover:border-rose-300'
+          }`}
+        >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-secondary uppercase block">Super Submitted</span>
-            <span className="material-symbols-outlined text-[18px] text-primary">savings</span>
+            <span className="text-[11px] font-bold text-secondary uppercase block">Hold Payslip</span>
+            <span className="material-symbols-outlined text-[18px] text-rose-500">pause_circle</span>
           </div>
-          <span className="text-xl font-bold text-primary font-headline-lg">{superSubmittedCount}</span>
-          <span className="text-[10px] text-primary block">Cleared / direct submitted</span>
-        </div>
+          <span className="text-xl font-bold text-rose-700 font-headline-lg">{holdPayslipCount}</span>
+        </button>
 
-        <div className="p-3 bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-xs">
+        <button
+          type="button"
+          onClick={() => setPayslipFilter(payslipFilter === 'Draft' ? 'all' : 'Draft')}
+          className={`p-3 bg-surface-container-lowest rounded-xl border text-left transition shadow-xs ${
+            payslipFilter === 'Draft'
+              ? 'border-sky-500 ring-1 ring-sky-500'
+              : 'border-outline-variant/30 hover:border-sky-300'
+          }`}
+        >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-secondary uppercase block">Action Required</span>
-            <span className="material-symbols-outlined text-[18px] text-rose-500">warning</span>
+            <span className="text-[11px] font-bold text-secondary uppercase block">Draft</span>
+            <span className="material-symbols-outlined text-[18px] text-sky-600">edit_document</span>
           </div>
-          <span className="text-xl font-bold text-rose-700 font-headline-lg">{holdOrActionCount}</span>
-          <span className="text-[10px] text-rose-600 block">HeroClear setup or On-hold</span>
-        </div>
+          <span className="text-xl font-bold text-sky-700 font-headline-lg">{draftPayslipCount}</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setPayslipFilter(payslipFilter === 'Pending' ? 'all' : 'Pending')}
+          className={`p-3 bg-surface-container-lowest rounded-xl border text-left transition shadow-xs ${
+            payslipFilter === 'Pending'
+              ? 'border-amber-500 ring-1 ring-amber-500'
+              : 'border-outline-variant/30 hover:border-amber-300'
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-secondary uppercase block">Pending</span>
+            <span className="material-symbols-outlined text-[18px] text-amber-600">schedule</span>
+          </div>
+          <span className="text-xl font-bold text-amber-700 font-headline-lg">{pendingPayslipCount}</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setPayslipFilter(payslipFilter === 'empty' ? 'all' : 'empty')}
+          className={`p-3 bg-surface-container-lowest rounded-xl border text-left transition shadow-xs ${
+            payslipFilter === 'empty'
+              ? 'border-slate-500 ring-1 ring-slate-500'
+              : 'border-outline-variant/30 hover:border-slate-300'
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-secondary uppercase block">Not Set</span>
+            <span className="material-symbols-outlined text-[18px] text-secondary">hourglass_empty</span>
+          </div>
+          <span className="text-xl font-bold text-secondary font-headline-lg">{emptyPayslipCount}</span>
+        </button>
       </div>
 
       {/* Filter and Search Bar */}
@@ -660,14 +720,14 @@ export default function PayslipsPage() {
         </div>
 
         {/* Dropdown Filters Row */}
-        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-outline-variant/20 text-xs">
-          <span className="text-secondary font-bold text-[11px] uppercase tracking-wider">Filters:</span>
+        <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 pt-2 border-t border-outline-variant/20 text-xs">
+          <span className="col-span-2 sm:col-span-1 text-secondary font-bold text-[11px] uppercase tracking-wider">Filters:</span>
 
           {/* Software Filter */}
           <select
             value={softwareFilter}
             onChange={(e) => setSoftwareFilter(e.target.value)}
-            className="h-7 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none"
+            className="h-7 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none w-full sm:w-auto"
           >
             <option value="all">Software: All</option>
             <option value="Quickbook">Quickbook</option>
@@ -678,7 +738,7 @@ export default function PayslipsPage() {
           <select
             value={payrunFilter}
             onChange={(e) => setPayrunFilter(e.target.value)}
-            className="h-7 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none"
+            className="h-7 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none w-full sm:w-auto"
           >
             <option value="all">Period: All</option>
             <option value="fortnightly">Fortnightly</option>
@@ -690,7 +750,7 @@ export default function PayslipsPage() {
           <select
             value={superFilter}
             onChange={(e) => setSuperFilter(e.target.value)}
-            className="h-7 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none"
+            className="h-7 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none w-full sm:w-auto"
           >
             <option value="all">Super Status: All</option>
             <option value="Submitted">Submitted</option>
@@ -703,19 +763,21 @@ export default function PayslipsPage() {
           <select
             value={payslipFilter}
             onChange={(e) => setPayslipFilter(e.target.value)}
-            className="h-7 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none"
+            className="h-7 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none w-full sm:w-auto"
           >
             <option value="all">Payslip Status: All</option>
             <option value="Payslip sent">Payslip sent</option>
             <option value="Hold payslip">Hold payslip</option>
-            <option value="empty">Not Sent / Empty</option>
+            <option value="Draft">Draft</option>
+            <option value="Pending">Pending</option>
+            <option value="empty">Not Set / Empty</option>
           </select>
 
           {/* Processed Timing Filter */}
           <select
             value={processedFilter}
             onChange={(e) => setProcessedFilter(e.target.value)}
-            className="h-7 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none"
+            className="h-7 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none w-full sm:w-auto"
           >
             <option value="all">Processed Timing: All</option>
             <option value="this">This Week</option>

@@ -6,7 +6,6 @@ export default function Header({ setMobileOpen }) {
   const navigate = useNavigate();
   const {
     currentUser,
-    switchRole,
     setActiveModal,
     flagCounts,
     totalFlagCount,
@@ -245,36 +244,6 @@ export default function Header({ setMobileOpen }) {
               <div className="px-3 py-1.5 border-b border-outline-variant/20">
                 <span className="font-bold text-on-surface block">{currentUser.name}</span>
                 <span className="text-[11px] text-secondary">{currentUser.email}</span>
-              </div>
-
-              <div className="px-3 py-2 flex items-center justify-between border-b border-outline-variant/20">
-                <span className="text-secondary font-medium">Switch Role:</span>
-                <div className="flex items-center gap-1">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      switchRole('Admin');
-                      setShowRoleMenu(false);
-                    }}
-                    className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                      currentUser.role === 'Admin' ? 'bg-primary text-on-primary' : 'bg-surface-container text-secondary'
-                    }`}
-                  >
-                    Admin
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      switchRole('User');
-                      setShowRoleMenu(false);
-                    }}
-                    className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                      currentUser.role === 'User' ? 'bg-secondary text-on-secondary' : 'bg-surface-container text-secondary'
-                    }`}
-                  >
-                    User
-                  </button>
-                </div>
               </div>
 
               <button

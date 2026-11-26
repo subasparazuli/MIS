@@ -10,6 +10,12 @@ export default function ClientsPage() {
   const [search, setSearch] = useState('');
   const [softwareFilter, setSoftwareFilter] = useState('all');
   const [entityFilter, setEntityFilter] = useState('all');
+  const [viewMode, setViewMode] = useState(() => localStorage.getItem('mis_clients_view_mode') || 'grid');
+
+  const handleSetViewMode = (mode) => {
+    setViewMode(mode);
+    localStorage.setItem('mis_clients_view_mode', mode);
+  };
 
   const filteredClients = clients.filter((c) => {
     if (search.trim()) {
@@ -98,11 +104,42 @@ export default function ClientsPage() {
             <option value="Trust">Discretionary Trust</option>
             <option value="Partnership">Partnership</option>
           </select>
+
+          {/* Grid / List View Switcher */}
+          <div className="flex items-center p-0.5 bg-surface-container rounded-lg border border-outline-variant/30">
+            <button
+              type="button"
+              onClick={() => handleSetViewMode('grid')}
+              className={`h-7 px-2.5 rounded-md text-xs font-bold flex items-center gap-1 transition ${
+                viewMode === 'grid'
+                  ? 'bg-surface-container-lowest text-primary shadow-2xs'
+                  : 'text-secondary hover:text-on-surface'
+              }`}
+              title="Grid View"
+            >
+              <span className="material-symbols-outlined text-[16px]">grid_view</span>
+              <span className="hidden sm:inline">Grid</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleSetViewMode('list')}
+              className={`h-7 px-2.5 rounded-md text-xs font-bold flex items-center gap-1 transition ${
+                viewMode === 'list'
+                  ? 'bg-surface-container-lowest text-primary shadow-2xs'
+                  : 'text-secondary hover:text-on-surface'
+              }`}
+              title="List View"
+            >
+              <span className="material-symbols-outlined text-[16px]">view_list</span>
+              <span className="hidden sm:inline">List</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Clients Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md">
+      {/* Clients View: Grid or List */}
+      {viewMode === 'grid' ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md">
         {filteredClients.map((client) => {
           return (
             <div
@@ -167,7 +204,9 @@ export default function ClientsPage() {
                     Active Services:
                   </span>
                   <div className="flex flex-wrap gap-1">
-                    {(client.activeServices || ['bas', 'payslip']).map((svc) => (
+                    {Array.from(
+                      new Set((client.activeServices || ['bas', 'payslip']).filter((s) => s === 'bas' || s === 'payslip'))
+                    ).map((svc) => (
                       <span
                         key={svc}
                         className="px-2 py-0.5 rounded text-[10px] font-semibold bg-surface-container text-on-surface capitalize"
@@ -192,6 +231,108 @@ export default function ClientsPage() {
           );
         })}
       </div>
+      ) : (
+        <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-xs overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse text-xs min-w-[880px]">
+              <thead>
+                <tr className="bg-surface-container-low border-b border-outline-variant/20 text-secondary uppercase font-semibold text-[11px] tracking-wide">
+                  <th className="py-2.5 px-3 w-10 text-center">#</th>
+                  <th className="py-2.5 px-3 min-w-[220px]">Client Name</th>
+                  <th className="py-2.5 px-3">Software</th>
+                  <th className="py-2.5 px-3">Email</th>
+                  <th className="py-2.5 px-3">Payrun</th>
+                  <th className="py-2.5 px-3">Active Services</th>
+                  <th className="py-2.5 px-3">Location</th>
+                  <th className="py-2.5 px-3">Status</th>
+                  <th className="py-2.5 px-3 text-right"></th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-outline-variant/15">
+                {filteredClients.map((client, idx) => (
+                  <tr
+                    key={client.id}
+                    onClick={() => handleSelectClient(client)}
+                    className="hover:bg-surface-container-low/60 transition cursor-pointer group"
+                  >
+                    <td className="py-2.5 px-3 text-center text-secondary font-mono text-[11px]">
+                      {idx + 1}
+                    </td>
+                    <td className="py-2.5 px-3">
+                      <div className="flex flex-col">
+                        <span className="font-bold text-on-surface group-hover:text-primary transition inline-flex items-center flex-wrap">
+                          <span>{client.name}</span>
+                          {client.dataLinkType === 'With Data Link' && <DataLinkIcon />}
+                        </span>
+                        {client.entityType && (
+                          <span className="text-[10px] text-secondary">{client.entityType}</span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="py-2.5 px-3">
+                      <span
+                        className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                          client.software === 'Xero'
+                            ? 'bg-sky-50 text-sky-800 border-sky-200'
+                            : 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                        }`}
+                      >
+                        {client.software || 'Quickbook'}
+                      </span>
+                    </td>
+                    <td className="py-2.5 px-3 font-mono text-[11px] text-secondary">
+                      {client.contactEmail || '-'}
+                    </td>
+                    <td className="py-2.5 px-3 font-mono text-[11px] text-on-surface">
+                      {client.payrollFrequency || 'Fortnightly'}
+                    </td>
+                    <td className="py-2.5 px-3">
+                      <div className="flex flex-wrap gap-1">
+                        {Array.from(
+                          new Set((client.activeServices || ['bas', 'payslip']).filter((s) => s === 'bas' || s === 'payslip'))
+                        ).map((svc) => (
+                          <span
+                            key={svc}
+                            className="px-2 py-0.5 rounded text-[10px] font-semibold bg-surface-container text-on-surface"
+                          >
+                            {svc === 'bas' ? 'BAS / GST' : 'Wage / Payroll'}
+                          </span>
+                        ))}
+                      </div>
+                    </td>
+                    <td className="py-2.5 px-3 text-[11px] text-secondary">
+                      {client.city || 'Adelaide'}, {client.state || 'SA'}
+                    </td>
+                    <td className="py-2.5 px-3">
+                      {client.flagsCount > 0 ? (
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 inline-flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                          {client.flagsCount} Flags
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                          Active
+                        </span>
+                      )}
+                    </td>
+                    <td className="py-2.5 px-3 text-right">
+                      <span className="text-primary font-bold text-xs whitespace-nowrap">
+                        View &rarr;
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {filteredClients.length === 0 && (
+        <div className="p-10 text-center text-xs text-secondary bg-surface-container-lowest rounded-xl border border-outline-variant/30 mt-3">
+          No clients matching your search or filters.
+        </div>
+      )}
     </div>
   );
 }

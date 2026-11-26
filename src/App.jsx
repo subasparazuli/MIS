@@ -17,6 +17,7 @@ import GlobalSearchModal from './components/modals/GlobalSearchModal';
 import TeamCommunicationPage from './pages/teamCommunicationPage';
 import BasPage from './pages/BasPage';
 import PayslipsPage from './pages/PayslipsPage';
+import DaspClientPage from './pages/DaspClientPage';
 import ClientsPage from './pages/ClientsPage';
 import ClientProfilePage from './pages/ClientProfilePage';
 import CustomServicePage from './pages/CustomServicePage';
@@ -26,23 +27,32 @@ export default function App() {
   const { toast, sidebarVisible, toggleSidebar } = useApp();
 
   return (
-    <div className="min-h-screen bg-surface font-body-md text-on-surface antialiased flex flex-col">
+    <div className="min-h-screen bg-surface font-body-md text-on-surface antialiased flex flex-col overflow-x-hidden">
       {/* Sidebar Rail */}
       <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
 
       {/* Main Layout Area */}
-      <div className={`${sidebarVisible ? 'lg:pl-64' : 'lg:pl-0'} transition-all duration-300 flex flex-col min-h-screen`}>
-        {/* Sidebar reopen button when collapsed on desktop or on mobile */}
+      <div className={`${sidebarVisible ? 'lg:pl-64' : 'lg:pl-0'} transition-all duration-300 flex flex-col min-h-screen w-full min-w-0`}>
+        {/* Mobile Top Bar (prevents hamburger button from overlapping page titles) */}
+        <div className="lg:hidden sticky top-0 z-30 flex items-center justify-between h-12 px-3 bg-surface-container-lowest/95 backdrop-blur-sm border-b border-outline-variant/25">
+          <button
+            type="button"
+            onClick={() => setMobileOpen(true)}
+            className="p-1.5 text-secondary hover:text-on-surface rounded-lg hover:bg-surface-container transition flex items-center justify-center"
+            aria-label="Open Sidebar"
+            title="Open Sidebar"
+          >
+            <span className="material-symbols-outlined text-[22px]">menu</span>
+          </button>
+          <span className="font-bold text-sm text-on-surface tracking-tight">LedgerPoint MIS</span>
+          <div className="w-8" />
+        </div>
+
+        {/* Desktop Sidebar Reopen Button when collapsed */}
         <button
           type="button"
-          onClick={() => {
-            if (window.innerWidth < 1024) {
-              setMobileOpen(true);
-            } else {
-              toggleSidebar();
-            }
-          }}
-          className={`${sidebarVisible ? 'lg:hidden' : 'lg:flex'} fixed top-3 left-3 z-30 p-1.5 bg-surface-container-lowest/90 backdrop-blur-sm border border-outline-variant/30 text-secondary hover:text-on-surface rounded-lg hover:bg-surface-container shadow-xs transition flex items-center justify-center`}
+          onClick={toggleSidebar}
+          className={`hidden ${!sidebarVisible ? 'lg:flex' : 'lg:hidden'} fixed top-3 left-3 z-30 p-1.5 bg-surface-container-lowest/90 backdrop-blur-sm border border-outline-variant/30 text-secondary hover:text-on-surface rounded-lg hover:bg-surface-container shadow-xs transition items-center justify-center`}
           aria-label="Show Sidebar"
           title="Show Sidebar"
         >
@@ -50,13 +60,14 @@ export default function App() {
         </button>
 
         {/* Content Body */}
-        <main className="relative pt-4 bg-surface min-h-screen w-full px-4 lg:px-gutter-desktop">
+        <main className="relative pt-5 lg:pt-7 bg-surface min-h-screen w-full min-w-0 px-4 sm:px-6 lg:px-gutter-desktop">
           <Routes>
             <Route path="/" element={<TeamCommunicationPage />} />
             <Route path="/team-communications" element={<TeamCommunicationPage />} />
             <Route path="/quick-view" element={<TeamCommunicationPage />} />
             <Route path="/services/bas" element={<BasPage />} />
             <Route path="/services/payslips" element={<PayslipsPage />} />
+            <Route path="/services/dasp" element={<DaspClientPage />} />
             <Route path="/services/:serviceId" element={<CustomServicePage />} />
             <Route path="/clients" element={<ClientsPage />} />
             <Route path="/clients/:clientId" element={<ClientProfilePage />} />

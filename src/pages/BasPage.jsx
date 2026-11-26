@@ -1191,57 +1191,60 @@ export default function BasPage() {
             )}
           </div>
 
-          {/* Responsible Filter */}
-          <select
-            value={responsibleFilter}
-            onChange={(e) => setResponsibleFilter(e.target.value)}
-            className="h-8 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none cursor-pointer"
-          >
-            <option value="all">Staff: All ({totalCount})</option>
-            {standardResponsibles.map((r) => (
-              <option key={r} value={r.toLowerCase()}>
-                {r}
-              </option>
-            ))}
-            <option value="unassigned">-- Unassigned ({unassignedCount}) --</option>
-          </select>
+          {/* Filter Dropdowns */}
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 w-full lg:w-auto">
+            {/* Responsible Filter */}
+            <select
+              value={responsibleFilter}
+              onChange={(e) => setResponsibleFilter(e.target.value)}
+              className="h-8 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none cursor-pointer w-full sm:w-auto"
+            >
+              <option value="all">Staff: All ({totalCount})</option>
+              {standardResponsibles.map((r) => (
+                <option key={r} value={r.toLowerCase()}>
+                  {r}
+                </option>
+              ))}
+              <option value="unassigned">-- Unassigned ({unassignedCount}) --</option>
+            </select>
 
-          {/* Priority Filter */}
-          <select
-            value={priorityFilter}
-            onChange={(e) => setPriorityFilter(e.target.value)}
-            className="h-8 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none cursor-pointer"
-          >
-            <option value="all">Priority: All</option>
-            <option value="very high">Very High</option>
-            <option value="high">High</option>
-            <option value="med">Medium</option>
-            <option value="low">Low</option>
-          </select>
+            {/* Priority Filter */}
+            <select
+              value={priorityFilter}
+              onChange={(e) => setPriorityFilter(e.target.value)}
+              className="h-8 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none cursor-pointer w-full sm:w-auto"
+            >
+              <option value="all">Priority: All</option>
+              <option value="very high">Very High</option>
+              <option value="high">High</option>
+              <option value="med">Medium</option>
+              <option value="low">Low</option>
+            </select>
 
-          {/* Period Status Filter */}
-          <select
-            value={periodStatusFilter}
-            onChange={(e) => setPeriodStatusFilter(e.target.value)}
-            className="h-8 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none cursor-pointer"
-          >
-            <option value="all">{periodColumnTitle}: All</option>
-            <option value="lodged">Lodged</option>
-            <option value="hold">HOLD</option>
-            <option value="eld">ELD</option>
-            <option value="suspense">Suspense sent</option>
-          </select>
+            {/* Period Status Filter */}
+            <select
+              value={periodStatusFilter}
+              onChange={(e) => setPeriodStatusFilter(e.target.value)}
+              className="h-8 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none cursor-pointer w-full sm:w-auto"
+            >
+              <option value="all">{periodColumnTitle}: All</option>
+              <option value="lodged">Lodged</option>
+              <option value="hold">HOLD</option>
+              <option value="eld">ELD</option>
+              <option value="suspense">Suspense sent</option>
+            </select>
 
-          {/* Company Tax Return Filter */}
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="h-8 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none cursor-pointer"
-          >
-            <option value="all">Tax Return ({basReportYear}): All</option>
-            <option value="submitted">Submitted</option>
-            <option value="not submitted">Not Submitted</option>
-          </select>
+            {/* Company Tax Return Filter */}
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="h-8 px-2 rounded-lg bg-surface-container text-xs text-on-surface border border-outline-variant/30 focus:outline-none cursor-pointer w-full sm:w-auto"
+            >
+              <option value="all">Tax Return ({basReportYear}): All</option>
+              <option value="submitted">Submitted</option>
+              <option value="not submitted">Not Submitted</option>
+            </select>
+          </div>
 
           {/* Clear Filters */}
           {(responsibleFilter !== 'all' || priorityFilter !== 'all' || statusFilter !== 'all' || periodStatusFilter !== 'all' || search) && (

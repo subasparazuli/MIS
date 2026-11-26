@@ -957,7 +957,7 @@ export default function QuickViewPage() {
 
                       {/* Reply Box */}
                       {isExpanded && (
-                        <div className="flex items-center gap-1.5 mt-1">
+                        <div className="flex flex-wrap items-center gap-1.5 mt-1">
                           <input
                             type="text"
                             value={replyState.content}
@@ -971,7 +971,7 @@ export default function QuickViewPage() {
                               if (e.key === 'Enter') handleSendReply(com.id);
                             }}
                             placeholder="Write a response or note..."
-                            className="flex-1 h-7 px-2.5 rounded-lg bg-surface-container-low text-xs text-on-surface border border-outline-variant/20 focus:border-primary focus:outline-none"
+                            className="flex-1 min-w-[160px] h-7 px-2.5 rounded-lg bg-surface-container-low text-xs text-on-surface border border-outline-variant/20 focus:border-primary focus:outline-none"
                           />
 
                           {/* Optional Status change alongside response */}

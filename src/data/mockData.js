@@ -70,6 +70,29 @@ export const initialServices = [
     unprocessedCount: 5,
     deadlineCount: 3,
     isDefault: true
+  },
+  {
+    id: "dasp",
+    name: "DASP Client",
+    shortName: "DASP Client",
+    path: "/services/dasp",
+    icon: "assignment_ind",
+    description: "",
+    category: "Compliance",
+    frequency: "Ad-Hoc",
+    activeClientsCount: 1,
+    unprocessedCount: 1,
+    deadlineCount: 0,
+    isDefault: true
+  }
+];
+
+export const initialDaspClients = [
+  {
+    id: "DASP-001",
+    name: "Manoj Khanal",
+    status: "In progress",
+    feeStatus: "Unpaid"
   }
 ];
 

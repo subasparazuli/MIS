@@ -12,7 +12,8 @@ import {
   initialBasRecords,
   initialPayRuns,
   initialPayslips,
-  initialPayslipTracking
+  initialPayslipTracking,
+  initialDaspClients
 } from '../data/mockData';
 
 const AppContext = createContext();
@@ -50,7 +51,12 @@ export function AppProvider({ children }) {
       try {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
-          return parsed.filter((s) => s.id !== 'superannuation');
+          const filtered = parsed.filter((s) => s.id !== 'superannuation');
+          if (!filtered.some((s) => s.id === 'dasp')) {
+            const daspSvc = initialServices.find((s) => s.id === 'dasp');
+            if (daspSvc) return [...filtered, daspSvc];
+          }
+          return filtered;
         }
       } catch (e) {}
     }
@@ -102,6 +108,18 @@ export function AppProvider({ children }) {
   const [teamCommunications, setTeamCommunications] = useState(() => {
     const saved = localStorage.getItem('mis_v3_team_communications');
     return saved ? JSON.parse(saved) : initialTeamCommunications;
+  });
+
+  // DASP Clients State
+  const [daspClients, setDaspClients] = useState(() => {
+    const saved = localStorage.getItem('mis_v3_dasp_clients');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) return parsed;
+      } catch (e) {}
+    }
+    return initialDaspClients;
   });
 
   // BAS Records State (247 client tracking sheet)
@@ -434,15 +452,6 @@ export function AppProvider({ children }) {
     setCurrentUser(newUser);
     showToast(`Account registered and active as ${newUser.name} (${newUser.role}).`);
     setActiveModal(null);
-  };
-
-  const switchRole = (newRole) => {
-    setCurrentUser((prev) => ({
-      ...prev,
-      role: newRole,
-      title: newRole === 'Admin' ? 'Managing Director & Registered Tax Agent' : 'Senior Staff Accountant'
-    }));
-    showToast(`Role switched to ${newRole}.`);
   };
 
   const logout = () => {
@@ -1160,6 +1169,39 @@ export function AppProvider({ children }) {
     showToast("Client activated and restored to Active Clients.");
   };
 
+  // DASP Client Actions
+  const addDaspClient = (clientData) => {
+    const newItem = {
+      id: `DASP-${Date.now().toString().slice(-4)}`,
+      name: (clientData.name || 'New Client').trim(),
+      status: clientData.status || 'In progress',
+      feeStatus: clientData.feeStatus || 'Unpaid'
+    };
+    setDaspClients((prev) => {
+      const updated = [newItem, ...prev];
+      localStorage.setItem('mis_v3_dasp_clients', JSON.stringify(updated));
+      return updated;
+    });
+    showToast(`Added "${newItem.name}" to DASP Client.`);
+  };
+
+  const updateDaspClientField = (id, field, value) => {
+    setDaspClients((prev) => {
+      const updated = prev.map((row) => (row.id === id ? { ...row, [field]: value } : row));
+      localStorage.setItem('mis_v3_dasp_clients', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const deleteDaspClient = (id) => {
+    setDaspClients((prev) => {
+      const updated = prev.filter((row) => row.id !== id);
+      localStorage.setItem('mis_v3_dasp_clients', JSON.stringify(updated));
+      return updated;
+    });
+    showToast('DASP client removed.');
+  };
+
   // Reset to initial clean data
   const resetAllData = () => {
     setCurrentUser(initialCurrentUser);
@@ -1218,7 +1260,6 @@ export function AppProvider({ children }) {
         currentUser,
         login,
         signup,
-        switchRole,
         logout,
         sampleUsers,
 
@@ -1325,6 +1366,12 @@ export function AppProvider({ children }) {
         addRecentPayrunPeriod,
         recentNotes,
         addRecentNote,
+
+        // DASP Clients
+        daspClients,
+        addDaspClient,
+        updateDaspClientField,
+        deleteDaspClient,
 
         // Global UI
         activeModal,

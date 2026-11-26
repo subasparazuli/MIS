@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 
 export default function AuthModal() {
-  const { activeModal, setActiveModal, login, signup, currentUser, switchRole, logout } = useApp();
+  const { activeModal, setActiveModal, login, signup, currentUser, logout } = useApp();
 
   const [mode, setMode] = useState('login'); // 'login' | 'signup'
   const [selectedRole, setSelectedRole] = useState('Admin'); // 'Admin' | 'User'

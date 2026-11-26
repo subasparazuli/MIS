@@ -115,15 +115,15 @@ export default function ClientProfilePage() {
           <span className="text-on-surface font-bold">{client.name}</span>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-secondary font-semibold">Switch Client:</span>
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <span className="text-xs text-secondary font-semibold shrink-0">Switch Client:</span>
           <select
             value={client.id}
             onChange={(e) => {
               setSelectedClientId(e.target.value);
               navigate(`/clients/${e.target.value}`);
             }}
-            className="h-8 px-2.5 bg-surface-container rounded-lg text-xs font-semibold text-on-surface border border-outline-variant/30 focus:outline-none"
+            className="h-8 px-2.5 bg-surface-container rounded-lg text-xs font-semibold text-on-surface border border-outline-variant/30 focus:outline-none flex-1 sm:flex-initial min-w-0 max-w-full"
           >
             {clients.map((c) => (
               <option key={c.id} value={c.id}>
@@ -241,7 +241,9 @@ export default function ClientProfilePage() {
         <div className="pt-3 mt-3 border-t border-outline-variant/20 flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-1.5 text-xs">
             <span className="text-secondary font-semibold mr-1">Active Practice Services:</span>
-            {(client.activeServices || ['bas', 'payslip']).map((svc) => (
+            {Array.from(
+              new Set((client.activeServices || ['bas', 'payslip']).filter((s) => s === 'bas' || s === 'payslip'))
+            ).map((svc) => (
               <span
                 key={svc}
                 className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary border border-primary/20 flex items-center gap-1"

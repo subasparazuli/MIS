@@ -34,7 +34,7 @@ export default function ServiceNotificationBell({ notifications = [], onResolve 
         onClick={(e) => e.stopPropagation()}
         className={`${
           pinned ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none group-hover/bell:opacity-100 group-hover/bell:pointer-events-auto'
-        } transition-opacity duration-150 absolute left-0 top-full mt-1.5 w-72 bg-surface-container-lowest rounded-xl border border-emerald-300 shadow-xl z-50 p-3 text-left`}
+        } transition-opacity duration-150 absolute left-0 top-full mt-1.5 w-72 max-w-[calc(100vw-2rem)] bg-surface-container-lowest rounded-xl border border-emerald-300 shadow-xl z-50 p-3 text-left`}
       >
         <div className="flex items-center justify-between pb-1.5 mb-2 border-b border-emerald-200/70">
           <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-emerald-800">

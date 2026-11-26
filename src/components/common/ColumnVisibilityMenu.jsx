@@ -44,7 +44,7 @@ export default function ColumnVisibilityMenu({ columns, hiddenColumns, onToggleC
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-1.5 w-60 bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-xl z-40 p-2 animate-fade-in">
+        <div className="absolute right-0 mt-1.5 w-60 max-w-[calc(100vw-2rem)] bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-xl z-40 p-2 animate-fade-in">
           <div className="flex items-center justify-between px-2 py-1.5 border-b border-outline-variant/20 mb-1">
             <span className="text-[11px] font-bold uppercase tracking-wider text-secondary">
               Visible Columns

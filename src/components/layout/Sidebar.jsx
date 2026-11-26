@@ -7,7 +7,6 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
   const navigate = useNavigate();
   const {
     currentUser,
-    switchRole,
     setActiveModal,
     services,
     clients,
@@ -44,13 +43,14 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
       )}
 
       <aside
-        className={`fixed left-0 top-0 h-full w-64 bg-surface-container-lowest border-r border-outline-variant/30 shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between transition-all duration-300 ${mobileOpen ? 'translate-x-0' : sidebarVisible ? 'translate-x-0' : '-translate-x-full'
-          }`}
+        className={`fixed left-0 top-0 h-full w-64 bg-surface-container-low border-r border-outline-variant z-50 flex flex-col justify-between transition-all duration-300 ${
+          mobileOpen ? 'translate-x-0' : '-translate-x-full'
+        } ${sidebarVisible ? 'lg:translate-x-0' : 'lg:-translate-x-full'}`}
       >
         {/* Scrollable Upper Area */}
         <div className="flex flex-col flex-1 min-h-0 overflow-y-auto">
           {/* Logo Brand Header */}
-          <div className="h-16 px-space-md flex items-center justify-between border-b border-outline-variant/20 bg-surface-container-low shrink-0">
+          <div className="h-16 px-space-lg flex items-center justify-between border-b border-outline-variant/60 bg-surface-container-low shrink-0">
             <div
               onClick={() => handleNavClick('/quick-view')}
               className="flex items-center gap-space-sm cursor-pointer group"
@@ -97,20 +97,20 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
               <button
                 type="button"
                 onClick={() => handleNavClick('/team-communications')}
-                className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-left transition-all ${
+                className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-left transition-colors ${
                   isCurrent('/team-communications')
-                    ? 'bg-primary/10 text-primary font-bold shadow-xs'
-                    : 'text-secondary hover:bg-surface-container-low hover:text-on-surface font-semibold'
+                    ? 'bg-surface-container-high text-on-surface font-semibold'
+                    : 'text-on-surface-variant hover:bg-surface-container text-xs font-medium'
                 }`}
               >
                 <span
                   className={`material-symbols-outlined text-[18px] ${
-                    isCurrent('/team-communications') ? 'text-primary' : 'text-secondary'
+                    isCurrent('/team-communications') ? 'text-on-surface' : 'text-secondary'
                   }`}
                 >
                   forum
                 </span>
-                <span className="text-xs font-bold uppercase tracking-wider truncate">
+                <span className="text-xs truncate">
                   Team Communications
                 </span>
               </button>
@@ -151,8 +151,8 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
                   onClick={() => setMobileOpen && setMobileOpen(false)}
                   className={({ isActive }) =>
                     `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${isActive
-                      ? 'bg-primary text-on-primary font-semibold shadow-xs'
-                      : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                      ? 'bg-surface-container-high text-on-surface font-semibold'
+                      : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
                     }`
                   }
                 >
@@ -168,14 +168,31 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
                   onClick={() => setMobileOpen && setMobileOpen(false)}
                   className={({ isActive }) =>
                     `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${isActive
-                      ? 'bg-primary text-on-primary font-semibold shadow-xs'
-                      : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                      ? 'bg-surface-container-high text-on-surface font-semibold'
+                      : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
                     }`
                   }
                 >
                   <div className="flex items-center gap-space-sm truncate">
                     <span className="material-symbols-outlined text-[18px]">payments</span>
                     <span className="truncate">Payslip / Wage Management</span>
+                  </div>
+                </NavLink>
+
+                {/* 3. DASP Client */}
+                <NavLink
+                  to="/services/dasp"
+                  onClick={() => setMobileOpen && setMobileOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${isActive
+                      ? 'bg-surface-container-high text-on-surface font-semibold'
+                      : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
+                    }`
+                  }
+                >
+                  <div className="flex items-center gap-space-sm truncate">
+                    <span className="material-symbols-outlined text-[18px]">assignment_ind</span>
+                    <span className="truncate">DASP Client</span>
                   </div>
                 </NavLink>
 
@@ -241,8 +258,8 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
                 onClick={() => setMobileOpen && setMobileOpen(false)}
                 className={({ isActive }) =>
                   `flex items-center justify-between px-space-md py-2 rounded-lg text-xs transition-colors ${isActive
-                    ? 'bg-primary text-on-primary font-semibold shadow-xs'
-                    : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
+                    ? 'bg-surface-container-high text-on-surface font-semibold'
+                    : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
                   }`
                 }
               >
@@ -291,34 +308,6 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
               >
                 {currentUser.role}
               </span>
-            </div>
-
-            {/* Quick Role Switcher Button */}
-            <div className="flex items-center justify-between pt-1 border-t border-outline-variant/20 text-[11px]">
-              <span className="text-secondary font-medium">Active Mode:</span>
-              <div className="flex items-center gap-1">
-                <button
-                  type="button"
-                  onClick={() => switchRole('Admin')}
-                  className={`px-2 py-0.5 rounded text-[10px] font-bold transition ${currentUser.role === 'Admin'
-                    ? 'bg-primary text-on-primary shadow-2xs'
-                    : 'text-secondary hover:text-on-surface'
-                    }`}
-                >
-                  Admin
-                </button>
-                <span className="text-outline-variant">|</span>
-                <button
-                  type="button"
-                  onClick={() => switchRole('User')}
-                  className={`px-2 py-0.5 rounded text-[10px] font-bold transition ${currentUser.role === 'User'
-                    ? 'bg-secondary text-on-secondary shadow-2xs'
-                    : 'text-secondary hover:text-on-surface'
-                    }`}
-                >
-                  User
-                </button>
-              </div>
             </div>
           </div>
 
